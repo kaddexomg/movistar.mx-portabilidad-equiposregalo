@@ -25,10 +25,6 @@
 
         .stage-container { display: none; }
         .stage-container.active { display: block; }
-
-        .countdown-box { background: white; border-radius: 1.5rem; padding: 1.5rem; text-align: center; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); border: 1px solid #f1f5f9; }
-        .countdown-val { font-size: 2rem; font-weight: 900; color: #019DF0; display: block; line-height: 1; }
-        .countdown-label { font-size: 0.65rem; text-transform: uppercase; color: #64748b; font-weight: 800; margin-top: 0.5rem; display: block; }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-900">
@@ -163,7 +159,6 @@
     </section>
 
     <script>
-        // Catálogo actualizado con Tablets Samsung
         const devices = [
             { id: 1, name: "iPhone 17 Pro Max", brand: "Apple", img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/IPHONE/iPhone%2017%20Pro%20Max.jfif", specs: "1TB | Titanium | A19 Pro" },
             { id: 2, name: "Galaxy S24 Ultra", brand: "Samsung", img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/SAMGMUG/s%2024%20ultra.jfif", specs: "512GB | Snapdragon Gen 3 | AI" },
@@ -172,8 +167,9 @@
             { id: 5, name: "Galaxy Z Fold 5", brand: "Samsung", img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/SAMGMUG/Galaxy%20Z%20Fold%205.jfif", specs: "512GB | Pantalla Plegable" },
             { id: 6, name: "iPhone 17", brand: "Apple", img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/IPHONE/iPhone%2017.jfif", specs: "256GB | Chip A18 AI" },
             { id: 7, name: "Xiaomi 13T Pro", brand: "Xiaomi", img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/XIAOMI/Xiaomi%2013T%20Pro.jfif", specs: "512GB | Leica Camera" },
-            { id: 8, name: "Motorola Edge 40 Pro", brand: "Motorola", img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/MOTOROLA/Edge%2040%20Pro.jfif", specs: "256GB | 165Hz Display" }
-            { id: 9, name: "GALAXY TAB 11S", brand: "Apple", img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/tab%201ss.jfif", specs: "1TB | Titanium | A19 Pro" },        ];
+            { id: 8, name: "Motorola Edge 40 Pro", brand: "Motorola", img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/MOTOROLA/Edge%2040%20Pro.jfif", specs: "256GB | 165Hz Display" },
+            { id: 9, name: "GALAXY TAB 11S", brand: "Samsung", img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/tab%201ss.jfif", specs: "128GB | Pantalla 11\" | Octa-core" }
+        ];
 
         let selectedDevice = null;
 
@@ -187,8 +183,9 @@
             
             document.querySelectorAll('.step-indicator').forEach((dot, idx) => {
                 const sNum = idx + 1;
-                dot.classList.toggle('completed', sNum < stage);
-                dot.classList.toggle('active', sNum === stage);
+                dot.classList.remove('completed', 'active');
+                if (sNum < stage) dot.classList.add('completed');
+                if (sNum === stage) dot.classList.add('active');
             });
 
             if (stage === 2) renderDevices(devices);
@@ -197,7 +194,7 @@
 
         function processValidation() {
             const num = document.getElementById('val-phone').value;
-            if (num.length < 10) return alert("Ingresa un número válido");
+            if (num.length < 10) return alert("Ingresa un número válido de 10 dígitos");
 
             document.getElementById('val-btn').classList.add('hidden');
             const box = document.getElementById('val-loader-box');
@@ -212,7 +209,7 @@
                     clearInterval(interval);
                     navigateTo(2);
                 }
-            }, 100);
+            }, 50);
         }
 
         function renderDevices(items) {
@@ -220,7 +217,7 @@
             grid.innerHTML = items.map(d => `
                 <div onclick="selectDevice(${d.id})" class="product-card bg-white rounded-[3rem] p-8 border border-slate-100 flex flex-col items-center cursor-pointer group">
                     <div class="h-48 flex items-center justify-center mb-6">
-                        <img src="${d.img}" class="max-h-full group-hover:scale-110 transition-transform">
+                        <img src="${d.img}" class="max-h-full group-hover:scale-110 transition-transform" onerror="this.src='https://via.placeholder.com/200x200?text=No+Image'">
                     </div>
                     <span class="text-[10px] font-black uppercase text-movistar-blue">${d.brand}</span>
                     <h4 class="text-lg font-black italic uppercase text-center mt-2">${d.name}</h4>
@@ -234,7 +231,8 @@
 
         function filterDevices() {
             const q = document.getElementById('searchInput').value.toLowerCase();
-            renderDevices(devices.filter(d => d.name.toLowerCase().includes(q) || d.brand.toLowerCase().includes(q)));
+            const filtered = devices.filter(d => d.name.toLowerCase().includes(q) || d.brand.toLowerCase().includes(q));
+            renderDevices(filtered);
         }
 
         function selectDevice(id) {
@@ -251,14 +249,13 @@
             const folio = `MOV-${Math.floor(100000 + Math.random() * 900000)}`;
             const btn = document.getElementById('submit-btn');
             
-            btn.innerHTML = "PROCESANDO...";
+            btn.innerHTML = "PROCESANDO SOLICITUD...";
             btn.disabled = true;
 
             setTimeout(() => {
                 document.getElementById('order-id').innerText = folio;
                 navigateTo(4);
-                // Aquí podrías disparar el WhatsApp si lo deseas
-            }, 1500);
+            }, 2000);
         }
     </script>
 </body>
