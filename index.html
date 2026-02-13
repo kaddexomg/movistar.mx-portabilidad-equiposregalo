@@ -1,390 +1,679 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movistar | Tienda y Promociones Exclusivas</title>
+    <title>Movistar | Store Promociones Especiales</title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        movistar: { blue: '#019DF0', dark: '#005A87', green: '#5BC500' }
+                    },
+                    fontFamily: {
+                        sans: ['Roboto', 'sans-serif'],
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'slide-up': 'slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'toast-in': 'toastIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        slideUp: {
+                            '0%': { opacity: 0, transform: 'translateY(30px)' },
+                            '100%': { opacity: 1, transform: 'translateY(0)' },
+                        },
+                        toastIn: {
+                            '0%': { opacity: 0, transform: 'translateX(100%)' },
+                            '100%': { opacity: 1, transform: 'translateX(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
     <style>
-        body { font-family: 'Roboto', sans-serif; scroll-behavior: smooth; }
-        .movistar-blue { background-color: #019DF0; }
-        .text-movistar-blue { color: #019DF0; }
-        .bg-movistar-green { background-color: #5BC500; }
-        .text-movistar-green { color: #5BC500; }
-        .hero-gradient { background: linear-gradient(135deg, #019DF0 0%, #005A87 100%); }
-        
-        .fade-in { animation: fadeIn 0.5s ease-out forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        
-        .product-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        .product-card:hover { transform: translateY(-10px); box-shadow: 0 25px 30px -10px rgba(0, 0, 0, 0.1); }
+        /* CSS Avanzado y Custom Properties */
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.4);
+            --transition-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
 
-        .step-indicator.active { background-color: #019DF0; color: white; transform: scale(1.1); box-shadow: 0 0 20px rgba(1, 157, 240, 0.3); }
-        .step-indicator.completed { background-color: #5BC500; color: white; }
+        body { background-color: #f8fafc; overflow-x: hidden; }
 
-        .stage-container { display: none; }
-        .stage-container.active { display: block; }
-        
-        /* Custom Radio Button styling for Plans */
-        .plan-radio:checked + div { border-color: #019DF0; background-color: #f0f9ff; }
-        .plan-radio:checked + div .check-icon { color: #019DF0; opacity: 1; }
+        /* Utilidades Glassmorphism */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+        }
+
+        /* Manejo de Estados de Pantalla (SPA) */
+        .stage-container { 
+            display: none; 
+            opacity: 0; 
+            transition: opacity 0.4s ease-out;
+        }
+        .stage-container.active { 
+            display: block; 
+            animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        /* Estilos de Radio Buttons Personalizados */
+        .plan-radio:checked + div {
+            border-color: #019DF0;
+            background-color: #f0f9ff;
+            transform: scale(1.02);
+            box-shadow: 0 10px 25px rgba(1, 157, 240, 0.15);
+        }
+        .plan-radio:checked + div .check-icon { color: #019DF0; opacity: 1; transform: scale(1); }
+        .plan-radio + div { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .plan-radio + div .check-icon { transform: scale(0.5); transition: all 0.3s ease; }
+
+        /* Scrollbar Personalizada */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #019DF0; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #005A87; }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-900">
+<body class="text-slate-800 antialiased selection:bg-movistar-blue selection:text-white">
 
-    <div id="loader" class="fixed inset-0 bg-white z-[9999] flex flex-col justify-center items-center">
-        <div class="animate-spin h-14 w-14 text-movistar-blue mb-4">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4"><circle class="opacity-25" cx="12" cy="12" r="10"></circle><path class="opacity-75" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4"></path></svg>
+    <div id="toast-container" class="fixed bottom-5 right-5 z-[9999] flex flex-col gap-3 pointer-events-none"></div>
+
+    <div id="loader" class="fixed inset-0 bg-white z-[9999] flex flex-col justify-center items-center transition-opacity duration-500">
+        <div class="relative w-20 h-20 flex items-center justify-center">
+            <div class="absolute inset-0 rounded-full border-t-4 border-movistar-blue animate-spin"></div>
+            <i class="fas fa-store text-movistar-blue text-2xl animate-pulse"></i>
         </div>
-        <p class="text-movistar-blue font-black italic animate-pulse tracking-widest uppercase text-xs">CARGANDO TIENDA MOVISTAR...</p>
+        <p class="mt-4 text-movistar-blue font-black italic tracking-widest uppercase text-xs">Optimizando Catálogo...</p>
     </div>
 
-    <header class="movistar-blue text-white shadow-xl sticky top-0 z-50">
+    <header class="bg-movistar-blue/95 backdrop-blur-md text-white shadow-xl sticky top-0 z-50 border-b border-white/10">
         <div class="container mx-auto px-4 h-16 flex items-center justify-between">
-            <div class="flex items-center gap-2 cursor-pointer" onclick="location.reload()">
-                <div class="bg-white p-1.5 rounded-full shadow-inner"><i class="fas fa-store text-movistar-blue text-xs"></i></div>
-                <span class="font-black text-xl tracking-tighter uppercase italic">Movistar Store</span>
+            <div class="flex items-center gap-3 cursor-pointer group" onclick="App.reset()">
+                <div class="bg-white p-2 rounded-xl shadow-inner group-hover:rotate-12 transition-transform duration-300">
+                    <i class="fas fa-bolt text-movistar-blue text-sm"></i>
+                </div>
+                <span class="font-black text-xl tracking-tighter uppercase italic drop-shadow-md">Movistar Store</span>
             </div>
             <div class="flex items-center gap-4">
-                <a href="#" class="hidden sm:flex items-center gap-2 text-[10px] font-black uppercase bg-white/10 px-4 py-2 rounded-full">
-                    <i class="fas fa-tags text-movistar-green"></i> Promociones Activas
-                </a>
+                <span class="hidden sm:flex items-center gap-2 text-[11px] font-black uppercase bg-white/20 px-4 py-2 rounded-xl backdrop-blur-sm border border-white/20">
+                    <i class="fas fa-shield-alt text-movistar-green"></i> Compra Segura
+                </span>
             </div>
         </div>
     </header>
 
-    <nav id="global-stepper" class="bg-white border-b sticky top-16 z-40 py-6 shadow-sm">
+    <nav id="global-stepper" class="glass-card sticky top-16 z-40 py-5">
         <div class="container mx-auto px-4">
             <div class="flex items-center justify-between max-w-2xl mx-auto relative">
-                <div class="absolute top-1/2 left-0 w-full h-0.5 bg-slate-100 -translate-y-1/2 z-0"></div>
-                <div class="relative z-10 flex flex-col items-center gap-2">
-                    <div id="dot-1" class="step-indicator active w-10 h-10 rounded-full border-2 border-slate-100 bg-white flex items-center justify-center text-sm font-black">1</div>
-                    <span class="text-[10px] font-black uppercase text-slate-400">Validar</span>
+                <div class="absolute top-1/2 left-0 w-full h-1 bg-slate-200 -translate-y-1/2 rounded-full overflow-hidden">
+                    <div id="stepper-progress" class="h-full bg-movistar-blue w-[0%] transition-all duration-700 ease-in-out"></div>
                 </div>
-                <div class="relative z-10 flex flex-col items-center gap-2">
-                    <div id="dot-2" class="step-indicator w-10 h-10 rounded-full border-2 border-slate-100 bg-white flex items-center justify-center text-sm font-black">2</div>
-                    <span class="text-[10px] font-black uppercase text-slate-400">Equipos</span>
+                <div class="relative z-10 flex flex-col items-center gap-2 step-item" data-step="1">
+                    <div class="step-circle w-10 h-10 rounded-2xl border-2 border-slate-200 bg-white flex items-center justify-center text-sm font-black transition-all duration-300 shadow-sm text-slate-400">1</div>
+                    <span class="text-[10px] font-black uppercase text-slate-500">Validar</span>
                 </div>
-                <div class="relative z-10 flex flex-col items-center gap-2">
-                    <div id="dot-3" class="step-indicator w-10 h-10 rounded-full border-2 border-slate-100 bg-white flex items-center justify-center text-sm font-black">3</div>
-                    <span class="text-[10px] font-black uppercase text-slate-400">Cotizar</span>
+                <div class="relative z-10 flex flex-col items-center gap-2 step-item" data-step="2">
+                    <div class="step-circle w-10 h-10 rounded-2xl border-2 border-slate-200 bg-white flex items-center justify-center text-sm font-black transition-all duration-300 shadow-sm text-slate-400">2</div>
+                    <span class="text-[10px] font-black uppercase text-slate-500">Equipos</span>
+                </div>
+                <div class="relative z-10 flex flex-col items-center gap-2 step-item" data-step="3">
+                    <div class="step-circle w-10 h-10 rounded-2xl border-2 border-slate-200 bg-white flex items-center justify-center text-sm font-black transition-all duration-300 shadow-sm text-slate-400">3</div>
+                    <span class="text-[10px] font-black uppercase text-slate-500">Cotizar</span>
                 </div>
             </div>
         </div>
     </nav>
 
-    <section id="stage-1" class="stage-container active fade-in py-16 px-4">
-        <div class="max-w-xl mx-auto bg-white p-10 md:p-14 rounded-[4rem] shadow-2xl text-center">
-            <div class="bg-blue-50 w-24 h-24 rounded-[2rem] rotate-12 flex items-center justify-center mx-auto mb-8">
-                <i class="fas fa-percentage text-4xl text-movistar-blue -rotate-12"></i>
+    <main class="min-h-screen pb-20">
+        
+        <section id="stage-1" class="stage-container active py-16 px-4">
+            <div class="max-w-xl mx-auto glass-card p-10 md:p-14 rounded-[3rem] text-center relative overflow-hidden">
+                <div class="absolute -top-20 -right-20 w-40 h-40 bg-movistar-blue opacity-10 rounded-full blur-3xl"></div>
+                <div class="absolute -bottom-20 -left-20 w-40 h-40 bg-movistar-green opacity-10 rounded-full blur-3xl"></div>
+                
+                <div class="bg-gradient-to-br from-blue-50 to-blue-100 w-24 h-24 rounded-[2rem] shadow-inner flex items-center justify-center mx-auto mb-8 animate-float">
+                    <i class="fas fa-ticket-alt text-4xl text-movistar-blue"></i>
+                </div>
+                <h2 class="text-3xl font-black italic uppercase mb-3 text-slate-800 tracking-tight">Acceso a Liquidación</h2>
+                <p class="text-slate-500 mb-10 text-sm font-medium">Valida tu número móvil para desbloquear precios especiales con hasta 80% de descuento real.</p>
+                
+                <form id="form-validation" class="space-y-5 max-w-sm mx-auto relative z-10">
+                    <div class="relative">
+                        <span class="absolute left-6 top-1/2 -translate-y-1/2 text-slate-400 font-black">+52</span>
+                        <input type="tel" id="val-phone" maxlength="10" required pattern="[0-9]{10}" placeholder="000 000 0000" 
+                            class="w-full bg-white border-2 border-slate-200 py-5 pl-16 pr-6 rounded-2xl text-2xl font-black text-slate-700 focus:border-movistar-blue focus:ring-4 focus:ring-movistar-blue/20 outline-none transition-all placeholder:font-medium placeholder:text-slate-300">
+                    </div>
+                    <button type="submit" id="val-btn" class="w-full bg-movistar-blue hover:bg-movistar-dark text-white font-black py-5 rounded-2xl shadow-lg hover:shadow-movistar-blue/50 uppercase italic text-sm transition-all flex items-center justify-center gap-2 group">
+                        Consultar Ofertas <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                    </button>
+                </form>
+
+                <div id="val-loader-box" class="hidden mt-8 space-y-3">
+                    <div class="w-full bg-slate-100 h-3 rounded-full overflow-hidden shadow-inner">
+                        <div id="val-progress" class="h-full bg-movistar-blue w-0 rounded-full bg-[length:1rem_1rem] bg-[linear-gradient(45deg,rgba(255,255,255,.15)_25%,transparent_25%,transparent_50%,rgba(255,255,255,.15)_50%,rgba(255,255,255,.15)_75%,transparent_75%,transparent)] animate-[tw-spin_1s_linear_infinite]"></div>
+                    </div>
+                    <p class="text-[11px] font-black text-movistar-blue uppercase animate-pulse tracking-widest">Verificando en base de datos...</p>
+                </div>
             </div>
-            <h2 class="text-3xl font-black text-slate-800 italic uppercase mb-4">Verificar Promociones</h2>
-            <p class="text-slate-500 mb-10 text-sm font-medium">Ingresa tu número para verificar si aplicas a nuestros precios especiales de liquidación.</p>
-            <div class="space-y-4 max-w-sm mx-auto">
-                <input type="tel" id="val-phone" maxlength="10" placeholder="Número a 10 dígitos" 
-                    class="w-full bg-slate-50 border-2 border-slate-100 p-6 rounded-3xl text-center text-3xl font-black focus:border-movistar-blue outline-none">
-                <button onclick="processValidation()" id="val-btn" class="w-full movistar-blue text-white font-black py-6 rounded-3xl shadow-xl uppercase italic text-sm hover:bg-blue-600 transition">
-                    VER OFERTAS <i class="fas fa-arrow-right ml-2"></i>
+        </section>
+
+        <section id="stage-2" class="stage-container">
+            <div class="bg-gradient-to-r from-movistar-blue via-[#007cc0] to-movistar-dark text-white py-16 px-4 text-center shadow-lg relative overflow-hidden">
+                <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4xKSIvPjwvc3ZnPg==')]"></div>
+                <div class="relative z-10">
+                    <span class="bg-movistar-green text-white text-[10px] font-black px-4 py-1.5 rounded-full uppercase mb-4 inline-block tracking-widest shadow-lg">Catálogo Desbloqueado</span>
+                    <h2 class="text-4xl md:text-5xl font-black mb-4 italic uppercase drop-shadow-md">Remate Exclusivo</h2>
+                    <p class="text-sm md:text-base text-blue-100 mb-10 font-medium max-w-xl mx-auto">Selecciona el equipo que deseas cotizar. Precios de fábrica aplicables al adquirir tu paquete promocional.</p>
+                    <div class="relative max-w-lg mx-auto group">
+                        <i class="fas fa-search absolute left-6 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-movistar-blue transition-colors"></i>
+                        <input type="text" id="searchInput" placeholder="Ej. iPhone, Galaxy, ZTE, Nubia..." 
+                            class="w-full bg-white text-slate-800 pl-14 pr-6 py-4 rounded-2xl outline-none shadow-2xl font-bold border-4 border-transparent focus:border-blue-300 transition-all">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="container mx-auto px-4 py-12">
+                <div id="device-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                    </div>
+                <div id="no-results" class="hidden text-center py-20">
+                    <i class="fas fa-box-open text-6xl text-slate-300 mb-4"></i>
+                    <h3 class="text-xl font-black text-slate-500 uppercase">No se encontraron equipos</h3>
+                </div>
+            </div>
+        </section>
+
+        <section id="stage-3" class="stage-container py-10">
+            <div class="container mx-auto px-4 max-w-6xl">
+                <button onclick="App.navigateTo(2)" class="mb-6 text-slate-500 hover:text-movistar-blue font-black flex items-center gap-2 uppercase text-[11px] transition-colors bg-white px-4 py-2 rounded-xl shadow-sm inline-flex">
+                    <i class="fas fa-arrow-left"></i> Cambiar Equipo
                 </button>
-            </div>
-            <div id="val-loader-box" class="hidden mt-10 space-y-4">
-                <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
-                    <div id="val-progress" class="h-full movistar-blue w-0 transition-all duration-300"></div>
-                </div>
-                <p id="val-text" class="text-[10px] font-black text-movistar-blue uppercase animate-pulse">Buscando descuentos autorizados...</p>
-            </div>
-        </div>
-    </section>
-
-    <section id="stage-2" class="stage-container fade-in">
-        <div class="hero-gradient text-white py-16 px-4 text-center">
-            <h2 class="text-4xl md:text-6xl font-black mb-4 italic uppercase">Precios de Locura</h2>
-            <p class="text-lg opacity-90 mb-10 italic">Smartphones y Tablets con hasta 80% de descuento al adquirir una promoción.</p>
-            <div class="relative max-w-md mx-auto">
-                <input type="text" id="searchInput" onkeyup="filterDevices()" placeholder="Buscar modelo (iPhone, Galaxy, Tab...)" 
-                    class="w-full bg-white text-slate-800 px-6 py-5 rounded-3xl outline-none shadow-2xl font-bold">
-            </div>
-        </div>
-        <main class="container mx-auto px-4 py-16">
-            <div id="device-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10">
-                </div>
-        </main>
-    </section>
-
-    <section id="stage-3" class="stage-container fade-in py-16 bg-slate-100 min-h-screen">
-        <div class="container mx-auto px-4 max-w-6xl">
-            <button onclick="backToCatalog()" class="mb-8 text-movistar-blue font-black flex items-center gap-2 uppercase text-sm italic hover:underline">
-                <i class="fas fa-chevron-left"></i> Volver al catálogo
-            </button>
-            
-            <div class="bg-white shadow-2xl rounded-[3rem] overflow-hidden">
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-0">
-                    
-                    <div class="lg:col-span-5 bg-slate-50 p-10 flex flex-col items-center border-r border-slate-100">
-                        <div class="w-full max-w-xs bg-white p-6 rounded-[2rem] shadow-sm mb-6 h-64 flex items-center justify-center">
-                            <img id="checkout-img" src="" class="max-h-full object-contain hover:scale-105 transition-transform duration-500">
-                        </div>
-                        <span id="checkout-brand" class="text-xs font-black uppercase text-movistar-blue mb-1"></span>
-                        <h2 id="checkout-name" class="text-3xl font-black italic uppercase text-slate-800 text-center mb-6">EQUIPO</h2>
+                
+                <div class="glass-card rounded-[2.5rem] overflow-hidden">
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-0">
                         
-                        <div class="w-full text-left bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-                            <h3 class="font-black text-slate-800 border-b border-slate-100 pb-2 mb-4 flex items-center gap-2">
-                                <i class="fas fa-list-ul text-movistar-blue"></i> Características
-                            </h3>
-                            <ul id="checkout-specs" class="space-y-2 text-sm text-slate-600 font-medium">
-                                </ul>
+                        <div class="lg:col-span-5 bg-gradient-to-b from-slate-50 to-white p-8 md:p-10 flex flex-col relative border-r border-slate-100">
+                            <div class="absolute top-8 right-8 bg-red-500 text-white text-[10px] font-black px-3 py-1 rounded-full uppercase shadow-lg shadow-red-200 animate-pulse">
+                                Remate Oficial
+                            </div>
+
+                            <div class="w-full aspect-square bg-white rounded-[2rem] shadow-sm mb-8 flex items-center justify-center p-6 border border-slate-100 group relative">
+                                <div class="absolute inset-0 bg-movistar-blue opacity-0 group-hover:opacity-5 rounded-[2rem] transition-opacity duration-500"></div>
+                                <img id="checkout-img" src="" class="max-h-full max-w-full object-contain group-hover:scale-110 transition-transform duration-700 ease-out drop-shadow-xl" alt="Dispositivo">
+                            </div>
+                            
+                            <div class="text-center mb-6">
+                                <span id="checkout-brand" class="text-[11px] font-black uppercase text-movistar-blue tracking-widest bg-blue-50 px-3 py-1 rounded-lg"></span>
+                                <h2 id="checkout-name" class="text-3xl font-black italic uppercase text-slate-800 mt-3 leading-none"></h2>
+                            </div>
+                            
+                            <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 flex-1">
+                                <h3 class="font-black text-slate-800 text-sm uppercase tracking-wider border-b border-slate-200 pb-3 mb-4 flex items-center gap-2">
+                                    <i class="fas fa-microchip text-movistar-blue"></i> Especificaciones
+                                </h3>
+                                <ul id="checkout-specs" class="space-y-3 text-sm text-slate-600 font-medium">
+                                    </ul>
+                            </div>
+                        </div>
+
+                        <div class="lg:col-span-7 p-8 md:p-10 lg:p-14 bg-white">
+                            
+                            <div class="mb-10 animate-slide-up" style="animation-delay: 0.1s">
+                                <div class="flex items-center gap-3 mb-6">
+                                    <div class="bg-movistar-blue text-white w-8 h-8 rounded-lg flex items-center justify-center text-sm font-black shadow-md">1</div>
+                                    <h3 class="text-xl font-black italic uppercase text-slate-800">Elige tu Plan Promocional</h3>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                    <label class="relative cursor-pointer group">
+                                        <input type="radio" name="planSelection" value="100" class="plan-radio peer sr-only" checked onchange="App.updateQuote()">
+                                        <div class="border-2 border-slate-200 rounded-2xl p-6 bg-white relative overflow-hidden">
+                                            <div class="absolute top-0 right-0 bg-movistar-green text-white text-[9px] font-black px-2 py-1 rounded-bl-lg uppercase tracking-wider">Recomendado</div>
+                                            <div class="flex justify-between items-center mb-1">
+                                                <span class="font-black text-lg uppercase text-slate-800">Plan Movistar</span>
+                                                <i class="fas fa-check-circle check-icon opacity-0 text-xl"></i>
+                                            </div>
+                                            <div class="flex items-baseline gap-1 mb-2">
+                                                <span class="text-3xl font-black text-movistar-blue">$100</span>
+                                                <span class="text-xs text-slate-500 font-bold">MXN</span>
+                                            </div>
+                                            <p class="text-[11px] font-black text-movistar-green bg-green-50 px-2 py-1 rounded inline-block mb-3 border border-green-100">Vigencia 45 Días</p>
+                                            <ul class="text-[11px] font-bold text-slate-500 space-y-2">
+                                                <li class="flex items-center gap-2"><i class="fas fa-infinity text-movistar-blue w-4"></i> Datos Ilimitados</li>
+                                                <li class="flex items-center gap-2"><i class="fas fa-phone-alt text-movistar-blue w-4"></i> Llamadas/SMS</li>
+                                                <li class="flex items-center gap-2"><i class="fab fa-whatsapp text-movistar-blue w-4"></i> Redes Libres</li>
+                                            </ul>
+                                        </div>
+                                    </label>
+                                    <label class="relative cursor-pointer group">
+                                        <input type="radio" name="planSelection" value="50" class="plan-radio peer sr-only" onchange="App.updateQuote()">
+                                        <div class="border-2 border-slate-200 rounded-2xl p-6 bg-white">
+                                            <div class="flex justify-between items-center mb-1">
+                                                <span class="font-black text-lg uppercase text-slate-800">Plan Básico</span>
+                                                <i class="fas fa-check-circle check-icon opacity-0 text-xl"></i>
+                                            </div>
+                                            <div class="flex items-baseline gap-1 mb-2">
+                                                <span class="text-3xl font-black text-slate-700 group-hover:text-movistar-blue transition-colors">$50</span>
+                                                <span class="text-xs text-slate-500 font-bold">MXN</span>
+                                            </div>
+                                            <p class="text-[11px] font-black text-movistar-blue bg-blue-50 px-2 py-1 rounded inline-block mb-3 border border-blue-100">Vigencia 30 Días</p>
+                                            <ul class="text-[11px] font-bold text-slate-500 space-y-2">
+                                                <li class="flex items-center gap-2"><i class="fas fa-wifi text-slate-400 w-4"></i> Datos Libres</li>
+                                                <li class="flex items-center gap-2"><i class="fas fa-phone-alt text-slate-400 w-4"></i> Minutos Incluidos</li>
+                                                <li class="flex items-center gap-2"><i class="fab fa-whatsapp text-slate-400 w-4"></i> WhatsApp Ilimitado</li>
+                                            </ul>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="bg-slate-900 p-6 md:p-8 rounded-[2rem] mb-10 text-white shadow-2xl relative overflow-hidden animate-slide-up" style="animation-delay: 0.2s">
+                                <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20"></div>
+                                <div class="relative z-10">
+                                    <h4 class="text-xs font-black text-slate-400 uppercase tracking-widest mb-5">Desglose de Cotización</h4>
+                                    <div class="space-y-3 mb-5 text-sm font-medium">
+                                        <div class="flex justify-between items-center border-b border-white/10 pb-3">
+                                            <span class="text-slate-300">Costo Base del Equipo:</span>
+                                            <span id="quote-original-price" class="text-slate-500 line-through text-xs font-bold"></span>
+                                        </div>
+                                        <div class="flex justify-between items-center border-b border-white/10 pb-3">
+                                            <span class="text-movistar-green font-bold flex items-center gap-2"><i class="fas fa-tag"></i> Equipo (Precio Liquidación):</span>
+                                            <span id="quote-device-price" class="font-bold text-lg"></span>
+                                        </div>
+                                        <div class="flex justify-between items-center pb-2">
+                                            <span class="text-blue-300">Costo de Plan Seleccionado:</span>
+                                            <span id="quote-plan-price" class="font-bold"></span>
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end border-t border-white/20 pt-5 mt-2 gap-2">
+                                        <div>
+                                            <span class="block text-[10px] text-slate-400 uppercase font-black tracking-widest">Total a Pagar HOY</span>
+                                            <span class="text-[10px] text-movistar-green font-bold">Incluye impuestos y envío</span>
+                                        </div>
+                                        <span id="quote-total-price" class="text-4xl font-black text-white italic tracking-tighter drop-shadow-[0_0_15px_rgba(91,197,0,0.4)]"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="animate-slide-up" style="animation-delay: 0.3s">
+                                <div class="flex items-center gap-3 mb-6">
+                                    <div class="bg-movistar-blue text-white w-8 h-8 rounded-lg flex items-center justify-center text-sm font-black shadow-md">2</div>
+                                    <h3 class="text-xl font-black italic uppercase text-slate-800">Datos de Envío</h3>
+                                </div>
+                                <form id="purchase-form" class="space-y-5">
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                        <div class="relative group">
+                                            <i class="fas fa-user absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-movistar-blue"></i>
+                                            <input type="text" required placeholder="Nombre Completo" class="w-full bg-slate-50 p-4 pl-12 rounded-xl border border-slate-200 outline-none focus:border-movistar-blue focus:bg-white focus:ring-4 ring-blue-50 font-bold transition-all">
+                                        </div>
+                                        <div class="relative group">
+                                            <i class="fas fa-phone absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-movistar-blue"></i>
+                                            <input type="tel" required pattern="[0-9]{10}" maxlength="10" placeholder="Número de Contacto (10 dígitos)" class="w-full bg-slate-50 p-4 pl-12 rounded-xl border border-slate-200 outline-none focus:border-movistar-blue focus:bg-white focus:ring-4 ring-blue-50 font-bold transition-all">
+                                        </div>
+                                    </div>
+                                    <div class="relative group">
+                                        <i class="fas fa-map-marker-alt absolute left-4 top-5 text-slate-400 group-focus-within:text-movistar-blue"></i>
+                                        <textarea required placeholder="Dirección Completa (Calle, Número, Colonia, C.P., Municipio, Estado)..." rows="3" class="w-full bg-slate-50 p-4 pl-12 rounded-xl border border-slate-200 outline-none focus:border-movistar-blue focus:bg-white focus:ring-4 ring-blue-50 font-bold transition-all resize-none"></textarea>
+                                    </div>
+                                    
+                                    <button type="submit" id="submit-btn" class="w-full relative overflow-hidden bg-movistar-green hover:bg-[#4ea800] transition-colors text-white font-black py-5 rounded-xl shadow-lg shadow-green-500/30 text-lg uppercase italic flex items-center justify-center gap-3 mt-4">
+                                        <span class="relative z-10 flex items-center gap-2">Confirmar Orden y Enviar <i class="fas fa-paper-plane"></i></span>
+                                        <div class="absolute inset-0 bg-white/20 translate-y-full hover:translate-y-0 transition-transform duration-300"></div>
+                                    </button>
+                                </form>
+                            </div>
+
                         </div>
                     </div>
+                </div>
+            </div>
+        </section>
 
-                    <div class="lg:col-span-7 p-10 md:p-14">
-                        
-                        <div class="mb-10">
-                            <h3 class="text-xl font-black italic uppercase mb-6 text-slate-800 flex items-center gap-2">
-                                <span class="bg-movistar-blue text-white w-8 h-8 rounded-full flex items-center justify-center text-sm">1</span>
-                                Selecciona tu Promoción
-                            </h3>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <label class="relative cursor-pointer group">
-                                    <input type="radio" name="planSelection" value="100" class="plan-radio peer sr-only" checked onchange="updateQuote()">
-                                    <div class="border-2 border-slate-200 rounded-2xl p-5 hover:border-movistar-blue transition-all">
-                                        <div class="flex justify-between items-start mb-2">
-                                            <span class="font-black text-lg uppercase text-slate-800">Plan Movistar</span>
-                                            <i class="fas fa-check-circle check-icon opacity-0 transition-opacity text-xl"></i>
-                                        </div>
-                                        <p class="text-3xl font-black text-movistar-blue mb-1">$100 <span class="text-sm text-slate-500 font-bold uppercase">MXN</span></p>
-                                        <p class="text-xs font-bold text-movistar-green bg-green-50 px-2 py-1 rounded inline-block mb-2">Vigencia 45 Días</p>
-                                        <ul class="text-[10px] font-bold text-slate-500 space-y-1">
-                                            <li><i class="fas fa-wifi mr-1"></i> Datos Ilimitados</li>
-                                            <li><i class="fas fa-phone mr-1"></i> Llamadas Nacionales</li>
-                                            <li><i class="fab fa-whatsapp mr-1"></i> Redes Sociales Libres</li>
-                                        </ul>
-                                    </div>
-                                </label>
-                                <label class="relative cursor-pointer group">
-                                    <input type="radio" name="planSelection" value="50" class="plan-radio peer sr-only" onchange="updateQuote()">
-                                    <div class="border-2 border-slate-200 rounded-2xl p-5 hover:border-movistar-blue transition-all">
-                                        <div class="flex justify-between items-start mb-2">
-                                            <span class="font-black text-lg uppercase text-slate-800">Plan Básico</span>
-                                            <i class="fas fa-check-circle check-icon opacity-0 transition-opacity text-xl"></i>
-                                        </div>
-                                        <p class="text-3xl font-black text-slate-700 mb-1">$50 <span class="text-sm text-slate-500 font-bold uppercase">MXN</span></p>
-                                        <p class="text-xs font-bold text-movistar-blue bg-blue-50 px-2 py-1 rounded inline-block mb-2">Vigencia 30 Días</p>
-                                        <ul class="text-[10px] font-bold text-slate-500 space-y-1">
-                                            <li><i class="fas fa-wifi mr-1"></i> Datos Ilimitados</li>
-                                            <li><i class="fas fa-phone mr-1"></i> Minutos Incluidos</li>
-                                            <li><i class="fab fa-whatsapp mr-1"></i> WhatsApp Libre</li>
-                                        </ul>
-                                    </div>
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="bg-gradient-to-br from-blue-50 to-slate-50 p-6 rounded-3xl mb-10 border border-blue-100 shadow-inner">
-                            <h4 class="text-sm font-black text-movistar-blue uppercase tracking-widest mb-4">Resumen de Compra</h4>
-                            <div class="space-y-2 mb-4">
-                                <div class="flex justify-between text-sm font-bold text-slate-600">
-                                    <span>Costo del Equipo (Remate):</span>
-                                    <span id="quote-device-price">$0</span>
-                                </div>
-                                <div class="flex justify-between text-sm font-bold text-slate-600">
-                                    <span>Promoción Seleccionada:</span>
-                                    <span id="quote-plan-price">+$100</span>
-                                </div>
-                            </div>
-                            <div class="flex justify-between items-center border-t border-blue-200 pt-4">
-                                <span class="text-xl font-black text-slate-800 uppercase italic">Total a Pagar:</span>
-                                <span id="quote-total-price" class="text-3xl font-black text-movistar-green"></span>
-                            </div>
-                        </div>
-
-                        <div>
-                            <h3 class="text-xl font-black italic uppercase mb-6 text-slate-800 flex items-center gap-2">
-                                <span class="bg-movistar-blue text-white w-8 h-8 rounded-full flex items-center justify-center text-sm">2</span>
-                                Datos de Envío
-                            </h3>
-                            <form id="purchase-form" onsubmit="submitPurchase(event)" class="space-y-6">
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <input type="text" required placeholder="Nombre Completo" class="bg-slate-50 p-4 rounded-2xl border border-slate-200 outline-none focus:border-movistar-blue font-bold">
-                                    <input type="tel" required maxlength="10" placeholder="Número de Contacto" class="bg-slate-50 p-4 rounded-2xl border border-slate-200 outline-none focus:border-movistar-blue font-bold">
-                                </div>
-                                <textarea required placeholder="Dirección completa (Calle, Número, Colonia, C.P., Ciudad)..." rows="3" class="w-full bg-slate-50 p-4 rounded-2xl border border-slate-200 outline-none focus:border-movistar-blue font-bold"></textarea>
-                                
-                                <button type="submit" id="submit-btn" class="w-full bg-movistar-green hover:bg-green-600 transition-colors text-white font-black py-6 rounded-[2rem] shadow-xl text-xl uppercase italic flex items-center justify-center gap-3">
-                                    Generar Orden de Compra <i class="fas fa-shopping-cart"></i>
-                                </button>
-                            </form>
-                        </div>
-
+        <section id="stage-4" class="stage-container py-16 px-4">
+            <div class="max-w-2xl mx-auto glass-card p-12 md:p-16 rounded-[3rem] text-center border-t-8 border-t-movistar-green">
+                <div class="relative w-24 h-24 mx-auto mb-8">
+                    <div class="absolute inset-0 bg-movistar-green rounded-full animate-ping opacity-20"></div>
+                    <div class="relative w-full h-full bg-gradient-to-tr from-movistar-green to-[#7ceb1a] text-white rounded-full flex items-center justify-center shadow-xl shadow-green-200">
+                        <i class="fas fa-check text-4xl"></i>
+                    </div>
+                </div>
+                
+                <h2 class="text-4xl font-black mb-3 uppercase italic text-slate-800">¡Cotización Aprobada!</h2>
+                <p class="text-slate-500 font-medium mb-10 text-lg">Tu orden ha sido registrada exitosamente en nuestro sistema con los precios de liquidación garantizados.</p>
+                
+                <div class="bg-slate-50 border border-slate-200 p-8 rounded-3xl mb-10 relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-2 h-full bg-movistar-blue"></div>
+                    <span class="text-xs font-black text-slate-400 block mb-1 uppercase tracking-widest">Folio de Seguimiento Oficial</span>
+                    <h3 id="order-id" class="text-4xl md:text-5xl font-black tracking-widest text-movistar-blue font-mono"></h3>
+                </div>
+                
+                <div class="bg-blue-50 text-movistar-dark p-6 rounded-2xl flex items-start gap-4 text-left border border-blue-100">
+                    <i class="fab fa-whatsapp text-3xl text-green-500 mt-1"></i>
+                    <div>
+                        <h4 class="font-black text-sm uppercase mb-1">Próximos Pasos</h4>
+                        <p class="text-sm font-medium opacity-90 leading-relaxed">Guarda tu folio. Un ejecutivo de ventas Movistar te contactará por WhatsApp o llamada en un máximo de <strong>24 horas hábiles</strong> para confirmar la dirección de envío y método de pago (Aceptamos contra-entrega en zonas participantes).</p>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <section id="stage-4" class="stage-container fade-in py-16 px-4">
-        <div class="max-w-2xl mx-auto bg-white p-12 rounded-[4rem] shadow-2xl text-center">
-            <div class="w-24 h-24 bg-movistar-green text-white rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg shadow-green-200">
-                <i class="fas fa-check text-4xl"></i>
-            </div>
-            <h2 class="text-4xl font-black mb-2 uppercase italic text-slate-800">¡Cotización Generada!</h2>
-            <p class="text-slate-500 font-medium mb-8">Tu orden ha sido procesada con los descuentos seleccionados.</p>
-            
-            <div class="bg-slate-50 border border-slate-100 p-8 rounded-[3rem] mb-8">
-                <span class="text-xs font-black text-movistar-blue block mb-2 uppercase tracking-widest">Folio de Compra</span>
-                <h3 id="order-id" class="text-4xl font-black tracking-widest text-slate-800"></h3>
-            </div>
-            
-            <p class="text-sm text-slate-500 font-bold bg-yellow-50 text-yellow-700 p-4 rounded-2xl">
-                <i class="fas fa-info-circle mr-2"></i> Un asesor se pondrá en contacto contigo vía WhatsApp o Llamada para confirmar el método de pago y el envío a tu domicilio en las próximas 24 horas.
-            </p>
-        </div>
-    </section>
+    </main>
 
     <script>
-        // Datos de equipos con precios económicos (liquidación) y specs detalladas
-        const devices = [
-            { id: 1, name: "iPhone 17 Pro Max", brand: "Apple", img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/IPHONE/iPhone%2017%20Pro%20Max.jfif", shortSpecs: "1TB | Titanium", price: 5499, fullSpecs: ["Pantalla Super Retina XDR 6.7\"", "Chip A19 Pro Bionic", "Cámara Triple 48MP + IA", "Capacidad: 1TB", "Acabado en Titanio Aeroespacial"] },
-            { id: 2, name: "Galaxy S24 Ultra", brand: "Samsung", img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/SAMGMUG/s%2024%20ultra.jfif", shortSpecs: "512GB | IA Integrada", price: 4999, fullSpecs: ["Pantalla 6.8\" QHD+ Dynamic AMOLED", "Snapdragon 8 Gen 3 for Galaxy", "Cámara 200MP + Zoom 100x", "S-Pen Integrado", "Batería 5000 mAh"] },
-            { id: 3, name: "Galaxy Tab S10 Ultra", brand: "Samsung", img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/tab%20s10.jfif", shortSpecs: "14.6\" | S-Pen", price: 3899, fullSpecs: ["Pantalla 14.6\" Dynamic AMOLED 2X", "Almacenamiento 512GB", "Resistencia al agua IP68", "Incluye S-Pen magnético", "Cámaras duales frontales 12MP"] },
-            { id: 4, name: "Galaxy Tab S9 FE", brand: "Samsung", img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/galaxy%20tab.jfif", shortSpecs: "10.9\" | 128GB", price: 2199, fullSpecs: ["Pantalla 10.9\" a 90Hz", "Resistencia al agua y polvo IP68", "Batería 8000 mAh de larga duración", "Procesador Octa-Core", "S-Pen Inluido"] },
-            { id: 5, name: "Galaxy Z Fold 5", brand: "Samsung", img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/SAMGMUG/Galaxy%20Z%20Fold%205.jfif", shortSpecs: "512GB | Plegable", price: 6200, fullSpecs: ["Pantalla Plegable 7.6\" AMOLED", "Pantalla Exterior 6.2\"", "Snapdragon 8 Gen 2", "Diseño Flex Hinge más delgado", "Multitarea avanzada"] },
-            { id: 6, name: "iPhone 17", brand: "Apple", img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/IPHONE/iPhone%2017.jfif", shortSpecs: "256GB | Chip A18", price: 3499, fullSpecs: ["Pantalla OLED 6.1\"", "Nuevo Chip A18 con Apple Intelligence", "Cámara Dual Avanzada 48MP", "Batería para todo el día", "USB-C y MagSafe"] },
-            { id: 7, name: "Xiaomi 13T Pro", brand: "Xiaomi", img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/XIAOMI/Xiaomi%2013T%20Pro.jfif", shortSpecs: "512GB | Leica", price: 2899, fullSpecs: ["Lentes ópticos Leica Profesionales", "Carga HyperCharge 120W (0 a 100% en 19 min)", "Pantalla AMOLED 144Hz", "MediaTek Dimensity 9200+", "Resistencia IP68"] },
-            { id: 8, name: "Motorola Edge 40 Pro", brand: "Motorola", img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/MOTOROLA/Edge%2040%20Pro.jfif", shortSpecs: "256GB | 165Hz", price: 2599, fullSpecs: ["Pantalla pOLED curva 165Hz", "Snapdragon 8 Gen 2", "Carga TurboPower 125W", "Cámara Triple 50MP de Alta Resolución", "Sonido Dolby Atmos"] },
-            { id: 9, name: "GALAXY TAB 11S", brand: "Samsung", img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/tab%201ss.jfif", shortSpecs: "11\" | Octa-core", price: 1899, fullSpecs: ["Pantalla Inmersiva 11\"", "Procesador Octa-Core rápido", "Memoria Expansible vía MicroSD", "Ideal para multimedia y clases", "Batería optimizada"] }
+        // Formateador de moneda API Internacional
+        const mxnFormatter = new Intl.NumberFormat('es-MX', {
+            style: 'currency',
+            currency: 'MXN',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
+        });
+
+        // Base de Datos de Equipos (Añadido ZTE Nubia)
+        const dbDevices = [
+            { id: 101, name: "ZTE Nubia Neo 3 GT 5G", brand: "ZTE", img: "https://placehold.co/600x600/1e293b/019DF0/png?text=Nubia+Neo+3+GT", shortSpecs: "256GB | 5G Gaming", price: 1899, originalPrice: 5999, fullSpecs: ["Pantalla 6.72\" FHD+ 120Hz Ultra Fluida", "Procesador Unisoc T820 5G Gaming", "Batería 6000 mAh + Carga Rápida 33W", "Diseño Mecha Futurista Interactivo", "Gatillos capacitivos para eSports", "Cámara Dual 50MP + IA"] },
+            { id: 1, name: "iPhone 17 Pro Max", brand: "Apple", img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/IPHONE/iPhone%2017%20Pro%20Max.jfif", shortSpecs: "1TB | Titanium", price: 5499, originalPrice: 32999, fullSpecs: ["Pantalla Super Retina XDR 6.7\"", "Chip A19 Pro Bionic", "Cámara Triple 48MP + Fotografía IA", "Capacidad: 1TB NVMe", "Acabado en Titanio Aeroespacial Grado 5"] },
+            { id: 2, name: "Galaxy S24 Ultra", brand: "Samsung", img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/SAMGMUG/s%2024%20ultra.jfif", shortSpecs: "512GB | Galaxy AI", price: 4999, originalPrice: 28999, fullSpecs: ["Pantalla 6.8\" QHD+ Dynamic AMOLED 2X", "Procesador Snapdragon 8 Gen 3 for Galaxy", "Cámara Principal 200MP + Zoom Óptico", "S-Pen Integrado con Bluetooth", "Chasis de Titanio Reforzado"] },
+            { id: 3, name: "Galaxy Tab S10 Ultra", brand: "Samsung", img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/tab%20s10.jfif", shortSpecs: "14.6\" | S-Pen", price: 3899, originalPrice: 22999, fullSpecs: ["Espectacular Pantalla 14.6\" AMOLED", "Almacenamiento 512GB (Expandible)", "Resistencia al agua y polvo IP68", "Incluye S-Pen magnético baja latencia", "Sistema de 4 Altavoces AKG Dolby Atmos"] },
+            { id: 5, name: "Galaxy Z Fold 5", brand: "Samsung", img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/SAMGMUG/Galaxy%20Z%20Fold%205.jfif", shortSpecs: "512GB | Plegable", price: 6200, originalPrice: 35999, fullSpecs: ["Pantalla Interna Plegable 7.6\" Dynamic AMOLED", "Pantalla Exterior 6.2\" 120Hz", "Snapdragon 8 Gen 2 Optimizado", "Nueva Bisagra Flex Hinge (Cero huecos)", "Productividad Multitarea Avanzada"] },
+            { id: 6, name: "iPhone 17", brand: "Apple", img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/IPHONE/iPhone%2017.jfif", shortSpecs: "256GB | Chip A18", price: 3499, originalPrice: 18999, fullSpecs: ["Pantalla OLED 6.1\" HDR10", "Nuevo Chip A18 con Apple Intelligence", "Cámara Dual Avanzada 48MP con Photonic Engine", "Batería optimizada para todo el día", "Puerto USB-C 3.0 y MagSafe"] },
+            { id: 7, name: "Xiaomi 13T Pro", brand: "Xiaomi", img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/XIAOMI/Xiaomi%2013T%20Pro.jfif", shortSpecs: "512GB | Leica", price: 2899, originalPrice: 15999, fullSpecs: ["Lentes Ópticos Profesionales co-diseñados con Leica", "Carga HyperCharge 120W (0 a 100% en 19 min)", "Pantalla CrystalRes AMOLED 144Hz", "MediaTek Dimensity 9200+ Flagship", "Certificación IP68 Resistencia extrema"] },
+            { id: 8, name: "Motorola Edge 40 Pro", brand: "Motorola", img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/MOTOROLA/Edge%2040%20Pro.jfif", shortSpecs: "256GB | 165Hz", price: 2599, originalPrice: 16999, fullSpecs: ["Pantalla pOLED curva sin bordes a 165Hz", "Plataforma Móvil Snapdragon 8 Gen 2", "Carga TurboPower 125W en caja", "Cámara Triple 50MP de Alta Resolución", "Sonido Espacial Dolby Atmos"] },
         ];
 
-        let selectedDevice = null;
+        // Core Application Logic
+        const App = {
+            state: {
+                currentStage: 1,
+                selectedDevice: null,
+                selectedPlan: 100
+            },
 
-        window.onload = () => {
-            setTimeout(() => document.getElementById('loader').style.display = 'none', 1000);
+            init() {
+                // Remover Loader
+                setTimeout(() => {
+                    const loader = document.getElementById('loader');
+                    loader.style.opacity = '0';
+                    setTimeout(() => loader.style.display = 'none', 500);
+                }, 1200);
+
+                // Event Listeners
+                document.getElementById('form-validation').addEventListener('submit', this.handleValidation.bind(this));
+                document.getElementById('searchInput').addEventListener('input', this.handleSearch.bind(this));
+                document.getElementById('purchase-form').addEventListener('submit', this.handlePurchase.bind(this));
+            },
+
+            // Sistema Avanzado de Notificaciones Toast
+            showToast(message, type = 'success') {
+                const container = document.getElementById('toast-container');
+                const toast = document.createElement('div');
+                const bgColor = type === 'error' ? 'bg-red-500' : (type === 'info' ? 'bg-movistar-blue' : 'bg-movistar-green');
+                const icon = type === 'error' ? 'fa-exclamation-triangle' : (type === 'info' ? 'fa-info-circle' : 'fa-check-circle');
+                
+                toast.className = `${bgColor} text-white px-6 py-4 rounded-xl shadow-2xl flex items-center gap-3 animate-toast-in pointer-events-auto`;
+                toast.innerHTML = `<i class="fas ${icon} text-lg"></i> <span class="font-bold text-sm">${message}</span>`;
+                
+                container.appendChild(toast);
+                setTimeout(() => {
+                    toast.style.opacity = '0';
+                    toast.style.transform = 'translateX(100%)';
+                    toast.style.transition = 'all 0.4s ease';
+                    setTimeout(() => toast.remove(), 400);
+                }, 3500);
+            },
+
+            // Control de Navegación del SPA
+            navigateTo(stage) {
+                this.state.currentStage = stage;
+                
+                // Ocultar todas las secciones
+                document.querySelectorAll('.stage-container').forEach(s => {
+                    s.classList.remove('active');
+                    s.style.display = 'none';
+                });
+                
+                // Mostrar nueva sección con delay para animación
+                const nextStage = document.getElementById(`stage-${stage}`);
+                nextStage.style.display = 'block';
+                // Forzar reflow para reiniciar animacion CSS
+                void nextStage.offsetWidth; 
+                nextStage.classList.add('active');
+
+                this.updateStepper();
+
+                if (stage === 2) this.renderCatalog(dbDevices);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            },
+
+            updateStepper() {
+                const stepItems = document.querySelectorAll('.step-item');
+                const progressBar = document.getElementById('stepper-progress');
+                
+                // Limitar UI del stepper al paso 3 (el 4 es éxito)
+                const uiStage = Math.min(this.state.currentStage, 3); 
+                
+                // Actualizar barra de progreso
+                const progressPercentages = {1: '0%', 2: '50%', 3: '100%'};
+                if(progressBar) progressBar.style.width = progressPercentages[uiStage];
+
+                stepItems.forEach((item) => {
+                    const stepNum = parseInt(item.dataset.step);
+                    const circle = item.querySelector('.step-circle');
+                    const text = item.querySelector('span');
+                    
+                    circle.className = 'step-circle w-10 h-10 rounded-2xl border-2 flex items-center justify-center text-sm font-black transition-all duration-500 shadow-sm';
+                    
+                    if (stepNum < uiStage) {
+                        // Pasado
+                        circle.classList.add('bg-movistar-green', 'border-movistar-green', 'text-white');
+                        circle.innerHTML = '<i class="fas fa-check"></i>';
+                        text.classList.add('text-movistar-green');
+                    } else if (stepNum === uiStage) {
+                        // Actual
+                        circle.classList.add('bg-movistar-blue', 'border-movistar-blue', 'text-white', 'scale-110', 'shadow-movistar-blue/30');
+                        circle.innerHTML = stepNum;
+                        text.classList.add('text-movistar-blue');
+                        text.classList.remove('text-slate-500');
+                    } else {
+                        // Futuro
+                        circle.classList.add('bg-white', 'border-slate-200', 'text-slate-400');
+                        circle.innerHTML = stepNum;
+                        text.classList.add('text-slate-500');
+                        text.classList.remove('text-movistar-blue');
+                    }
+                });
+            },
+
+            // Paso 1: Validación simulada
+            handleValidation(e) {
+                e.preventDefault();
+                const btn = document.getElementById('val-btn');
+                const box = document.getElementById('val-loader-box');
+                const bar = document.getElementById('val-progress');
+                
+                btn.style.display = 'none';
+                box.classList.remove('hidden');
+
+                let p = 0;
+                const interval = setInterval(() => {
+                    p += (Math.random() * 15); // Progreso orgánico
+                    if(p > 100) p = 100;
+                    bar.style.width = `${p}%`;
+                    
+                    if (p === 100) {
+                        clearInterval(interval);
+                        this.showToast('Número validado correctamente. ¡Beneficios aplicados!', 'success');
+                        setTimeout(() => this.navigateTo(2), 500);
+                    }
+                }, 150);
+            },
+
+            // Paso 2: Renderizado de Catálogo
+            renderCatalog(items) {
+                const grid = document.getElementById('device-grid');
+                const noResults = document.getElementById('no-results');
+                
+                if(items.length === 0) {
+                    grid.innerHTML = '';
+                    noResults.classList.remove('hidden');
+                    return;
+                }
+                
+                noResults.classList.add('hidden');
+                
+                // Uso de template literals avanzados y map
+                grid.innerHTML = items.map((d, index) => `
+                    <article onclick="App.selectDevice(${d.id})" class="glass-card rounded-[2rem] p-5 cursor-pointer group hover:border-movistar-blue transition-all duration-300 transform hover:-translate-y-2 relative overflow-hidden flex flex-col h-full animate-slide-up" style="animation-delay: ${index * 0.05}s">
+                        <div class="absolute top-4 left-4 bg-movistar-blue text-white text-[10px] font-black px-2 py-1 rounded shadow-sm z-10">
+                            - ${Math.round((1 - (d.price / d.originalPrice)) * 100)}%
+                        </div>
+                        
+                        <figure class="h-48 w-full flex items-center justify-center mb-4 bg-slate-50 rounded-2xl p-4 relative overflow-hidden group-hover:bg-blue-50/50 transition-colors">
+                            <img src="${d.img}" alt="${d.name}" class="max-h-full drop-shadow-md group-hover:scale-110 transition-transform duration-500 ease-out" onerror="this.src='https://placehold.co/400x400/f8fafc/94a3b8/png?text=Sin+Imagen'">
+                        </figure>
+                        
+                        <div class="flex-1 flex flex-col">
+                            <span class="text-[10px] font-black uppercase text-slate-400 tracking-widest">${d.brand}</span>
+                            <h4 class="text-base font-black italic uppercase mt-1 text-slate-800 leading-tight mb-2">${d.name}</h4>
+                            <p class="text-[11px] text-slate-500 font-bold mb-4 bg-slate-100 self-start px-2 py-1 rounded">${d.shortSpecs}</p>
+                            
+                            <div class="mt-auto pt-4 border-t border-slate-100 flex items-end justify-between">
+                                <div>
+                                    <p class="text-[10px] text-slate-400 line-through mb-0.5">${mxnFormatter.format(d.originalPrice)}</p>
+                                    <p class="text-xl font-black text-movistar-blue">${mxnFormatter.format(d.price)}</p>
+                                </div>
+                                <div class="w-10 h-10 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center group-hover:bg-movistar-blue group-hover:text-white transition-colors">
+                                    <i class="fas fa-chevron-right"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                `).join('');
+            },
+
+            handleSearch(e) {
+                const term = e.target.value.toLowerCase().trim();
+                const filtered = dbDevices.filter(d => 
+                    d.name.toLowerCase().includes(term) || 
+                    d.brand.toLowerCase().includes(term) ||
+                    d.shortSpecs.toLowerCase().includes(term)
+                );
+                this.renderCatalog(filtered);
+            },
+
+            // Paso 3: Selección y Cotización
+            selectDevice(id) {
+                this.state.selectedDevice = dbDevices.find(d => d.id === id);
+                const dev = this.state.selectedDevice;
+                
+                if(!dev) return this.showToast('Error al cargar dispositivo', 'error');
+
+                // Llenar vista previa
+                document.getElementById('checkout-img').src = dev.img;
+                document.getElementById('checkout-name').innerText = dev.name;
+                document.getElementById('checkout-brand').innerText = dev.brand;
+                
+                // Llenar specs
+                document.getElementById('checkout-specs').innerHTML = dev.fullSpecs
+                    .map(spec => `<li class="flex items-start gap-2"><i class="fas fa-check-circle text-movistar-green mt-0.5"></i> <span>${spec}</span></li>`)
+                    .join('');
+
+                this.updateQuote();
+                this.navigateTo(3);
+                this.showToast(`Has seleccionado el ${dev.name}`, 'info');
+            },
+
+            updateQuote() {
+                if(!this.state.selectedDevice) return;
+
+                // Capturar plan (Optional Chaining y selector)
+                const planInput = document.querySelector('input[name="planSelection"]:checked');
+                this.state.selectedPlan = planInput ? parseInt(planInput.value) : 100;
+
+                const dev = this.state.selectedDevice;
+                const total = dev.price + this.state.selectedPlan;
+
+                // Animación simple de actualización de precio
+                const totalEl = document.getElementById('quote-total-price');
+                totalEl.style.opacity = '0';
+                
+                setTimeout(() => {
+                    document.getElementById('quote-original-price').innerText = mxnFormatter.format(dev.originalPrice);
+                    document.getElementById('quote-device-price').innerText = mxnFormatter.format(dev.price);
+                    document.getElementById('quote-plan-price').innerText = `+ ${mxnFormatter.format(this.state.selectedPlan)}`;
+                    totalEl.innerText = mxnFormatter.format(total);
+                    totalEl.style.opacity = '1';
+                }, 150);
+            },
+
+            // Paso 4: Finalizar Compra
+            handlePurchase(e) {
+                e.preventDefault();
+                const btn = document.getElementById('submit-btn');
+                const dev = this.state.selectedDevice;
+                
+                // Generador de folio alfanumérico avanzado
+                const prefix = 'MOV';
+                const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+                let randomHash = '';
+                for(let i=0; i<8; i++) randomHash += chars.charAt(Math.floor(Math.random() * chars.length));
+                
+                // Estado de carga del botón
+                btn.disabled = true;
+                btn.innerHTML = `<span class="relative z-10 flex items-center gap-2"><i class="fas fa-circle-notch fa-spin"></i> ENCRIPTANDO DATOS...</span>`;
+                btn.classList.replace('bg-movistar-green', 'bg-slate-500');
+
+                // Simular llamada de red
+                setTimeout(() => {
+                    document.getElementById('order-id').innerText = `${prefix}-${randomHash}`;
+                    this.navigateTo(4);
+                    this.showToast('¡Orden generada con éxito!', 'success');
+                }, 2500);
+            },
+
+            // Hard reset de la App para volver al inicio
+            reset() {
+                if(this.state.currentStage === 1) return;
+                
+                document.getElementById('form-validation').reset();
+                document.getElementById('searchInput').value = '';
+                document.getElementById('purchase-form').reset();
+                
+                const btn = document.getElementById('val-btn');
+                const box = document.getElementById('val-loader-box');
+                const bar = document.getElementById('val-progress');
+                
+                btn.style.display = 'flex';
+                box.classList.add('hidden');
+                bar.style.width = '0%';
+                
+                const submitBtn = document.getElementById('submit-btn');
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = `<span class="relative z-10 flex items-center gap-2">Confirmar Orden y Enviar <i class="fas fa-paper-plane"></i></span><div class="absolute inset-0 bg-white/20 translate-y-full hover:translate-y-0 transition-transform duration-300"></div>`;
+                submitBtn.classList.replace('bg-slate-500', 'bg-movistar-green');
+
+                this.state = { currentStage: 1, selectedDevice: null, selectedPlan: 100 };
+                this.navigateTo(1);
+            }
         };
 
-        function navigateTo(stage) {
-            document.querySelectorAll('.stage-container').forEach(s => s.classList.remove('active'));
-            document.getElementById(`stage-${stage}`).classList.add('active');
-            
-            document.querySelectorAll('.step-indicator').forEach((dot, idx) => {
-                const sNum = idx + 1;
-                dot.classList.remove('completed', 'active');
-                if (sNum < stage) dot.classList.add('completed');
-                if (sNum === stage) dot.classList.add('active');
-            });
+        // Inicializar App al cargar DOM
+        document.addEventListener('DOMContentLoaded', () => App.init());
 
-            if (stage === 2) renderDevices(devices);
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function processValidation() {
-            const num = document.getElementById('val-phone').value;
-            if (num.length < 10) return alert("Ingresa un número válido de 10 dígitos");
-
-            document.getElementById('val-btn').classList.add('hidden');
-            const box = document.getElementById('val-loader-box');
-            const bar = document.getElementById('val-progress');
-            box.classList.remove('hidden');
-
-            let p = 0;
-            const interval = setInterval(() => {
-                p += 5;
-                bar.style.width = p + "%";
-                if (p >= 100) {
-                    clearInterval(interval);
-                    navigateTo(2);
-                }
-            }, 40);
-        }
-
-        function formatMoney(amount) {
-            return "$" + amount.toLocaleString('es-MX');
-        }
-
-        function renderDevices(items) {
-            const grid = document.getElementById('device-grid');
-            grid.innerHTML = items.map(d => {
-                const realPrice = d.price * 5; // Precio ficticio real (mucho más caro)
-                return `
-                <div onclick="selectDevice(${d.id})" class="product-card bg-white rounded-[2.5rem] p-6 border border-slate-100 flex flex-col items-center cursor-pointer group shadow-sm hover:border-movistar-blue">
-                    <div class="h-44 w-full flex items-center justify-center mb-4 bg-slate-50 rounded-3xl p-4">
-                        <img src="${d.img}" class="max-h-full group-hover:scale-110 transition-transform duration-300" onerror="this.src='https://via.placeholder.com/200x200?text=No+Image'">
-                    </div>
-                    <span class="text-[10px] font-black uppercase text-slate-400 tracking-widest">${d.brand}</span>
-                    <h4 class="text-lg font-black italic uppercase text-center mt-1 text-slate-800 leading-tight">${d.name}</h4>
-                    <p class="text-[10px] text-slate-500 mt-1 font-bold">${d.shortSpecs}</p>
-                    
-                    <div class="mt-4 text-center">
-                        <p class="text-xs text-slate-400 line-through mb-1">${formatMoney(realPrice)}</p>
-                        <p class="text-2xl font-black text-movistar-blue">${formatMoney(d.price)}</p>
-                    </div>
-
-                    <div class="w-full py-3 mt-4 bg-slate-100 text-slate-700 rounded-2xl text-xs font-black text-center group-hover:bg-movistar-blue group-hover:text-white transition-colors uppercase italic tracking-wider">
-                        Cotizar Equipo
-                    </div>
-                </div>
-            `}).join('');
-        }
-
-        function filterDevices() {
-            const q = document.getElementById('searchInput').value.toLowerCase();
-            const filtered = devices.filter(d => d.name.toLowerCase().includes(q) || d.brand.toLowerCase().includes(q));
-            renderDevices(filtered);
-        }
-
-        function selectDevice(id) {
-            selectedDevice = devices.find(d => d.id === id);
-            
-            // Llenar vista previa
-            document.getElementById('checkout-img').src = selectedDevice.img;
-            document.getElementById('checkout-name').innerText = selectedDevice.name;
-            document.getElementById('checkout-brand').innerText = selectedDevice.brand;
-            
-            // Llenar specs como lista HTML
-            const specsHtml = selectedDevice.fullSpecs.map(spec => `<li><i class="fas fa-check text-movistar-green mr-2"></i>${spec}</li>`).join('');
-            document.getElementById('checkout-specs').innerHTML = specsHtml;
-
-            updateQuote(); // Iniciar cotizador
-            navigateTo(3);
-        }
-
-        function updateQuote() {
-            if(!selectedDevice) return;
-
-            // Obtener valor del plan seleccionado
-            let planPrice = 100; // Por defecto
-            const radios = document.getElementsByName('planSelection');
-            for(let i = 0; i < radios.length; i++) {
-                if(radios[i].checked) {
-                    planPrice = parseInt(radios[i].value);
-                    break;
-                }
-            }
-
-            const total = selectedDevice.price + planPrice;
-
-            // Actualizar interfaz del cotizador
-            document.getElementById('quote-device-price').innerText = formatMoney(selectedDevice.price);
-            document.getElementById('quote-plan-price').innerText = "+" + formatMoney(planPrice);
-            document.getElementById('quote-total-price').innerText = formatMoney(total) + " MXN";
-        }
-
-        function backToCatalog() { navigateTo(2); }
-
-        function submitPurchase(e) {
-            e.preventDefault();
-            const folio = `MOV-${Math.floor(100000 + Math.random() * 900000)}`;
-            const btn = document.getElementById('submit-btn');
-            
-            btn.innerHTML = "<i class='fas fa-circle-notch fa-spin mr-2'></i> PROCESANDO COMPRA...";
-            btn.disabled = true;
-            btn.classList.replace('bg-movistar-green', 'bg-slate-400');
-
-            setTimeout(() => {
-                document.getElementById('order-id').innerText = folio;
-                navigateTo(4);
-            }, 2000);
-        }
     </script>
 </body>
 </html>
