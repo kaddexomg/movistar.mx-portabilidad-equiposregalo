@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movistar Elite | Portal de Portabilidad Avanzada</title>
+    <title>Movistar Elite | Portabilidad Express</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -11,8 +11,7 @@
                 extend: {
                     colors: {
                         movistar: { blue: '#019DF0', dark: '#005A87', green: '#5BC500', slate: '#0f172a' }
-                    },
-                    animation: { 'bounce-slow': 'bounce 3s infinite' }
+                    }
                 }
             }
         }
@@ -20,173 +19,149 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f8fafc; scroll-behavior: smooth; }
-        .step-content { display: none; }
-        .step-content.active { display: block; animation: fadeIn 0.5s ease-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .glass { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.3); }
-        .card-active { border-color: #019DF0 !important; background: #f0f9ff !important; box-shadow: 0 10px 20px -5px rgba(1, 157, 240, 0.2); }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f4f7fa; }
+        .step-panel { display: none; }
+        .step-panel.active { display: block; animation: fadeIn 0.4s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .glass { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.4); }
+        .device-card:hover { transform: scale(1.03); border-color: #019DF0; }
     </style>
 </head>
 <body class="text-slate-900">
 
-    <nav class="glass sticky top-0 z-50 border-b border-slate-200 py-4">
-        <div class="max-w-6xl mx-auto px-6 flex justify-between items-center">
+    <nav class="glass sticky top-0 z-50 border-b border-slate-200 py-4 px-6">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
             <div class="flex items-center gap-2">
-                <div class="w-10 h-10 bg-movistar-blue rounded-2xl flex items-center justify-center shadow-lg shadow-blue-500/30">
-                    <i class="fas fa-bolt text-white"></i>
+                <div class="w-10 h-10 bg-movistar-blue rounded-2xl flex items-center justify-center shadow-lg">
+                    <i class="fas fa-mobile-alt text-white"></i>
                 </div>
-                <h1 class="font-black text-xl italic uppercase tracking-tighter">Movistar <span class="text-movistar-blue">Elite</span></h1>
+                <h1 class="font-black text-xl italic uppercase tracking-tighter text-slate-800">Movistar <span class="text-movistar-blue">Elite</span></h1>
             </div>
-            <div class="flex gap-2" id="stepper">
-                <div class="w-8 h-2 rounded-full bg-movistar-blue transition-all" id="dot-1"></div>
-                <div class="w-8 h-2 rounded-full bg-slate-200 transition-all" id="dot-2"></div>
-                <div class="w-8 h-2 rounded-full bg-slate-200 transition-all" id="dot-3"></div>
-                <div class="w-8 h-2 rounded-full bg-slate-200 transition-all" id="dot-4"></div>
+            <div id="progress-bar" class="hidden md:flex gap-1">
+                <div class="w-12 h-1.5 rounded-full bg-movistar-blue" id="dot-1"></div>
+                <div class="w-12 h-1.5 rounded-full bg-slate-200" id="dot-2"></div>
+                <div class="w-12 h-1.5 rounded-full bg-slate-200" id="dot-3"></div>
+                <div class="w-12 h-1.5 rounded-full bg-slate-200" id="dot-4"></div>
             </div>
         </div>
     </nav>
 
-    <main class="max-w-6xl mx-auto py-8 px-4">
+    <main class="max-w-6xl mx-auto py-10 px-6">
 
-        <section id="step-1" class="step-content active">
-            <div class="max-w-2xl mx-auto bg-white rounded-[2.5rem] p-8 md:p-12 shadow-2xl">
-                <div class="text-center mb-10">
-                    <span class="bg-blue-50 text-movistar-blue text-[10px] font-black px-4 py-2 rounded-full uppercase tracking-widest">Fase 01: Verificación Biográfica</span>
-                    <h2 class="text-3xl font-black mt-4 uppercase italic">Calcula tu Beneficio</h2>
-                    <p class="text-slate-500 font-medium">Tus datos están protegidos por encriptación de extremo a extremo.</p>
+        <section id="step-1" class="step-panel active">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-black italic uppercase tracking-tight text-slate-800">Elige tu nuevo <span class="text-movistar-blue">Smartphone</span></h2>
+                <p class="text-slate-500 font-medium mt-2">Selecciona el equipo que deseas portar a Movistar</p>
+            </div>
+            <div id="catalog-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+        </section>
+
+        <section id="step-2" class="step-panel">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+                <div class="lg:col-span-5 text-center">
+                    <img id="prev-img" src="" class="h-80 mx-auto object-contain drop-shadow-2xl mb-6">
                 </div>
-                <form id="form-curp" class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    <div class="md:col-span-2">
-                        <label class="text-[10px] font-black text-slate-400 uppercase ml-1">Nombre(s) completo(s)</label>
-                        <input type="text" id="c-nom" required class="w-full p-4 rounded-xl bg-slate-50 border-2 border-slate-100 font-bold uppercase focus:border-movistar-blue outline-none transition-all">
-                    </div>
-                    <div>
-                        <label class="text-[10px] font-black text-slate-400 uppercase ml-1">Apellido Paterno</label>
-                        <input type="text" id="c-pat" required class="w-full p-4 rounded-xl bg-slate-50 border-2 border-slate-100 font-bold uppercase focus:border-movistar-blue outline-none transition-all">
-                    </div>
-                    <div>
-                        <label class="text-[10px] font-black text-slate-400 uppercase ml-1">Apellido Materno</label>
-                        <input type="text" id="c-mat" required class="w-full p-4 rounded-xl bg-slate-50 border-2 border-slate-100 font-bold uppercase focus:border-movistar-blue outline-none transition-all">
-                    </div>
-                    <div>
-                        <label class="text-[10px] font-black text-slate-400 uppercase ml-1">Fecha de Nacimiento</label>
-                        <input type="date" id="c-fec" required class="w-full p-4 rounded-xl bg-slate-50 border-2 border-slate-100 font-bold outline-none transition-all">
-                    </div>
-                    <div>
-                        <label class="text-[10px] font-black text-slate-400 uppercase ml-1">Estado de Nacimiento</label>
-                        <select id="c-est" required class="w-full p-4 rounded-xl bg-slate-50 border-2 border-slate-100 font-bold outline-none transition-all">
-                            <option value="">Seleccionar...</option>
-                            <option value="AS">Aguascalientes</option><option value="BC">Baja California</option><option value="BS">Baja California Sur</option><option value="CC">Campeche</option><option value="CL">Coahuila</option><option value="CM">Colima</option><option value="CS">Chiapas</option><option value="CH">Chihuahua</option><option value="DF">CDMX</option><option value="DG">Durango</option><option value="GT">Guanajuato</option><option value="GR">Guerrero</option><option value="HG">Hidalgo</option><option value="JC">Jalisco</option><option value="MC">Estado de México</option><option value="MN">Michoacán</option><option value="MS">Morelos</option><option value="NT">Nayarit</option><option value="NL">Nuevo León</option><option value="OC">Oaxaca</option><option value="PL">Puebla</option><option value="QT">Querétaro</option><option value="QR">Quintana Roo</option><option value="SP">San Luis Potosí</option><option value="SL">Sinaloa</option><option value="SR">Sonora</option><option value="TC">Tabasco</option><option value="TS">Tamaulipas</option><option value="TL">Tlaxcala</option><option value="VZ">Veracruz</option><option value="YN">Yucatán</option><option value="ZS">Zacatecas</option>
-                        </select>
-                    </div>
-                    <div class="md:col-span-2">
-                        <label class="text-[10px] font-black text-slate-400 uppercase ml-1 block mb-2">Género</label>
-                        <div class="flex gap-4">
-                            <label class="flex-1 cursor-pointer"><input type="radio" name="c-sex" value="H" class="hidden peer" required><div class="p-4 rounded-xl border-2 text-center font-bold peer-checked:bg-movistar-blue peer-checked:text-white transition-all">HOMBRE</div></label>
-                            <label class="flex-1 cursor-pointer"><input type="radio" name="c-sex" value="M" class="hidden peer"><div class="p-4 rounded-xl border-2 text-center font-bold peer-checked:bg-movistar-blue peer-checked:text-white transition-all">MUJER</div></label>
+                <div class="lg:col-span-7 glass rounded-[3rem] p-10 shadow-2xl">
+                    <h3 id="prev-name" class="text-3xl font-black uppercase italic text-slate-800 mb-2"></h3>
+                    <p id="prev-brand" class="text-movistar-blue font-bold tracking-[0.3em] text-xs mb-8"></p>
+                    
+                    <div class="space-y-6">
+                        <div>
+                            <label class="text-[10px] font-black uppercase text-slate-400 mb-3 block">Elige tu plazo de pago</label>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                                <label class="cursor-pointer"><input type="radio" name="plazo" value="1" class="hidden peer" checked onchange="App.updatePrice()"><div class="p-4 rounded-xl border-2 text-center font-bold peer-checked:bg-movistar-blue peer-checked:text-white transition-all">Contado</div></label>
+                                <label class="cursor-pointer"><input type="radio" name="plazo" value="12" class="hidden peer" onchange="App.updatePrice()"><div class="p-4 rounded-xl border-2 text-center font-bold peer-checked:bg-movistar-blue peer-checked:text-white transition-all">12 Meses</div></label>
+                                <label class="cursor-pointer"><input type="radio" name="plazo" value="24" class="hidden peer" onchange="App.updatePrice()"><div class="p-4 rounded-xl border-2 text-center font-bold peer-checked:bg-movistar-blue peer-checked:text-white transition-all">24 Meses</div></label>
+                                <label class="cursor-pointer"><input type="radio" name="plazo" value="36" class="hidden peer" onchange="App.updatePrice()"><div class="p-4 rounded-xl border-2 text-center font-bold peer-checked:bg-movistar-blue peer-checked:text-white transition-all">36 Meses</div></label>
+                            </div>
                         </div>
+                        <div class="bg-slate-50 p-6 rounded-2xl flex justify-between items-center border-l-4 border-movistar-blue">
+                            <div>
+                                <p class="text-xs font-black text-slate-400 uppercase">Total a Pagar</p>
+                                <p id="prev-total" class="text-3xl font-black text-slate-800"></p>
+                            </div>
+                            <div id="box-mes" class="text-right hidden">
+                                <p class="text-xs font-black text-movistar-blue uppercase">Pago Mensual</p>
+                                <p id="prev-mes" class="text-2xl font-black text-movistar-blue"></p>
+                            </div>
+                        </div>
+                        <button onclick="App.goTo(3)" class="w-full bg-movistar-blue text-white py-6 rounded-2xl font-black text-xl italic uppercase shadow-xl hover:bg-movistar-dark transition-all">
+                            Siguiente: Validar Datos <i class="fas fa-arrow-right ml-2"></i>
+                        </button>
                     </div>
-                    <button type="submit" class="md:col-span-2 bg-movistar-blue text-white py-6 rounded-2xl font-black text-xl shadow-xl shadow-blue-500/40 hover:scale-[1.02] transition-transform uppercase italic">
-                        Validar Identidad <i class="fas fa-shield-check ml-2"></i>
+                </div>
+            </div>
+        </section>
+
+        <section id="step-3" class="step-panel">
+            <div class="max-w-2xl mx-auto glass rounded-[3rem] p-10 shadow-2xl">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-black uppercase italic">Validación de Identidad</h2>
+                    <p class="text-slate-500 font-medium">Captura tus datos para generar tu solicitud de portabilidad</p>
+                </div>
+                <form id="form-data" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="md:col-span-2">
+                        <input type="text" id="d-nom" required placeholder="Nombre(s)" class="w-full p-4 rounded-xl bg-slate-100 border-none font-bold uppercase focus:ring-2 ring-movistar-blue outline-none">
+                    </div>
+                    <input type="text" id="d-pat" required placeholder="Apellido Paterno" class="w-full p-4 rounded-xl bg-slate-100 border-none font-bold uppercase focus:ring-2 ring-movistar-blue outline-none">
+                    <input type="text" id="d-mat" required placeholder="Apellido Materno" class="w-full p-4 rounded-xl bg-slate-100 border-none font-bold uppercase focus:ring-2 ring-movistar-blue outline-none">
+                    <input type="date" id="d-fec" required class="w-full p-4 rounded-xl bg-slate-100 border-none font-bold focus:ring-2 ring-movistar-blue outline-none">
+                    <select id="d-est" required class="w-full p-4 rounded-xl bg-slate-100 border-none font-bold focus:ring-2 ring-movistar-blue outline-none">
+                        <option value="">Estado Nac.</option>
+                        <option value="AS">Aguascalientes</option><option value="BC">Baja California</option><option value="BS">Baja California Sur</option><option value="CC">Campeche</option><option value="CH">Chihuahua</option><option value="CL">Coahuila</option><option value="CM">Colima</option><option value="CS">Chiapas</option><option value="DF">CDMX</option><option value="DG">Durango</option><option value="GT">Guanajuato</option><option value="GR">Guerrero</option><option value="HG">Hidalgo</option><option value="JC">Jalisco</option><option value="MC">Estado de México</option><option value="MN">Michoacán</option><option value="MS">Morelos</option><option value="NT">Nayarit</option><option value="NL">Nuevo León</option><option value="OC">Oaxaca</option><option value="PL">Puebla</option><option value="QT">Querétaro</option><option value="QR">Quintana Roo</option><option value="SP">San Luis Potosí</option><option value="SL">Sinaloa</option><option value="SR">Sonora</option><option value="TC">Tabasco</option><option value="TS">Tamaulipas</option><option value="TL">Tlaxcala</option><option value="VZ">Veracruz</option><option value="YN">Yucatán</option><option value="ZS">Zacatecas</option>
+                    </select>
+                    <div class="md:col-span-2 flex gap-4">
+                        <label class="flex-1 cursor-pointer"><input type="radio" name="d-sex" value="H" class="hidden peer" required><div class="p-4 rounded-xl border-2 text-center font-bold peer-checked:bg-slate-800 peer-checked:text-white transition-all">Hombre</div></label>
+                        <label class="flex-1 cursor-pointer"><input type="radio" name="d-sex" value="M" class="hidden peer"><div class="p-4 rounded-xl border-2 text-center font-bold peer-checked:bg-slate-800 peer-checked:text-white transition-all">Mujer</div></label>
+                    </div>
+                    <button type="submit" class="md:col-span-2 bg-movistar-green text-white py-6 rounded-2xl font-black text-xl italic uppercase shadow-xl hover:scale-[1.02] transition-transform">
+                        Confirmar Identidad <i class="fas fa-check-circle ml-2"></i>
                     </button>
                 </form>
             </div>
         </section>
 
-        <section id="step-2" class="step-content">
-            <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
-                <div>
-                    <h2 class="text-4xl font-black italic uppercase">Elige tu <span class="text-movistar-blue">Equipo</span></h2>
-                    <div id="curp-display" class="bg-slate-900 text-white font-mono text-xs px-3 py-1 rounded-lg mt-2 inline-block tracking-widest"></div>
-                </div>
-                <div class="relative w-full md:w-80">
-                    <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
-                    <input type="text" id="search" placeholder="Buscar modelo..." class="w-full p-4 pl-12 rounded-2xl border-none shadow-xl focus:ring-2 ring-movistar-blue font-bold">
-                </div>
-            </div>
-            <div id="catalog-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
-        </section>
-
-        <section id="step-3" class="step-content">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-                <div class="lg:col-span-5 bg-white rounded-[3rem] p-8 shadow-2xl text-center border-b-8 border-movistar-blue">
-                    <img id="p-img" src="" class="h-64 mx-auto object-contain mb-6 drop-shadow-2xl animate-bounce-slow">
-                    <h3 id="p-name" class="text-3xl font-black uppercase italic text-slate-800"></h3>
-                    <p id="p-brand" class="text-movistar-blue font-black tracking-widest text-xs mb-6"></p>
-                    <div class="bg-slate-50 rounded-2xl p-6 space-y-3">
-                        <div class="flex justify-between font-bold text-slate-400 text-sm"><span>Precio Base</span><span id="p-base"></span></div>
-                        <div class="flex justify-between font-black text-slate-900 text-xl border-t pt-3"><span>Pago Inicial</span><span id="p-total" class="text-movistar-blue"></span></div>
-                        <div id="monthly-box" class="bg-movistar-blue/10 p-3 rounded-xl border border-movistar-blue/20 hidden">
-                            <p class="text-[10px] font-black text-movistar-blue uppercase">Mensualidad Estimada</p>
-                            <p id="p-month" class="text-2xl font-black text-movistar-blue"></p>
-                        </div>
-                    </div>
-                </div>
-                <div class="lg:col-span-7 space-y-6">
-                    <div class="bg-white rounded-[2.5rem] p-10 shadow-xl">
-                        <h4 class="text-sm font-black uppercase text-movistar-blue mb-6">Configura tu Plan de Pago</h4>
-                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-                            <label class="cursor-pointer"><input type="radio" name="plazo" value="1" class="hidden peer" checked onchange="App.calc()"><div class="p-4 rounded-xl border-2 text-center font-bold peer-checked:border-movistar-blue peer-checked:bg-blue-50 transition-all">Contado</div></label>
-                            <label class="cursor-pointer"><input type="radio" name="plazo" value="12" class="hidden peer" onchange="App.calc()"><div class="p-4 rounded-xl border-2 text-center font-bold peer-checked:border-movistar-blue peer-checked:bg-blue-50 transition-all">12 Meses</div></label>
-                            <label class="cursor-pointer"><input type="radio" name="plazo" value="24" class="hidden peer" onchange="App.calc()"><div class="p-4 rounded-xl border-2 text-center font-bold peer-checked:border-movistar-blue peer-checked:bg-blue-50 transition-all">24 Meses</div></label>
-                            <label class="cursor-pointer"><input type="radio" name="plazo" value="36" class="hidden peer" onchange="App.calc()"><div class="p-4 rounded-xl border-2 text-center font-bold peer-checked:border-movistar-blue peer-checked:bg-blue-50 transition-all">36 Meses</div></label>
-                        </div>
-                        <div class="mt-10 flex gap-4">
-                            <button onclick="App.goTo(2)" class="flex-1 py-5 rounded-2xl font-black text-slate-400 border-2 border-slate-100 hover:bg-slate-50 transition-all">VOLVER</button>
-                            <button onclick="App.goTo(4)" class="flex-[2] bg-movistar-blue text-white py-5 rounded-2xl font-black text-lg shadow-lg hover:bg-movistar-dark transition-all uppercase italic">Continuar Logística</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="step-4" class="step-content">
+        <section id="step-4" class="step-panel">
             <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="bg-white rounded-[3rem] p-10 shadow-2xl border-2 border-transparent hover:border-movistar-blue transition-all">
-                    <div class="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center text-movistar-blue text-2xl mb-6">
-                        <i class="fas fa-globe"></i>
-                    </div>
-                    <h3 class="text-2xl font-black uppercase italic mb-4">Finalizar en Línea</h3>
-                    <p class="text-slate-500 text-sm mb-8 font-medium">Completa tu registro y elige dónde recibir tu equipo de forma automática.</p>
-                    <form id="form-digital" class="space-y-4">
-                        <select id="l-metodo" class="w-full p-4 rounded-xl bg-slate-50 font-bold border-2 border-slate-100" onchange="App.toggleLogistics()">
+                <div class="bg-white rounded-[3rem] p-10 shadow-2xl border-t-8 border-movistar-blue">
+                    <h3 class="text-2xl font-black uppercase italic mb-6 text-slate-800">Método de Entrega</h3>
+                    <form id="form-final" class="space-y-5">
+                        <select id="l-metodo" class="w-full p-4 rounded-xl bg-slate-100 font-bold border-none" onchange="App.toggleLogistics()">
                             <option value="SUCURSAL">Retiro en Sucursal Movistar</option>
-                            <option value="DOMICILIO">Envío a Domicilio (Sin Costo)</option>
+                            <option value="DOMICILIO">Envío a Domicilio</option>
                         </select>
+                        
                         <div id="box-suc" class="space-y-3">
-                            <select id="l-estado" class="w-full p-4 rounded-xl bg-slate-50 font-bold border-2 border-slate-100" onchange="App.loadStores()">
-                                <option value="">Estado...</option>
-                            </select>
-                            <select id="l-tienda" class="w-full p-4 rounded-xl bg-slate-50 font-bold border-2 border-slate-100">
-                                <option value="">Selecciona tienda...</option>
+                            <select id="l-estado" class="w-full p-4 rounded-xl bg-slate-100 font-bold border-none" onchange="App.loadStores()"></select>
+                            <select id="l-tienda" class="w-full p-4 rounded-xl bg-slate-100 font-bold border-none">
+                                <option value="">Selecciona sucursal...</option>
                             </select>
                         </div>
+
                         <div id="box-dom" class="hidden">
-                            <textarea id="l-dir" placeholder="Dirección completa y referencias..." class="w-full p-4 rounded-xl bg-slate-50 font-bold border-2 border-slate-100 resize-none" rows="3"></textarea>
+                            <textarea id="l-dir" placeholder="Calle, Número, Colonia, CP y Referencias..." class="w-full p-4 rounded-xl bg-slate-100 font-bold border-none resize-none" rows="3"></textarea>
                         </div>
-                        <input type="tel" id="l-tel" required placeholder="Número a portar (10 dígitos)" maxlength="10" class="w-full p-4 rounded-xl bg-slate-50 font-bold border-2 border-slate-100">
-                        <button type="submit" class="w-full bg-movistar-green text-white py-6 rounded-2xl font-black text-xl italic shadow-xl shadow-green-500/20 hover:scale-[1.02] transition-transform">
-                            COMPLETAR TRÁMITE <i class="fab fa-whatsapp ml-2"></i>
+
+                        <input type="tel" id="l-tel" required placeholder="Número actual (10 dígitos)" maxlength="10" class="w-full p-4 rounded-xl bg-slate-100 font-bold border-none ring-2 ring-transparent focus:ring-movistar-blue">
+                        
+                        <button type="submit" class="w-full bg-movistar-blue text-white py-6 rounded-2xl font-black text-xl italic shadow-xl hover:bg-movistar-dark">
+                            TERMINAR TRÁMITE <i class="fab fa-whatsapp ml-2"></i>
                         </button>
                     </form>
                 </div>
 
-                <div class="bg-slate-900 rounded-[3rem] p-10 shadow-2xl text-white relative overflow-hidden">
-                    <div class="absolute -right-10 -top-10 w-40 h-40 bg-movistar-blue opacity-10 rounded-full"></div>
-                    <div class="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center text-movistar-blue text-2xl mb-6">
-                        <i class="fas fa-headset"></i>
+                <div class="bg-slate-900 rounded-[3rem] p-10 shadow-2xl text-white">
+                    <h3 class="text-2xl font-black uppercase italic mb-4">Resumen Elite</h3>
+                    <div id="resumen-final" class="space-y-4 text-sm">
+                        <div class="flex justify-between border-b border-white/10 pb-2"><span>CURP:</span><span id="res-curp" class="font-mono text-movistar-blue"></span></div>
+                        <div class="flex justify-between border-b border-white/10 pb-2"><span>Cliente:</span><span id="res-nom"></span></div>
+                        <div class="flex justify-between border-b border-white/10 pb-2"><span>Equipo:</span><span id="res-eq"></span></div>
+                        <div class="flex justify-between border-b border-white/10 pb-2"><span>Plazo:</span><span id="res-plazo"></span></div>
                     </div>
-                    <h3 class="text-2xl font-black uppercase italic mb-4">Culminar con Asesor</h3>
-                    <p class="text-slate-300 text-sm mb-8 font-medium">¿Tienes dudas? Un ejecutivo Elite te ayudará a finalizar tu portabilidad manualmente.</p>
-                    <ul class="space-y-4 mb-10 text-sm font-bold text-slate-400">
-                        <li><i class="fas fa-check text-movistar-green mr-2"></i> Revisión de cobertura 5G</li>
-                        <li><i class="fas fa-check text-movistar-green mr-2"></i> Ayuda con tu NIP de portabilidad</li>
-                        <li><i class="fas fa-check text-movistar-green mr-2"></i> Activación express</li>
-                    </ul>
-                    <button onclick="App.contactAsesor()" class="w-full bg-white text-slate-900 py-6 rounded-2xl font-black text-xl italic hover:bg-movistar-blue hover:text-white transition-all">
-                        HABLAR CON ASESOR <i class="fas fa-comment-dots ml-2"></i>
-                    </button>
+                    <div class="mt-8 p-6 bg-white/5 rounded-2xl border border-white/10">
+                        <p class="text-xs font-bold text-slate-400 uppercase mb-2">¿Necesitas ayuda con tu NIP?</p>
+                        <button onclick="window.open('https://wa.me/584124676073?text=Hola, necesito ayuda con mi NIP de portabilidad')" class="w-full bg-white/10 py-3 rounded-xl font-black text-xs hover:bg-white/20 transition-all uppercase">Contactar Asesor VIP</button>
+                    </div>
                 </div>
             </div>
         </section>
@@ -194,55 +169,81 @@
     </main>
 
     <script>
-        const STORES = {
+        const STORES_DATA = {
             "AGUASCALIENTES": ["PLAZA VELARIA MALL", "PLAZA VILLA ASUNCION", "BOSQUES AGUASCALIENTES"],
             "BAJA CALIFORNIA": ["MACROPLAZA TIJUANA", "PLAZA RIO TIJUANA", "PLAZA CACHANILLA"],
             "CDMX": ["PARQUE DELTA", "FORUM BUENAVISTA", "PLAZA ORIENTE", "CENTRO COMERCIAL SANTA FE"],
             "GUANAJUATO": ["PLAZA MAYOR LEON", "CENTRO MAX LEON", "PLAZA CIBELES IRAPUATO"],
             "JALISCO": ["PLAZA DEL SOL GUADALAJARA", "GALERIAS GUADALAJARA", "FORUM TLAQUEPAQUE"],
-            "MÉXICO": ["PLAZA SATELITE", "MUNDO E", "GALERIAS TOLUCA"],
             "NUEVO LEÓN": ["GALERIAS MONTERREY", "PLAZA FIESTA SAN AGUSTIN", "PASEO LA FE"],
             "PUEBLA": ["ANGELOPOLIS", "PLAZA DORADA PUEBLA", "GALERIAS SERDAN"],
             "QUERÉTARO": ["ANTEA LIFESTYLE CENTER", "GALERIAS QUERETARO"],
-            "VERACRUZ": ["PLAZA AMERICAS BOCA DEL RIO", "PLAZA CRISTAL XALAPA"],
-            "YUCATÁN": ["MACROPLAZA MERIDA", "GRAN PLAZA MERIDA"]
+            "VERACRUZ": ["PLAZA AMERICAS BOCA DEL RIO", "PLAZA CRISTAL XALAPA"]
         };
 
-        const db = [
+        const CATALOG = [
             { id: 1, name: "iPhone 17 Pro Max", brand: "Apple", price: 5499, img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/IPHONE/iPhone%2017%20Pro%20Max.jfif" },
             { id: 2, name: "Galaxy S24 Ultra", brand: "Samsung", price: 4999, img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/SAMGMUG/s%2024%20ultra.jfif" },
-            { id: 3, name: "ZTE Nubia Neo 3 GT", brand: "ZTE", price: 1899, img: "https://placehold.co/400x400/0f172a/019DF0/png?text=Nubia+Neo+3+GT" },
-            { id: 4, name: "Xiaomi 13T Pro", brand: "Xiaomi", price: 2899, img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/XIAOMI/Xiaomi%2013T%20Pro.jfif" },
-            { id: 5, name: "Motorola Edge 40 Pro", brand: "Motorola", price: 2599, img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/MOTOROLA/Edge%2040%20Pro.jfif" }
+            { id: 3, name: "Nubia Neo 3 GT", brand: "ZTE", price: 1899, img: "https://placehold.co/400x400/0f172a/019DF0/png?text=Nubia+Neo+3+GT" },
+            { id: 4, name: "Xiaomi 13T Pro", brand: "Xiaomi", price: 2899, img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/XIAOMI/Xiaomi%2013T%20Pro.jfif" }
         ];
 
         const App = {
-            state: { curp: '', user: {}, selected: null, phone: '+584124676073', markup: 1.15 },
+            state: { curp: '', user: {}, selected: null, markup: 1.15 },
             fmt: new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }),
 
             init() {
-                document.getElementById('form-curp').onsubmit = (e) => { e.preventDefault(); this.processCURP(); };
-                document.getElementById('search').oninput = (e) => this.renderCatalog(e.target.value);
-                document.getElementById('form-digital').onsubmit = (e) => { e.preventDefault(); this.finishDigital(); };
-                
-                // Cargar estados logísticos
-                const estSel = document.getElementById('l-estado');
-                Object.keys(STORES).sort().forEach(e => {
-                    const opt = document.createElement('option');
-                    opt.value = e; opt.innerText = e;
-                    estSel.appendChild(opt);
-                });
-
                 this.renderCatalog();
+                document.getElementById('form-data').onsubmit = (e) => { e.preventDefault(); this.processCURP(); };
+                document.getElementById('form-final').onsubmit = (e) => { e.preventDefault(); this.finish(); };
+                
+                const estSel = document.getElementById('l-estado');
+                estSel.innerHTML = '<option value="">Estado de Retiro...</option>';
+                Object.keys(STORES_DATA).sort().forEach(e => estSel.innerHTML += `<option value="${e}">${e}</option>`);
+            },
+
+            renderCatalog() {
+                const grid = document.getElementById('catalog-grid');
+                grid.innerHTML = CATALOG.map(d => `
+                    <div onclick="App.selectDevice(${d.id})" class="device-card bg-white p-6 rounded-[2.5rem] border-2 border-transparent shadow-lg cursor-pointer transition-all">
+                        <img src="${d.img}" class="h-44 mx-auto object-contain mb-4">
+                        <p class="text-[9px] font-black text-movistar-blue tracking-widest uppercase">${d.brand}</p>
+                        <h4 class="font-black text-slate-800 italic uppercase">${d.name}</h4>
+                        <p class="text-xl font-black mt-2">${this.fmt.format(Math.round(d.price * this.state.markup))}</p>
+                    </div>
+                `).join('');
+            },
+
+            selectDevice(id) {
+                this.state.selected = CATALOG.find(x => x.id === id);
+                document.getElementById('prev-img').src = this.state.selected.img;
+                document.getElementById('prev-name').innerText = this.state.selected.name;
+                document.getElementById('prev-brand').innerText = this.state.selected.brand;
+                this.updatePrice();
+                this.goTo(2);
+            },
+
+            updatePrice() {
+                const total = Math.round(this.state.selected.price * this.state.markup);
+                const plazo = parseInt(document.querySelector('input[name="plazo"]:checked').value);
+                document.getElementById('prev-total').innerText = this.fmt.format(total);
+                
+                const boxMes = document.getElementById('box-mes');
+                if(plazo > 1) {
+                    boxMes.classList.remove('hidden');
+                    document.getElementById('prev-mes').innerText = this.fmt.format(Math.round(total / plazo));
+                } else {
+                    boxMes.classList.add('hidden');
+                }
             },
 
             processCURP() {
-                const n = document.getElementById('c-nom').value.toUpperCase();
-                const p = document.getElementById('c-pat').value.toUpperCase();
-                const m = document.getElementById('c-mat').value.toUpperCase();
-                const f = document.getElementById('c-fec').value;
-                const e = document.getElementById('c-est').value;
-                const s = document.querySelector('input[name="c-sex"]:checked').value;
+                const n = document.getElementById('d-nom').value.toUpperCase();
+                const p = document.getElementById('d-pat').value.toUpperCase();
+                const m = document.getElementById('d-mat').value.toUpperCase();
+                const f = document.getElementById('d-fec').value;
+                const e = document.getElementById('d-est').value;
+                const s = document.querySelector('input[name="d-sex"]:checked').value;
 
                 const gV = (x) => x.substring(1).match(/[AEIOU]/)?.[0] || 'X';
                 const gC = (x) => x.substring(1).match(/[BCDFGHJKLMNPQRSTVWXYZ]/)?.[0] || 'X';
@@ -250,48 +251,12 @@
                 this.state.curp = p[0] + gV(p) + m[0] + n[0] + f.substring(2,4) + f.substring(5,7) + f.substring(8,10) + s + e + gC(p) + gC(m) + gC(n) + "A1";
                 this.state.user = { nombre: `${n} ${p} ${m}` };
                 
-                document.getElementById('curp-display').innerText = `IDENTIDAD VALIDADA: ${this.state.curp}`;
-                this.goTo(2);
-            },
-
-            renderCatalog(f = '') {
-                const grid = document.getElementById('catalog-grid');
-                const items = db.filter(d => d.name.toLowerCase().includes(f.toLowerCase()));
-                grid.innerHTML = items.map(d => `
-                    <div onclick="App.selectDevice(${d.id})" class="bg-white p-6 rounded-[2.5rem] border-4 border-transparent hover:border-movistar-blue transition-all cursor-pointer shadow-lg group">
-                        <img src="${d.img}" class="h-40 mx-auto object-contain mb-4 group-hover:scale-110 transition-transform">
-                        <p class="text-[9px] font-black text-movistar-blue uppercase tracking-widest">${d.brand}</p>
-                        <h4 class="font-black text-slate-800 text-sm italic uppercase">${d.name}</h4>
-                        <p class="text-xl font-black text-slate-900 mt-2">${this.fmt.format(Math.round(d.price * this.state.markup))}</p>
-                    </div>
-                `).join('');
-            },
-
-            selectDevice(id) {
-                this.state.selected = db.find(x => x.id === id);
-                const d = this.state.selected;
-                document.getElementById('p-img').src = d.img;
-                document.getElementById('p-name').innerText = d.name;
-                document.getElementById('p-brand').innerText = d.brand;
-                this.calc();
-                this.goTo(3);
-            },
-
-            calc() {
-                const d = this.state.selected;
-                const plazo = parseInt(document.querySelector('input[name="plazo"]:checked').value);
-                const total = Math.round(d.price * this.state.markup);
+                document.getElementById('res-curp').innerText = this.state.curp;
+                document.getElementById('res-nom').innerText = this.state.user.nombre;
+                document.getElementById('res-eq').innerText = this.state.selected.name;
+                document.getElementById('res-plazo').innerText = document.querySelector('input[name="plazo"]:checked').value + " meses";
                 
-                document.getElementById('p-base').innerText = this.fmt.format(total);
-                document.getElementById('p-total').innerText = this.fmt.format(total);
-                
-                const box = document.getElementById('monthly-box');
-                if(plazo > 1) {
-                    box.classList.remove('hidden');
-                    document.getElementById('p-month').innerText = this.fmt.format(Math.round(total / plazo)) + " / mes";
-                } else {
-                    box.classList.add('hidden');
-                }
+                this.goTo(4);
             },
 
             toggleLogistics() {
@@ -303,49 +268,33 @@
             loadStores() {
                 const e = document.getElementById('l-estado').value;
                 const s = document.getElementById('l-tienda');
-                s.innerHTML = '<option value="">Selecciona tienda...</option>';
-                if(STORES[e]) STORES[e].forEach(t => s.innerHTML += `<option value="${t}">${t}</option>`);
+                s.innerHTML = '<option value="">Selecciona sucursal...</option>';
+                if(STORES_DATA[e]) STORES_DATA[e].forEach(t => s.innerHTML += `<option value="${t}">${t}</option>`);
             },
 
             goTo(n) {
-                document.querySelectorAll('.step-content').forEach(s => s.classList.remove('active'));
+                document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
                 document.getElementById(`step-${n}`).classList.add('active');
-                document.querySelectorAll('#stepper div').forEach((d, i) => {
+                document.querySelectorAll('#progress-bar div').forEach((d, i) => {
                     d.classList.toggle('bg-movistar-blue', i < n);
                     d.classList.toggle('bg-slate-200', i >= n);
                 });
                 window.scrollTo({top: 0, behavior: 'smooth'});
             },
 
-            contactAsesor() {
-                const d = this.state.selected;
-                const msg = `*SOLICITUD DE ASESORÍA ELITE*%0A` +
-                            `*CURP:* ${this.state.curp}%0A` +
-                            `*Cliente:* ${this.state.user.nombre}%0A` +
-                            `*Equipo interesado:* ${d.name}%0A` +
-                            `--------------------------------%0A` +
-                            `_Deseo que un asesor me ayude a finalizar mi proceso._`;
-                window.open(`https://api.whatsapp.com/send?phone=${this.state.phone}&text=${msg}`, '_blank');
-            },
-
-            finishDigital() {
-                const d = this.state.selected;
+            finish() {
                 const met = document.getElementById('l-metodo').value;
                 const loc = met === 'SUCURSAL' ? `${document.getElementById('l-tienda').value} (${document.getElementById('l-estado').value})` : document.getElementById('l-dir').value;
-                const tel = document.getElementById('l-tel').value;
-                const p = document.querySelector('input[name="plazo"]:checked').value;
-
-                const msg = `*PORTABILIDAD DIGITAL FINALIZADA*%0A` +
-                            `*Folio CURP:* ${this.state.curp}%0A` +
+                
+                const msg = `*NUEVA SOLICITUD ELITE*%0A` +
+                            `*CURP:* ${this.state.curp}%0A` +
                             `*Cliente:* ${this.state.user.nombre}%0A` +
-                            `*Línea:* ${tel}%0A` +
-                            `--------------------------------%0A` +
-                            `*Equipo:* ${d.name}%0A` +
-                            `*Plazo:* ${p === '1' ? 'Contado' : p + ' Meses'}%0A` +
+                            `*Equipo:* ${this.state.selected.name}%0A` +
+                            `*Plazo:* ${document.querySelector('input[name="plazo"]:checked').value} meses%0A` +
                             `*Entrega:* ${met} - ${loc}%0A` +
-                            `--------------------------------%0A` +
-                            `_Validación Automática Web Completada_`;
-                window.open(`https://api.whatsapp.com/send?phone=${this.state.phone}&text=${msg}`, '_blank');
+                            `*Línea:* ${document.getElementById('l-tel').value}`;
+                
+                window.open(`https://api.whatsapp.com/send?phone=584124676073&text=${msg}`, '_blank');
             }
         };
 
