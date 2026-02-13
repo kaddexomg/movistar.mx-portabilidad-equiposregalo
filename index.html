@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movistar | Programa de Equipos Bonificados 2026</title>
+    <title>Movistar | Tienda y Promociones Exclusivas</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
@@ -12,6 +12,7 @@
         .movistar-blue { background-color: #019DF0; }
         .text-movistar-blue { color: #019DF0; }
         .bg-movistar-green { background-color: #5BC500; }
+        .text-movistar-green { color: #5BC500; }
         .hero-gradient { background: linear-gradient(135deg, #019DF0 0%, #005A87 100%); }
         
         .fade-in { animation: fadeIn 0.5s ease-out forwards; }
@@ -25,6 +26,10 @@
 
         .stage-container { display: none; }
         .stage-container.active { display: block; }
+        
+        /* Custom Radio Button styling for Plans */
+        .plan-radio:checked + div { border-color: #019DF0; background-color: #f0f9ff; }
+        .plan-radio:checked + div .check-icon { color: #019DF0; opacity: 1; }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-900">
@@ -33,18 +38,18 @@
         <div class="animate-spin h-14 w-14 text-movistar-blue mb-4">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4"><circle class="opacity-25" cx="12" cy="12" r="10"></circle><path class="opacity-75" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4"></path></svg>
         </div>
-        <p class="text-movistar-blue font-black italic animate-pulse tracking-widest uppercase text-xs">SISTEMA MOVISTAR MÉXICO</p>
+        <p class="text-movistar-blue font-black italic animate-pulse tracking-widest uppercase text-xs">CARGANDO TIENDA MOVISTAR...</p>
     </div>
 
     <header class="movistar-blue text-white shadow-xl sticky top-0 z-50">
         <div class="container mx-auto px-4 h-16 flex items-center justify-between">
             <div class="flex items-center gap-2 cursor-pointer" onclick="location.reload()">
-                <div class="bg-white p-1.5 rounded-full shadow-inner"><i class="fas fa-phone-alt text-movistar-blue text-xs"></i></div>
-                <span class="font-black text-xl tracking-tighter uppercase italic">Movistar</span>
+                <div class="bg-white p-1.5 rounded-full shadow-inner"><i class="fas fa-store text-movistar-blue text-xs"></i></div>
+                <span class="font-black text-xl tracking-tighter uppercase italic">Movistar Store</span>
             </div>
             <div class="flex items-center gap-4">
                 <a href="#" class="hidden sm:flex items-center gap-2 text-[10px] font-black uppercase bg-white/10 px-4 py-2 rounded-full">
-                    <i class="fas fa-headset text-movistar-green"></i> Soporte México
+                    <i class="fas fa-tags text-movistar-green"></i> Promociones Activas
                 </a>
             </div>
         </div>
@@ -64,7 +69,7 @@
                 </div>
                 <div class="relative z-10 flex flex-col items-center gap-2">
                     <div id="dot-3" class="step-indicator w-10 h-10 rounded-full border-2 border-slate-100 bg-white flex items-center justify-center text-sm font-black">3</div>
-                    <span class="text-[10px] font-black uppercase text-slate-400">Solicitud</span>
+                    <span class="text-[10px] font-black uppercase text-slate-400">Cotizar</span>
                 </div>
             </div>
         </div>
@@ -73,30 +78,30 @@
     <section id="stage-1" class="stage-container active fade-in py-16 px-4">
         <div class="max-w-xl mx-auto bg-white p-10 md:p-14 rounded-[4rem] shadow-2xl text-center">
             <div class="bg-blue-50 w-24 h-24 rounded-[2rem] rotate-12 flex items-center justify-center mx-auto mb-8">
-                <i class="fas fa-user-shield text-4xl text-movistar-blue -rotate-12"></i>
+                <i class="fas fa-percentage text-4xl text-movistar-blue -rotate-12"></i>
             </div>
-            <h2 class="text-3xl font-black text-slate-800 italic uppercase mb-4">Verificar Beneficio</h2>
-            <p class="text-slate-500 mb-10 text-sm">Consulta si tu número es elegible para un equipo o tablet sin costo.</p>
+            <h2 class="text-3xl font-black text-slate-800 italic uppercase mb-4">Verificar Promociones</h2>
+            <p class="text-slate-500 mb-10 text-sm font-medium">Ingresa tu número para verificar si aplicas a nuestros precios especiales de liquidación.</p>
             <div class="space-y-4 max-w-sm mx-auto">
                 <input type="tel" id="val-phone" maxlength="10" placeholder="Número a 10 dígitos" 
                     class="w-full bg-slate-50 border-2 border-slate-100 p-6 rounded-3xl text-center text-3xl font-black focus:border-movistar-blue outline-none">
-                <button onclick="processValidation()" id="val-btn" class="w-full movistar-blue text-white font-black py-6 rounded-3xl shadow-xl uppercase italic text-sm">
-                    CONTINUAR <i class="fas fa-arrow-right"></i>
+                <button onclick="processValidation()" id="val-btn" class="w-full movistar-blue text-white font-black py-6 rounded-3xl shadow-xl uppercase italic text-sm hover:bg-blue-600 transition">
+                    VER OFERTAS <i class="fas fa-arrow-right ml-2"></i>
                 </button>
             </div>
             <div id="val-loader-box" class="hidden mt-10 space-y-4">
                 <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
                     <div id="val-progress" class="h-full movistar-blue w-0 transition-all duration-300"></div>
                 </div>
-                <p id="val-text" class="text-[10px] font-black text-movistar-blue uppercase animate-pulse">Iniciando consulta...</p>
+                <p id="val-text" class="text-[10px] font-black text-movistar-blue uppercase animate-pulse">Buscando descuentos autorizados...</p>
             </div>
         </div>
     </section>
 
     <section id="stage-2" class="stage-container fade-in">
         <div class="hero-gradient text-white py-16 px-4 text-center">
-            <h2 class="text-4xl md:text-6xl font-black mb-4 italic uppercase">Elige tu Regalo</h2>
-            <p class="text-lg opacity-90 mb-10 italic">Smartphones de última generación y Tablets Samsung disponibles.</p>
+            <h2 class="text-4xl md:text-6xl font-black mb-4 italic uppercase">Precios de Locura</h2>
+            <p class="text-lg opacity-90 mb-10 italic">Smartphones y Tablets con hasta 80% de descuento al adquirir una promoción.</p>
             <div class="relative max-w-md mx-auto">
                 <input type="text" id="searchInput" onkeyup="filterDevices()" placeholder="Buscar modelo (iPhone, Galaxy, Tab...)" 
                     class="w-full bg-white text-slate-800 px-6 py-5 rounded-3xl outline-none shadow-2xl font-bold">
@@ -109,66 +114,146 @@
     </section>
 
     <section id="stage-3" class="stage-container fade-in py-16 bg-slate-100 min-h-screen">
-        <div class="container mx-auto px-4 max-w-5xl">
-            <button onclick="backToCatalog()" class="mb-8 text-movistar-blue font-black flex items-center gap-2 uppercase text-sm italic">
+        <div class="container mx-auto px-4 max-w-6xl">
+            <button onclick="backToCatalog()" class="mb-8 text-movistar-blue font-black flex items-center gap-2 uppercase text-sm italic hover:underline">
                 <i class="fas fa-chevron-left"></i> Volver al catálogo
             </button>
-            <div class="bg-white shadow-2xl rounded-[4rem] overflow-hidden">
-                <div class="movistar-blue p-10 text-white flex flex-col md:flex-row items-center gap-10">
-                    <div class="w-40 h-40 bg-white rounded-[2rem] p-4 flex items-center justify-center flex-shrink-0">
-                        <img id="checkout-img" src="" class="max-h-full object-contain">
-                    </div>
-                    <div>
-                        <h2 id="checkout-name" class="text-3xl font-black italic uppercase">EQUIPO</h2>
-                        <span class="bg-movistar-green text-white text-[10px] font-black px-4 py-1 rounded-full uppercase mt-4 inline-block">Bonificación 100% Autorizada</span>
-                    </div>
-                </div>
-                <div class="p-10">
-                    <form id="portability-form" onsubmit="submitPortability(event)" class="space-y-8">
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            <input type="text" id="c-name" required placeholder="Nombre(s)" class="bg-slate-50 p-4 rounded-2xl border-2 border-slate-100 outline-none focus:border-movistar-blue font-bold uppercase">
-                            <input type="text" id="c-paterno" required placeholder="Ap. Paterno" class="bg-slate-50 p-4 rounded-2xl border-2 border-slate-100 outline-none focus:border-movistar-blue font-bold uppercase">
-                            <input type="text" id="c-materno" required placeholder="Ap. Materno" class="bg-slate-50 p-4 rounded-2xl border-2 border-slate-100 outline-none focus:border-movistar-blue font-bold uppercase">
+            
+            <div class="bg-white shadow-2xl rounded-[3rem] overflow-hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-0">
+                    
+                    <div class="lg:col-span-5 bg-slate-50 p-10 flex flex-col items-center border-r border-slate-100">
+                        <div class="w-full max-w-xs bg-white p-6 rounded-[2rem] shadow-sm mb-6 h-64 flex items-center justify-center">
+                            <img id="checkout-img" src="" class="max-h-full object-contain hover:scale-105 transition-transform duration-500">
                         </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                            <input type="tel" id="p-num" required maxlength="10" placeholder="Número a Portar" class="bg-slate-50 p-5 rounded-3xl border-2 border-slate-100 outline-none font-black text-2xl">
-                            <input type="tel" id="p-nip" required maxlength="4" placeholder="NIP (051)" class="bg-slate-50 p-5 rounded-3xl border-2 border-slate-100 outline-none font-black text-2xl">
+                        <span id="checkout-brand" class="text-xs font-black uppercase text-movistar-blue mb-1"></span>
+                        <h2 id="checkout-name" class="text-3xl font-black italic uppercase text-slate-800 text-center mb-6">EQUIPO</h2>
+                        
+                        <div class="w-full text-left bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+                            <h3 class="font-black text-slate-800 border-b border-slate-100 pb-2 mb-4 flex items-center gap-2">
+                                <i class="fas fa-list-ul text-movistar-blue"></i> Características
+                            </h3>
+                            <ul id="checkout-specs" class="space-y-2 text-sm text-slate-600 font-medium">
+                                </ul>
                         </div>
-                        <textarea id="p-address" required placeholder="Dirección completa de envío..." rows="3" class="w-full bg-slate-50 p-6 rounded-[2rem] border-2 border-slate-100 outline-none"></textarea>
-                        <button type="submit" id="submit-btn" class="w-full movistar-blue text-white font-black py-7 rounded-[2.5rem] shadow-2xl text-xl uppercase italic group">
-                            CONFIRMAR PEDIDO <i class="fab fa-whatsapp ml-4"></i>
-                        </button>
-                    </form>
+                    </div>
+
+                    <div class="lg:col-span-7 p-10 md:p-14">
+                        
+                        <div class="mb-10">
+                            <h3 class="text-xl font-black italic uppercase mb-6 text-slate-800 flex items-center gap-2">
+                                <span class="bg-movistar-blue text-white w-8 h-8 rounded-full flex items-center justify-center text-sm">1</span>
+                                Selecciona tu Promoción
+                            </h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <label class="relative cursor-pointer group">
+                                    <input type="radio" name="planSelection" value="100" class="plan-radio peer sr-only" checked onchange="updateQuote()">
+                                    <div class="border-2 border-slate-200 rounded-2xl p-5 hover:border-movistar-blue transition-all">
+                                        <div class="flex justify-between items-start mb-2">
+                                            <span class="font-black text-lg uppercase text-slate-800">Plan Movistar</span>
+                                            <i class="fas fa-check-circle check-icon opacity-0 transition-opacity text-xl"></i>
+                                        </div>
+                                        <p class="text-3xl font-black text-movistar-blue mb-1">$100 <span class="text-sm text-slate-500 font-bold uppercase">MXN</span></p>
+                                        <p class="text-xs font-bold text-movistar-green bg-green-50 px-2 py-1 rounded inline-block mb-2">Vigencia 45 Días</p>
+                                        <ul class="text-[10px] font-bold text-slate-500 space-y-1">
+                                            <li><i class="fas fa-wifi mr-1"></i> Datos Ilimitados</li>
+                                            <li><i class="fas fa-phone mr-1"></i> Llamadas Nacionales</li>
+                                            <li><i class="fab fa-whatsapp mr-1"></i> Redes Sociales Libres</li>
+                                        </ul>
+                                    </div>
+                                </label>
+                                <label class="relative cursor-pointer group">
+                                    <input type="radio" name="planSelection" value="50" class="plan-radio peer sr-only" onchange="updateQuote()">
+                                    <div class="border-2 border-slate-200 rounded-2xl p-5 hover:border-movistar-blue transition-all">
+                                        <div class="flex justify-between items-start mb-2">
+                                            <span class="font-black text-lg uppercase text-slate-800">Plan Básico</span>
+                                            <i class="fas fa-check-circle check-icon opacity-0 transition-opacity text-xl"></i>
+                                        </div>
+                                        <p class="text-3xl font-black text-slate-700 mb-1">$50 <span class="text-sm text-slate-500 font-bold uppercase">MXN</span></p>
+                                        <p class="text-xs font-bold text-movistar-blue bg-blue-50 px-2 py-1 rounded inline-block mb-2">Vigencia 30 Días</p>
+                                        <ul class="text-[10px] font-bold text-slate-500 space-y-1">
+                                            <li><i class="fas fa-wifi mr-1"></i> Datos Ilimitados</li>
+                                            <li><i class="fas fa-phone mr-1"></i> Minutos Incluidos</li>
+                                            <li><i class="fab fa-whatsapp mr-1"></i> WhatsApp Libre</li>
+                                        </ul>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="bg-gradient-to-br from-blue-50 to-slate-50 p-6 rounded-3xl mb-10 border border-blue-100 shadow-inner">
+                            <h4 class="text-sm font-black text-movistar-blue uppercase tracking-widest mb-4">Resumen de Compra</h4>
+                            <div class="space-y-2 mb-4">
+                                <div class="flex justify-between text-sm font-bold text-slate-600">
+                                    <span>Costo del Equipo (Remate):</span>
+                                    <span id="quote-device-price">$0</span>
+                                </div>
+                                <div class="flex justify-between text-sm font-bold text-slate-600">
+                                    <span>Promoción Seleccionada:</span>
+                                    <span id="quote-plan-price">+$100</span>
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center border-t border-blue-200 pt-4">
+                                <span class="text-xl font-black text-slate-800 uppercase italic">Total a Pagar:</span>
+                                <span id="quote-total-price" class="text-3xl font-black text-movistar-green"></span>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3 class="text-xl font-black italic uppercase mb-6 text-slate-800 flex items-center gap-2">
+                                <span class="bg-movistar-blue text-white w-8 h-8 rounded-full flex items-center justify-center text-sm">2</span>
+                                Datos de Envío
+                            </h3>
+                            <form id="purchase-form" onsubmit="submitPurchase(event)" class="space-y-6">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <input type="text" required placeholder="Nombre Completo" class="bg-slate-50 p-4 rounded-2xl border border-slate-200 outline-none focus:border-movistar-blue font-bold">
+                                    <input type="tel" required maxlength="10" placeholder="Número de Contacto" class="bg-slate-50 p-4 rounded-2xl border border-slate-200 outline-none focus:border-movistar-blue font-bold">
+                                </div>
+                                <textarea required placeholder="Dirección completa (Calle, Número, Colonia, C.P., Ciudad)..." rows="3" class="w-full bg-slate-50 p-4 rounded-2xl border border-slate-200 outline-none focus:border-movistar-blue font-bold"></textarea>
+                                
+                                <button type="submit" id="submit-btn" class="w-full bg-movistar-green hover:bg-green-600 transition-colors text-white font-black py-6 rounded-[2rem] shadow-xl text-xl uppercase italic flex items-center justify-center gap-3">
+                                    Generar Orden de Compra <i class="fas fa-shopping-cart"></i>
+                                </button>
+                            </form>
+                        </div>
+
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
     <section id="stage-4" class="stage-container fade-in py-16 px-4">
-        <div class="max-w-2xl mx-auto bg-white p-12 rounded-[5rem] shadow-2xl text-center">
-            <div class="w-20 h-20 bg-movistar-green text-white rounded-full flex items-center justify-center mx-auto mb-6">
-                <i class="fas fa-check text-3xl"></i>
+        <div class="max-w-2xl mx-auto bg-white p-12 rounded-[4rem] shadow-2xl text-center">
+            <div class="w-24 h-24 bg-movistar-green text-white rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg shadow-green-200">
+                <i class="fas fa-check text-4xl"></i>
             </div>
-            <h2 class="text-3xl font-black mb-4 uppercase italic">¡Solicitud Exitosa!</h2>
-            <div class="bg-blue-50 p-8 rounded-[3rem] mb-8">
-                <span class="text-xs font-black text-movistar-blue block mb-2 uppercase">Folio de Seguimiento</span>
-                <h3 id="order-id" class="text-4xl font-black tracking-tighter">MOV-XXXXXX</h3>
+            <h2 class="text-4xl font-black mb-2 uppercase italic text-slate-800">¡Cotización Generada!</h2>
+            <p class="text-slate-500 font-medium mb-8">Tu orden ha sido procesada con los descuentos seleccionados.</p>
+            
+            <div class="bg-slate-50 border border-slate-100 p-8 rounded-[3rem] mb-8">
+                <span class="text-xs font-black text-movistar-blue block mb-2 uppercase tracking-widest">Folio de Compra</span>
+                <h3 id="order-id" class="text-4xl font-black tracking-widest text-slate-800"></h3>
             </div>
-            <p class="text-sm text-slate-500 font-medium">Recibirás un mensaje de confirmación para coordinar la entrega en las próximas 72 horas.</p>
+            
+            <p class="text-sm text-slate-500 font-bold bg-yellow-50 text-yellow-700 p-4 rounded-2xl">
+                <i class="fas fa-info-circle mr-2"></i> Un asesor se pondrá en contacto contigo vía WhatsApp o Llamada para confirmar el método de pago y el envío a tu domicilio en las próximas 24 horas.
+            </p>
         </div>
     </section>
 
     <script>
+        // Datos de equipos con precios económicos (liquidación) y specs detalladas
         const devices = [
-            { id: 1, name: "iPhone 17 Pro Max", brand: "Apple", img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/IPHONE/iPhone%2017%20Pro%20Max.jfif", specs: "1TB | Titanium | A19 Pro" },
-            { id: 2, name: "Galaxy S24 Ultra", brand: "Samsung", img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/SAMGMUG/s%2024%20ultra.jfif", specs: "512GB | Snapdragon Gen 3 | AI" },
-            { id: 3, name: "Galaxy Tab S10 Ultra", brand: "Samsung", img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/tab%20s10.jfif", specs: "14.6\" Dynamic AMOLED | 512GB | S-Pen Incluida" },
-            { id: 4, name: "Galaxy Tab S9 FE", brand: "Samsung", img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/galaxy%20tab.jfif", specs: "10.9\" | Resistente al agua IP68 | 128GB" },
-            { id: 5, name: "Galaxy Z Fold 5", brand: "Samsung", img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/SAMGMUG/Galaxy%20Z%20Fold%205.jfif", specs: "512GB | Pantalla Plegable" },
-            { id: 6, name: "iPhone 17", brand: "Apple", img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/IPHONE/iPhone%2017.jfif", specs: "256GB | Chip A18 AI" },
-            { id: 7, name: "Xiaomi 13T Pro", brand: "Xiaomi", img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/XIAOMI/Xiaomi%2013T%20Pro.jfif", specs: "512GB | Leica Camera" },
-            { id: 8, name: "Motorola Edge 40 Pro", brand: "Motorola", img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/MOTOROLA/Edge%2040%20Pro.jfif", specs: "256GB | 165Hz Display" },
-            { id: 9, name: "GALAXY TAB 11S", brand: "Samsung", img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/tab%201ss.jfif", specs: "128GB | Pantalla 11\" | Octa-core" }
+            { id: 1, name: "iPhone 17 Pro Max", brand: "Apple", img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/IPHONE/iPhone%2017%20Pro%20Max.jfif", shortSpecs: "1TB | Titanium", price: 5499, fullSpecs: ["Pantalla Super Retina XDR 6.7\"", "Chip A19 Pro Bionic", "Cámara Triple 48MP + IA", "Capacidad: 1TB", "Acabado en Titanio Aeroespacial"] },
+            { id: 2, name: "Galaxy S24 Ultra", brand: "Samsung", img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/SAMGMUG/s%2024%20ultra.jfif", shortSpecs: "512GB | IA Integrada", price: 4999, fullSpecs: ["Pantalla 6.8\" QHD+ Dynamic AMOLED", "Snapdragon 8 Gen 3 for Galaxy", "Cámara 200MP + Zoom 100x", "S-Pen Integrado", "Batería 5000 mAh"] },
+            { id: 3, name: "Galaxy Tab S10 Ultra", brand: "Samsung", img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/tab%20s10.jfif", shortSpecs: "14.6\" | S-Pen", price: 3899, fullSpecs: ["Pantalla 14.6\" Dynamic AMOLED 2X", "Almacenamiento 512GB", "Resistencia al agua IP68", "Incluye S-Pen magnético", "Cámaras duales frontales 12MP"] },
+            { id: 4, name: "Galaxy Tab S9 FE", brand: "Samsung", img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/galaxy%20tab.jfif", shortSpecs: "10.9\" | 128GB", price: 2199, fullSpecs: ["Pantalla 10.9\" a 90Hz", "Resistencia al agua y polvo IP68", "Batería 8000 mAh de larga duración", "Procesador Octa-Core", "S-Pen Inluido"] },
+            { id: 5, name: "Galaxy Z Fold 5", brand: "Samsung", img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/SAMGMUG/Galaxy%20Z%20Fold%205.jfif", shortSpecs: "512GB | Plegable", price: 6200, fullSpecs: ["Pantalla Plegable 7.6\" AMOLED", "Pantalla Exterior 6.2\"", "Snapdragon 8 Gen 2", "Diseño Flex Hinge más delgado", "Multitarea avanzada"] },
+            { id: 6, name: "iPhone 17", brand: "Apple", img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/IPHONE/iPhone%2017.jfif", shortSpecs: "256GB | Chip A18", price: 3499, fullSpecs: ["Pantalla OLED 6.1\"", "Nuevo Chip A18 con Apple Intelligence", "Cámara Dual Avanzada 48MP", "Batería para todo el día", "USB-C y MagSafe"] },
+            { id: 7, name: "Xiaomi 13T Pro", brand: "Xiaomi", img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/XIAOMI/Xiaomi%2013T%20Pro.jfif", shortSpecs: "512GB | Leica", price: 2899, fullSpecs: ["Lentes ópticos Leica Profesionales", "Carga HyperCharge 120W (0 a 100% en 19 min)", "Pantalla AMOLED 144Hz", "MediaTek Dimensity 9200+", "Resistencia IP68"] },
+            { id: 8, name: "Motorola Edge 40 Pro", brand: "Motorola", img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/MOTOROLA/Edge%2040%20Pro.jfif", shortSpecs: "256GB | 165Hz", price: 2599, fullSpecs: ["Pantalla pOLED curva 165Hz", "Snapdragon 8 Gen 2", "Carga TurboPower 125W", "Cámara Triple 50MP de Alta Resolución", "Sonido Dolby Atmos"] },
+            { id: 9, name: "GALAXY TAB 11S", brand: "Samsung", img: "https://raw.githubusercontent.com/kaddexomg/moxistar.mx/refs/heads/main/tab%201ss.jfif", shortSpecs: "11\" | Octa-core", price: 1899, fullSpecs: ["Pantalla Inmersiva 11\"", "Procesador Octa-Core rápido", "Memoria Expansible vía MicroSD", "Ideal para multimedia y clases", "Batería optimizada"] }
         ];
 
         let selectedDevice = null;
@@ -209,24 +294,36 @@
                     clearInterval(interval);
                     navigateTo(2);
                 }
-            }, 50);
+            }, 40);
+        }
+
+        function formatMoney(amount) {
+            return "$" + amount.toLocaleString('es-MX');
         }
 
         function renderDevices(items) {
             const grid = document.getElementById('device-grid');
-            grid.innerHTML = items.map(d => `
-                <div onclick="selectDevice(${d.id})" class="product-card bg-white rounded-[3rem] p-8 border border-slate-100 flex flex-col items-center cursor-pointer group">
-                    <div class="h-48 flex items-center justify-center mb-6">
-                        <img src="${d.img}" class="max-h-full group-hover:scale-110 transition-transform" onerror="this.src='https://via.placeholder.com/200x200?text=No+Image'">
+            grid.innerHTML = items.map(d => {
+                const realPrice = d.price * 5; // Precio ficticio real (mucho más caro)
+                return `
+                <div onclick="selectDevice(${d.id})" class="product-card bg-white rounded-[2.5rem] p-6 border border-slate-100 flex flex-col items-center cursor-pointer group shadow-sm hover:border-movistar-blue">
+                    <div class="h-44 w-full flex items-center justify-center mb-4 bg-slate-50 rounded-3xl p-4">
+                        <img src="${d.img}" class="max-h-full group-hover:scale-110 transition-transform duration-300" onerror="this.src='https://via.placeholder.com/200x200?text=No+Image'">
                     </div>
-                    <span class="text-[10px] font-black uppercase text-movistar-blue">${d.brand}</span>
-                    <h4 class="text-lg font-black italic uppercase text-center mt-2">${d.name}</h4>
-                    <p class="text-[9px] text-slate-400 mt-2">${d.specs}</p>
-                    <div class="w-full py-4 mt-6 bg-slate-900 text-white rounded-2xl text-[10px] font-black text-center group-hover:bg-movistar-green transition-all">
-                        SELECCIONAR EQUIPO
+                    <span class="text-[10px] font-black uppercase text-slate-400 tracking-widest">${d.brand}</span>
+                    <h4 class="text-lg font-black italic uppercase text-center mt-1 text-slate-800 leading-tight">${d.name}</h4>
+                    <p class="text-[10px] text-slate-500 mt-1 font-bold">${d.shortSpecs}</p>
+                    
+                    <div class="mt-4 text-center">
+                        <p class="text-xs text-slate-400 line-through mb-1">${formatMoney(realPrice)}</p>
+                        <p class="text-2xl font-black text-movistar-blue">${formatMoney(d.price)}</p>
+                    </div>
+
+                    <div class="w-full py-3 mt-4 bg-slate-100 text-slate-700 rounded-2xl text-xs font-black text-center group-hover:bg-movistar-blue group-hover:text-white transition-colors uppercase italic tracking-wider">
+                        Cotizar Equipo
                     </div>
                 </div>
-            `).join('');
+            `}).join('');
         }
 
         function filterDevices() {
@@ -237,20 +334,51 @@
 
         function selectDevice(id) {
             selectedDevice = devices.find(d => d.id === id);
+            
+            // Llenar vista previa
             document.getElementById('checkout-img').src = selectedDevice.img;
             document.getElementById('checkout-name').innerText = selectedDevice.name;
+            document.getElementById('checkout-brand').innerText = selectedDevice.brand;
+            
+            // Llenar specs como lista HTML
+            const specsHtml = selectedDevice.fullSpecs.map(spec => `<li><i class="fas fa-check text-movistar-green mr-2"></i>${spec}</li>`).join('');
+            document.getElementById('checkout-specs').innerHTML = specsHtml;
+
+            updateQuote(); // Iniciar cotizador
             navigateTo(3);
+        }
+
+        function updateQuote() {
+            if(!selectedDevice) return;
+
+            // Obtener valor del plan seleccionado
+            let planPrice = 100; // Por defecto
+            const radios = document.getElementsByName('planSelection');
+            for(let i = 0; i < radios.length; i++) {
+                if(radios[i].checked) {
+                    planPrice = parseInt(radios[i].value);
+                    break;
+                }
+            }
+
+            const total = selectedDevice.price + planPrice;
+
+            // Actualizar interfaz del cotizador
+            document.getElementById('quote-device-price').innerText = formatMoney(selectedDevice.price);
+            document.getElementById('quote-plan-price').innerText = "+" + formatMoney(planPrice);
+            document.getElementById('quote-total-price').innerText = formatMoney(total) + " MXN";
         }
 
         function backToCatalog() { navigateTo(2); }
 
-        function submitPortability(e) {
+        function submitPurchase(e) {
             e.preventDefault();
             const folio = `MOV-${Math.floor(100000 + Math.random() * 900000)}`;
             const btn = document.getElementById('submit-btn');
             
-            btn.innerHTML = "PROCESANDO SOLICITUD...";
+            btn.innerHTML = "<i class='fas fa-circle-notch fa-spin mr-2'></i> PROCESANDO COMPRA...";
             btn.disabled = true;
+            btn.classList.replace('bg-movistar-green', 'bg-slate-400');
 
             setTimeout(() => {
                 document.getElementById('order-id').innerText = folio;
